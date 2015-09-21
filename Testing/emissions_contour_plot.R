@@ -6,14 +6,14 @@ library(directlabels)
 library(Cairo)
 library(ggthemes)
 
-d = read.table(file = "out_29082015.csv", header = TRUE, sep  = ",")
+d = read.table(file = "out_VOC_06092015.csv", header = TRUE, sep  = ",")
 d = tbl_df(d)
 
 mozart.emissions = d %>% filter(Mechanism == "MOZART") %>% select(O3, NOx.Emissions, VOC.Emissions)
-mozart.emissions = mozart.emissions %>% filter(NOx.Emissions <= 5e9)
+mozart.emissions = mozart.emissions %>% filter(NOx.Emissions <= 7.5e9)
 
 mcm.emissions = d %>% filter(Mechanism == "MCM") %>% select(O3, NOx.Emissions, VOC.Emissions)
-mcm.emissions = mcm.emissions %>% filter(NOx.Emissions <= 5e9)
+mcm.emissions = mcm.emissions %>% filter(NOx.Emissions <= 7.5e9)
 
 mozart.fld = with(mozart.emissions, interp(x = VOC.Emissions, y = NOx.Emissions, z = O3))
 mozart.df = melt(mozart.fld$z, na.rm = TRUE)
@@ -33,7 +33,18 @@ head(mcm.df)
 
 df = rbind(mcm.df, mozart.df)
 
-p = ggplot(df, aes(x = VOC.Emissions, y = NOx.Emissions, z = O3)) + stat_contour(aes(colour = ..level..), bins = 7) + facet_wrap(~ Mechanism) + theme_tufte() + theme(axis.line = element_line(colour = "black")) + theme(strip.text = element_text(face = "bold")) + xlab("VOC emissions (molecules(VOC) cm-3 s-1)") + ylab("NOx emissions (molecules(VOC) cm-3 s-1)")
+p = ggplot(df, aes(x = VOC.Emissions, y = NOx.Emissions, z = O3))
+#p = p + geom_point(aes(colour = O3)) 
+p = p + stat_contour(aes(colour = ..level..)) 
+p = p + facet_wrap(~ Mechanism) 
+p = p + theme_tufte() 
+p = p + theme(axis.line = element_line(colour = "black")) 
+p = p + theme(strip.text = element_text(face = "bold")) 
+p = p + xlab("VOC emissions (molecules(VOC) cm-3 s-1)") 
+p = p + ylab("NOx emissions (molecules(NOx) cm-3 s-1)") 
+p = p + theme(axis.title = element_text(face = "bold")) 
+p = p + scale_colour_continuous(name = "O3 (ppbv)")
+
 CairoPDF(file = "plot_emissions.pdf", width = 10, height = 7)
-print(p)
+print(direct.label(p))
 dev.off()

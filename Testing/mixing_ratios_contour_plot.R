@@ -5,7 +5,7 @@ library(akima)
 library(directlabels)
 library(Cairo)
 
-d = read.table(file = "out_29082015.csv", header = TRUE, sep  = ",")
+d = read.table(file = "out_VOC_02092015.csv", header = TRUE, sep  = ",")
 d = tbl_df(d)
 
 mozart = d %>% filter(Mechanism == "MOZART") %>% select(O3, NOx, VOC)
@@ -33,6 +33,6 @@ head(mcm.df)
 df = rbind(mcm.df, mozart.df)
 
 p = ggplot(df, aes(x = VOC, y = NOx, z = O3)) + stat_contour(aes(colour = ..level..), bins = 7) + facet_wrap(~ Mechanism)
-CairoPDF(file = "plot_mixing_ratio,pdf")
+CairoPDF(file = "plot_mixing_ratio.pdf")
 print(p)
 dev.off()
