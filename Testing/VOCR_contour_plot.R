@@ -5,7 +5,7 @@ library(akima)
 library(directlabels)
 library(Cairo)
 
-d = read.table(file = "out_29082015.csv", header = TRUE, sep  = ",")
+d = read.table(file = "out_VOC_22092015.csv", header = TRUE, sep  = ",")
 d = tbl_df(d)
 
 mozart = d %>% filter(Mechanism == "MOZART") %>% select(-Mechanism, -VOC)
