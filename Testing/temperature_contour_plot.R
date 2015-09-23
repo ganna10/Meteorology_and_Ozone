@@ -13,7 +13,7 @@ library(ggthemes)
 d = read.table(file = "out_Temperature_23092015.csv", header = TRUE, sep  = ",")
 d = tbl_df(d)
 
-species = c("O3", "HNO3", "HO2", "OH", "H2O2", "HCHO")
+species = c("O3", "HNO3", "HO2", "OH", "H2O2", "HCHO", "HOx")
 
 get.labels = function (break.points, orig.data, digits) {
     labels = lapply(break.points,
@@ -23,12 +23,19 @@ get.labels = function (break.points, orig.data, digits) {
 }
 
 get.plot = function (spc, data) { 
-    columns = c(spc, "NOx.Emissions", "Temperature")
+    if (spc == "HOx") {
+        columns = c("OH", "HO2", "NOx.Emissions", "Temperature")
+    } else {
+        columns = c(spc, "NOx.Emissions", "Temperature")
+    }
     column.numbers = match(columns, names(data))
     
     mozart.data = d %>% filter(Mechanism == "MOZART") %>% select(column.numbers)
     mozart.data = mozart.data %>% filter(NOx.Emissions <= 7.5e9)
     mozart.data = mozart.data %>% mutate(Scaled.Temperature = (Temperature - min(Temperature))/(max(Temperature) - min(Temperature)), Scaled.NOx.Emissions = (NOx.Emissions - min(NOx.Emissions))/(max(NOx.Emissions) - min(NOx.Emissions)))
+    if (spc == "HOx") {
+        mozart.data = mozart.data %>% mutate(HOx = OH + HO2) %>% select(-OH, -HO2)
+    }
     
     #mcm.data = d %>% filter(Mechanism == "MCM") %>% select(O3, NOx.Emissions, Temperature)
     #mcm.data = mcm.data %>% filter(NOx.Emissions <= 7.5e9) %>% arrange(Temperature)
@@ -60,7 +67,7 @@ get.plot = function (spc, data) {
 
     if (spc == "O3" | spc == "HNO3" | spc == "HCHO" | spc == "H2O2") {
         title = paste(spc, "Mixing Ratio (ppbv) Contour Plot")
-    } else if (spc == "HO2" | spc == "OH") {
+    } else if (spc == "HO2" | spc == "OH" | spc == "HOx") {
         title = paste(spc, "Mixing Ratio (pptv) Contour Plot")
     } else {
         title = "No title as yet"
