@@ -19,14 +19,14 @@ close $in;
 my @data;
 push @data, "Mechanism,NOx,VOC,O3,HNO3,H2O2,HO2,OH,HCHO,VOCR,NOx.Emissions,VOC.Emissions,Temperature,Relative.Humidity,Solar.Zenith.Angle";
 
-#my ($mozart_data) = $all_lines =~ /MOZART(.*?)MCM/s;
-my ($mozart_data) = $all_lines =~ /MOZART(.*?)$/s;
+my ($mozart_data) = $all_lines =~ /MOZART(.*?)MCM/s;
+#my ($mozart_data) = $all_lines =~ /MOZART(.*?)$/s;
 my @mozart_data = extract_data($mozart_data, "MOZART");
 push @data, @mozart_data;
 
-#my ($mcm_data) = $all_lines =~ /MCM(.*?)$/s;
-#my @mcm_data = extract_data($mcm_data, "MCM");
-#push @data, @mcm_data;
+my ($mcm_data) = $all_lines =~ /MCM(.*?)$/s;
+my @mcm_data = extract_data($mcm_data, "MCM");
+push @data, @mcm_data;
 
 my $out_file = "out_${variable}_${date}.csv";
 open my $out, '>:encoding(utf-8)', $out_file or die $!;

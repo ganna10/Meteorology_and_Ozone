@@ -37,9 +37,12 @@ get.plot = function (spc, data) {
         mozart.data = mozart.data %>% mutate(HOx = OH + HO2) %>% select(-OH, -HO2)
     }
     
-    #mcm.data = d %>% filter(Mechanism == "MCM") %>% select(O3, NOx.Emissions, Temperature)
-    #mcm.data = mcm.data %>% filter(NOx.Emissions <= 7.5e9) %>% arrange(Temperature)
-    #mcm.data = mcm.data %>% mutate(Scaled.Temperature = (Temperature - min(Temperature))/(max(Temperature) - min(Temperature)), Scaled.NOx.Emissions = (NOx.Emissions - min(NOx.Emissions))/(max(NOx.Emissions) - min(NOx.Emissions)))
+    mcm.data = d %>% filter(Mechanism == "MCM") %>% select(column.numbers)
+    mcm.data = mcm.data %>% filter(NOx.Emissions <= 7.5e9)
+    mcm.data = mcm.data %>% mutate(Scaled.Temperature = (Temperature - min(Temperature))/(max(Temperature) - min(Temperature)), Scaled.NOx.Emissions = (NOx.Emissions - min(NOx.Emissions))/(max(NOx.Emissions) - min(NOx.Emissions)))
+    if (spc == "HOx") {
+        mcm.data = mcm.data %>% mutate(HOx = OH + HO2) %>% select(-OH, -HO2)
+    }
 
     mozart.colnum = match(spc, names(mozart.data))
     mozart.fld = with(mozart.data, interp(x = Scaled.Temperature, y = Scaled.NOx.Emissions, z = mozart.data[[mozart.colnum]]))
@@ -49,15 +52,16 @@ get.plot = function (spc, data) {
     mozart.df$NOx.Emissions = mozart.fld$y[mozart.df$y]
     mozart.df$Mechanism = rep("MOZART-4", length(mozart.df$O3))
 
-    #mcm.fld = with(mcm.data, interp(x = Scaled.Temperature, y = Scaled.NOx.Emissions, z = O3, duplicate = "strip"))
-    #mcm.df = melt(mcm.fld$z, na.rm = TRUE)
-    #names(mcm.df) = c("x", "y", "O3")
-    #mcm.df$Temperature = mcm.fld$x[mcm.df$x]
-    #mcm.df$NOx.Emissions = mcm.fld$y[mcm.df$y]
-    #mcm.df$Mechanism = rep("MCMv3.2", length(mcm.df$O3))
+    mcm.colnum = match(spc, names(mcm.data))
+    mcm.fld = with(mcm.data, interp(x = Scaled.Temperature, y = Scaled.NOx.Emissions, z = mcm.data[[mcm.colnum]], duplicate = "strip"))
+    mcm.df = melt(mcm.fld$z, na.rm = TRUE)
+    names(mcm.df) = c("x", "y", "O3")
+    mcm.df$Temperature = mcm.fld$x[mcm.df$x]
+    mcm.df$NOx.Emissions = mcm.fld$y[mcm.df$y]
+    mcm.df$Mechanism = rep("MCMv3.2", length(mcm.df$O3))
     
-    #df = rbind(mcm.df, mozart.df)
-    df = mozart.df
+    df = rbind(mcm.df, mozart.df)
+    #df = mozart.df
     
     temperature.break.points = seq(0, 1, 0.2)
     temperature.labels = get.labels(temperature.break.points, mozart.data$Temperature, digits = 2)

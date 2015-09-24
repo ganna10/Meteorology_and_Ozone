@@ -1,37 +1,37 @@
 library(reshape2)
 library(ggplot2)
-library(dplyr)
+library(dplyr, warn.conflicts = FALSE)
 library(akima)
 library(directlabels)
 library(Cairo)
 library(ggthemes)
 
-d = read.table(file = "out_Temperature_06092015.csv", header = TRUE, sep  = ",")
+d = read.csv(file = "out_Temperature_23092015.csv")
 d = tbl_df(d)
 
 mozart.data = d %>% filter(Mechanism == "MOZART") %>% select(O3, NOx.Emissions, Temperature)
-mozart.data = mozart.data %>% filter(NOx.Emissions <= 7.5e9)
-mozart.data = mozart.data %>% mutate(Scaled.Temperature = (Temperature - min(Temperature))/(max(Temperature) - min(Temperature)), Scaled.NOx.Emissions = (NOx.Emissions - min(NOx.Emissions))/(max(NOx.Emissions) - min(NOx.Emissions)))
+moz.lm = lm(formula = I(log(O3) - log(NOx.Emissions)) ~ I(log(Temperature) - log(NOx.Emissions)), data = mozart.data)
+summary(moz.lm)
 
-mcm.data = d %>% filter(Mechanism == "MCM") %>% select(O3, NOx.Emissions, Temperature)
-mcm.data = mcm.data %>% filter(NOx.Emissions <= 7.5e9) %>% arrange(Temperature)
-mcm.data = mcm.data %>% mutate(Scaled.Temperature = (Temperature - min(Temperature))/(max(Temperature) - min(Temperature)), Scaled.NOx.Emissions = (NOx.Emissions - min(NOx.Emissions))/(max(NOx.Emissions) - min(NOx.Emissions)))
+f <- function( x, y ) {
+    exp( coef( moz.lm )[ 1 ] ) * ( x ^ coef( moz.lm )[ 2 ] ) * ( y ^ ( 1 - coef( moz.lm )[ 2 ] ) )
+}
 
-mozart.fld = with(mozart.data, interp(x = Scaled.Temperature, y = Scaled.NOx.Emissions, z = O3))
+y.interval = 1e9
+x.interval = 100
+x = seq( from = floor( min(mozart.data$Temperature) / x.interval ) * x.interval, to = ceiling( max(mozart.data$Temperature) / x.interval ) * x.interval, by = x.interval)
+y = seq( from = floor(min(mozart.data$NOx.Emissions) / y.interval) * y.interval, to = ceiling(max(mozart.data$NOx.Emissions) / y.interval) * y.interval, by = y.interval)
+
+O3.calc = f(x = mozart.data$Temperature, y = mozart.data$NOx.Emissions)
+model = mozart.data %>% select(-O3) %>% mutate(Scaled.Temperature = (Temperature - min(Temperature))/(max(Temperature) - min(Temperature)), Scaled.NOx.Emissions = (NOx.Emissions - min(NOx.Emissions))/(max(NOx.Emissions) - min(NOx.Emissions))) %>% select(-Temperature, -NOx.Emissions)
+model$O3 = O3.calc
+
+mozart.fld = with(model, interp(x = Scaled.Temperature, y = Scaled.NOx.Emissions, z = O3))
 mozart.df = melt(mozart.fld$z, na.rm = TRUE)
 names(mozart.df) = c("x", "y", "O3")
 mozart.df$Temperature = mozart.fld$x[mozart.df$x]
 mozart.df$NOx.Emissions = mozart.fld$y[mozart.df$y]
 mozart.df$Mechanism = rep("MOZART-4", length(mozart.df$O3))
-
-mcm.fld = with(mcm.data, interp(x = Scaled.Temperature, y = Scaled.NOx.Emissions, z = O3, duplicate = "strip"))
-mcm.df = melt(mcm.fld$z, na.rm = TRUE)
-names(mcm.df) = c("x", "y", "O3")
-mcm.df$Temperature = mcm.fld$x[mcm.df$x]
-mcm.df$NOx.Emissions = mcm.fld$y[mcm.df$y]
-mcm.df$Mechanism = rep("MCMv3.2", length(mcm.df$O3))
-
-df = rbind(mcm.df, mozart.df)
 
 get.labels = function (break.points, orig.data, digits) {
     labels = lapply(break.points,
@@ -45,9 +45,8 @@ NOx.Emissions.break.points = seq(0, 1, 0.2)
 NOx.Emissions.labels = get.labels(NOx.Emissions.break.points, mozart.data$NOx.Emissions, digits = 2)
 NOx.Emissions.labels = lapply(NOx.Emissions.labels, function (i) sprintf("%0.2e", i))
 
-p = ggplot(df, aes(x = Temperature, y = NOx.Emissions, z = O3))
-p = p + stat_contour(aes(colour = ..level..)) 
-p = p + geom_abline(slope = 10, intercept = 0)
+p = ggplot(mozart.df, aes(x = Temperature, y = NOx.Emissions, z = O3))
+p = p + stat_contour(aes(colour = ..level..))
 p = p + facet_wrap(~ Mechanism) 
 p = p + theme_tufte() 
 p = p + theme(axis.line = element_line(colour = "black")) 
@@ -59,6 +58,6 @@ p = p + scale_colour_continuous(name = "O3 (ppbv)")
 p = p + scale_x_continuous(breaks = temperature.break.points, labels = temperature.labels)
 p = p + scale_y_continuous(breaks = NOx.Emissions.break.points, labels = NOx.Emissions.labels)
 
-CairoPDF(file = "plot_regression_temperature.pdf", width = 10, height = 7)
+CairoPDF(file = "temperature_production_function.pdf")
 print(direct.label(p, "last.points"))
 dev.off()
