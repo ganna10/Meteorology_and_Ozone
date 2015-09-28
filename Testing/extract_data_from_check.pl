@@ -17,7 +17,7 @@ my $all_lines = <$in>;
 close $in;
 
 my @data;
-push @data, "Mechanism,NOx,VOC,O3,HNO3,H2O2,HO2,OH,HCHO,VOCR,NOx.Emissions,VOC.Emissions,Temperature,Relative.Humidity,Solar.Zenith.Angle";
+push @data, "Mechanism,NOx,VOC,O3,HNO3,H2O2,HO2,OH,HCHO,RO2NO2,RONO2,VOCR,NOx.Emissions,VOC.Emissions,Temperature,Relative.Humidity,Solar.Zenith.Angle";
 
 my ($mozart_data) = $all_lines =~ /MOZART(.*?)MCM/s;
 #my ($mozart_data) = $all_lines =~ /MOZART(.*?)$/s;
@@ -36,7 +36,7 @@ close $out;
 sub extract_data {
     my ($lines, $mechanism) = @_;
     my @lines = split /\n/, $lines;
-    my (@sub_data, @nox, @voc, @vocr, @o3, @hno3, @h2o2, @ho2, @oh, @hcho, @nox_emissions, @voc_emissions, @temperature, @relative_humidity,@sza);
+    my (@sub_data, @nox, @voc, @vocr, @o3, @hno3, @h2o2, @ho2, @oh, @hcho, @ro2no2, @rono2, @nox_emissions, @voc_emissions, @temperature, @relative_humidity,@sza);
     foreach my $line (@lines) {
          if ($line =~ /NO_scaling/) { 
              (my $temperature = $line) =~ s/^(.*?)_T//;
@@ -69,6 +69,10 @@ sub extract_data {
              push @oh, get_value($line) * 1e12;
          } elsif ($line =~ / HCHO /) {
              push @hcho, get_value($line) * 1e9;
+         } elsif ($line =~ / RO2NO2 /) {
+             push @ro2no2, get_value($line) * 1e9;
+         } elsif ($line =~ / RONO2 /) {
+             push @rono2, get_value($line) * 1e9;
          } elsif ($line =~ /NOx emissions/) {
              push @nox_emissions, get_value($line);
          } elsif ($line =~ /VOC emissions/) {
@@ -77,7 +81,7 @@ sub extract_data {
     }
 
     for (0..@nox-1) {
-        push @sub_data, "$mechanism,$nox[$_],$voc[$_],$o3[$_],$hno3[$_],$h2o2[$_],$ho2[$_],$oh[$_],$hcho[$_],$vocr[$_],$nox_emissions[$_],$voc_emissions[$_],$temperature[$_],$relative_humidity[$_],$sza[$_]";
+        push @sub_data, "$mechanism,$nox[$_],$voc[$_],$o3[$_],$hno3[$_],$h2o2[$_],$ho2[$_],$oh[$_],$hcho[$_],$ro2no2[$_],$rono2[$_],$vocr[$_],$nox_emissions[$_],$voc_emissions[$_],$temperature[$_],$relative_humidity[$_],$sza[$_]";
     }
     return @sub_data;
 }
