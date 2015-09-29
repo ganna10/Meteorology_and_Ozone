@@ -104,7 +104,7 @@ get.plot = function (spc, data) {
 
     filename = paste0("plot_temperature_NOx_", spc, ".pdf")
     CairoPDF(file = filename, width = 10, height = 7)
-    print(direct.label(p))
+    print(direct.label(p, list("top.pieces", cex = 0.7)))
     dev.off()
 }
 lapply(species, get.plot, data = d)
