@@ -16,12 +16,11 @@ library(scales)
 
 args = commandArgs(trailingOnly = TRUE)
 
-filename = paste0("out_Temperature_NOx_", args[[1]], ".csv")
+filename = paste0("out_Temperature_NOx_", args[[2]], "_", args[[1]], ".csv")
 d = read.table(file = filename, header = TRUE, sep  = ",")
 d = tbl_df(d)
 
 species = args[[2]]
-#species = c("O3", "HNO3", "HO2", "OH", "H2O2", "HCHO", "HOx", "RO2NO2", "RONO2")
 
 get.labels = function (break.points, orig.data, digits) {
     labels = lapply(break.points,
