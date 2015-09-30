@@ -90,6 +90,8 @@ p = p + theme(strip.text = element_text(face = "bold"))
 p = p + theme(strip.text.y = element_text(angle = 0))
 p = p + scale_x_continuous(breaks = temperature.break.points, labels = temperature.labels)
 p = p + scale_y_continuous(breaks = NOx.Emissions.break.points, labels = NOx.Emissions.labels)
+#p = p + geom_vline(xintercept = 0.92)
+#p = p + geom_hline(yintercept = 0.1997)
 
 filename = paste0("facet_plot_temperature_NOx.pdf")
 CairoPDF(file = filename, width = 15, height = 10)
