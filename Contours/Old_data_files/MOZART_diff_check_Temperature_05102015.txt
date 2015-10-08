@@ -1,0 +1,687 @@
+NOx_variations-Temp_288.5
+	NO_scaling_factor_0.31_RH_0.81_SZA_51_T_288.50_VOC_scaling_factor_1.0
+			Max NOx : 0.230584773497355 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 1.31889178398015e-11 molecules/molecule
+			Max H2O2 : 1.61727062297778e-10 molecules/molecule
+			Max HO2 : 1.11747087278014e-11 molecules/molecule
+			Max OH : 7.81710850564221e-14 molecules/molecule
+			Max HCHO : 8.48625503202527e-10 molecules/molecule
+			Max RO2NO2 : 1.39240424745779e-10 molecules/molecule
+			Max RONO2 : 1.40758668609742e-10 molecules/molecule
+			Max VOCR : 30.784273147583 s-1
+			Total NOx emissions : 34773188 molecules cm-3 s-1
+NOx_variations-Temp_289
+	NO_scaling_factor_0.31_RH_0.81_SZA_51_T_289.00_VOC_scaling_factor_1.0
+			Max NOx : 0.236102581929742 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 1.40083274841052e-11 molecules/molecule
+			Max H2O2 : 1.66015687308452e-10 molecules/molecule
+			Max HO2 : 1.13131656820364e-11 molecules/molecule
+			Max OH : 8.09546250564799e-14 molecules/molecule
+			Max HCHO : 8.64973925818191e-10 molecules/molecule
+			Max RO2NO2 : 1.40042588636646e-10 molecules/molecule
+			Max RONO2 : 1.44064427054502e-10 molecules/molecule
+			Max VOCR : 30.7063884735107 s-1
+			Total NOx emissions : 35440152 molecules cm-3 s-1
+NOx_variations-Temp_290
+	NO_scaling_factor_0.31_RH_0.81_SZA_51_T_290.00_VOC_scaling_factor_1.0
+			Max NOx : 0.247709269762808 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 1.57918192411621e-11 molecules/molecule
+			Max H2O2 : 1.75009451375274e-10 molecules/molecule
+			Max HO2 : 1.15985988174971e-11 molecules/molecule
+			Max OH : 8.67531686678941e-14 molecules/molecule
+			Max HCHO : 8.99324781311606e-10 molecules/molecule
+			Max RO2NO2 : 1.41397477060323e-10 molecules/molecule
+			Max RONO2 : 1.5094216154754e-10 molecules/molecule
+			Max VOCR : 30.5508518218994 s-1
+			Total NOx emissions : 36818840 molecules cm-3 s-1
+NOx_variations-Temp_290.5
+	NO_scaling_factor_0.31_RH_0.81_SZA_51_T_290.50_VOC_scaling_factor_1.0
+			Max NOx : 0.25381408086389 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 1.67610213902547e-11 molecules/molecule
+			Max H2O2 : 1.79728967819592e-10 molecules/molecule
+			Max HO2 : 1.17446824834944e-11 molecules/molecule
+			Max OH : 8.97709912048988e-14 molecules/molecule
+			Max HCHO : 9.1723179052039e-10 molecules/molecule
+			Max RO2NO2 : 1.41942818610019e-10 molecules/molecule
+			Max RONO2 : 1.54520229944666e-10 molecules/molecule
+			Max VOCR : 30.4731521606445 s-1
+			Total NOx emissions : 37531088 molecules cm-3 s-1
+	NO_scaling_factor_0.79_RH_0.81_SZA_51_T_290.50_VOC_scaling_factor_1.0
+			Max NOx : 0.968374047616294 ppbv
+			Max O3 : 43.9590034484863 ppbv
+			Max HNO3 : 9.96279933551669e-11 molecules/molecule
+			Max H2O2 : 2.23935273102605e-10 molecules/molecule
+			Max HO2 : 1.33366625035269e-11 molecules/molecule
+			Max OH : 1.86213403637753e-13 molecules/molecule
+			Max HCHO : 1.83324777580651e-09 molecules/molecule
+			Max RO2NO2 : 4.40483344243958e-10 molecules/molecule
+			Max RONO2 : 3.80568382363222e-10 molecules/molecule
+			Max VOCR : 29.5896415710449 s-1
+			Total NOx emissions : 117799504 molecules cm-3 s-1
+NOx_variations-Temp_291
+	NO_scaling_factor_0.31_RH_0.81_SZA_51_T_291.00_VOC_scaling_factor_1.0
+			Max NOx : 0.260124699558162 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 1.77853721333721e-11 molecules/molecule
+			Max H2O2 : 1.84618598186859e-10 molecules/molecule
+			Max HO2 : 1.18929970038817e-11 molecules/molecule
+			Max OH : 9.28692344380477e-14 molecules/molecule
+			Max HCHO : 9.35631572218654e-10 molecules/molecule
+			Max RO2NO2 : 1.4239259771287e-10 molecules/molecule
+			Max RONO2 : 1.58190488486198e-10 molecules/molecule
+			Max VOCR : 30.3955001831055 s-1
+			Total NOx emissions : 38258900 molecules cm-3 s-1
+NOx_variations-Temp_291.5
+	NO_scaling_factor_0.31_RH_0.81_SZA_51_T_291.50_VOC_scaling_factor_1.0
+			Max NOx : 0.266648481073162 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 1.88676418239053e-11 molecules/molecule
+			Max H2O2 : 1.89664756122809e-10 molecules/molecule
+			Max HO2 : 1.20435675321495e-11 molecules/molecule
+			Max OH : 9.60489757932496e-14 molecules/molecule
+			Max HCHO : 9.54536671926576e-10 molecules/molecule
+			Max RO2NO2 : 1.42742637154747e-10 molecules/molecule
+			Max RONO2 : 1.61954116784102e-10 molecules/molecule
+			Max VOCR : 30.3179187774658 s-1
+			Total NOx emissions : 39002524 molecules cm-3 s-1
+NOx_variations-Temp_292
+	NO_scaling_factor_0.31_RH_0.81_SZA_51_T_292.00_VOC_scaling_factor_1.0
+			Max NOx : 0.273392947169881 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 2.00105626513292e-11 molecules/molecule
+			Max H2O2 : 1.94873409076202e-10 molecules/molecule
+			Max HO2 : 1.21964452426404e-11 molecules/molecule
+			Max OH : 9.93511439025159e-14 molecules/molecule
+			Max HCHO : 9.73962244188442e-10 molecules/molecule
+			Max RO2NO2 : 1.42991035678719e-10 molecules/molecule
+			Max RONO2 : 1.65814417751875e-10 molecules/molecule
+			Max VOCR : 30.2403564453125 s-1
+			Total NOx emissions : 39762168 molecules cm-3 s-1
+NOx_variations-Temp_292.5
+	NO_scaling_factor_0.31_RH_0.81_SZA_51_T_292.50_VOC_scaling_factor_1.0
+			Max NOx : 0.280362955074054 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 2.12170177260607e-11 molecules/molecule
+			Max H2O2 : 2.0024870650559e-10 molecules/molecule
+			Max HO2 : 1.23516284006309e-11 molecules/molecule
+			Max OH : 1.02750890207306e-13 molecules/molecule
+			Max HCHO : 9.93914173186283e-10 molecules/molecule
+			Max RO2NO2 : 1.43134185059957e-10 molecules/molecule
+			Max RONO2 : 1.69771446900668e-10 molecules/molecule
+			Max VOCR : 30.1628112792969 s-1
+			Total NOx emissions : 40538052 molecules cm-3 s-1
+NOx_variations-Temp_293
+	NO_scaling_factor_0.31_RH_0.81_SZA_51_T_293.00_VOC_scaling_factor_1.0
+			Max NOx : 0.287559476230825 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 2.24899213835394e-11 molecules/molecule
+			Max H2O2 : 2.05793382335173e-10 molecules/molecule
+			Max HO2 : 1.25090658317784e-11 molecules/molecule
+			Max OH : 1.06237575973802e-13 molecules/molecule
+			Max HCHO : 1.01438746291649e-09 molecules/molecule
+			Max RO2NO2 : 1.43167117050425e-10 molecules/molecule
+			Max RONO2 : 1.73822442550708e-10 molecules/molecule
+			Max VOCR : 30.0853080749512 s-1
+			Total NOx emissions : 41330260 molecules cm-3 s-1
+	NO_scaling_factor_0.37_RH_0.81_SZA_51_T_293.00_VOC_scaling_factor_1.0
+			Max NOx : 0.367295249770194 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 3.15053608201943e-11 molecules/molecule
+			Max H2O2 : 2.18764825699047e-10 molecules/molecule
+			Max HO2 : 1.28974747548583e-11 molecules/molecule
+			Max OH : 1.21986689955063e-13 molecules/molecule
+			Max HCHO : 1.1434256874665e-09 molecules/molecule
+			Max RO2NO2 : 1.70839245527965e-10 molecules/molecule
+			Max RONO2 : 2.07924844009e-10 molecules/molecule
+			Max VOCR : 29.9666843414307 s-1
+			Total NOx emissions : 50737612 molecules cm-3 s-1
+	NO_scaling_factor_0.39_RH_0.81_SZA_51_T_293.00_VOC_scaling_factor_1.0
+			Max NOx : 0.395099258865272 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 3.48381566650513e-11 molecules/molecule
+			Max H2O2 : 2.22481255640616e-10 molecules/molecule
+			Max HO2 : 1.30092039571372e-11 molecules/molecule
+			Max OH : 1.2717748403869e-13 molecules/molecule
+			Max HCHO : 1.18666088066988e-09 molecules/molecule
+			Max RO2NO2 : 1.80891218670709e-10 molecules/molecule
+			Max RONO2 : 2.19092619047068e-10 molecules/molecule
+			Max VOCR : 29.9258594512939 s-1
+			Total NOx emissions : 53985048 molecules cm-3 s-1
+	NO_scaling_factor_0.47_RH_0.81_SZA_51_T_293.00_VOC_scaling_factor_1.0
+			Max NOx : 0.512339504155079 ppbv
+			Max O3 : 40.7844619750977 ppbv
+			Max HNO3 : 4.96910047831367e-11 molecules/molecule
+			Max H2O2 : 2.34897518103239e-10 molecules/molecule
+			Max HO2 : 1.33881707803374e-11 molecules/molecule
+			Max OH : 1.47401757683366e-13 molecules/molecule
+			Max HCHO : 1.35903699405304e-09 molecules/molecule
+			Max RO2NO2 : 2.25622492910915e-10 molecules/molecule
+			Max RONO2 : 2.62398075490111e-10 molecules/molecule
+			Max VOCR : 29.7578258514404 s-1
+			Total NOx emissions : 67531432 molecules cm-3 s-1
+	NO_scaling_factor_0.49_RH_0.81_SZA_51_T_293.00_VOC_scaling_factor_1.0
+			Max NOx : 0.543154299315063 ppbv
+			Max O3 : 41.0053787231445 ppbv
+			Max HNO3 : 5.37587058202504e-11 molecules/molecule
+			Max H2O2 : 2.37463632091206e-10 molecules/molecule
+			Max HO2 : 1.3468333219524e-11 molecules/molecule
+			Max OH : 1.52284963610659e-13 molecules/molecule
+			Max HCHO : 1.40170619555846e-09 molecules/molecule
+			Max RO2NO2 : 2.38014497000449e-10 molecules/molecule
+			Max RONO2 : 2.72827260783259e-10 molecules/molecule
+			Max VOCR : 29.7148590087891 s-1
+			Total NOx emissions : 71055992 molecules cm-3 s-1
+	NO_scaling_factor_0.57_RH_0.81_SZA_51_T_293.00_VOC_scaling_factor_1.0
+			Max NOx : 0.672950750679746 ppbv
+			Max O3 : 41.8942108154297 ppbv
+			Max HNO3 : 7.12707184935546e-11 molecules/molecule
+			Max H2O2 : 2.45717945990265e-10 molecules/molecule
+			Max HO2 : 1.37397532587458e-11 molecules/molecule
+			Max OH : 1.70912871529094e-13 molecules/molecule
+			Max HCHO : 1.56917290272673e-09 molecules/molecule
+			Max RO2NO2 : 2.92504437338081e-10 molecules/molecule
+			Max RONO2 : 3.13109899119368e-10 molecules/molecule
+			Max VOCR : 29.565954208374 s-1
+			Total NOx emissions : 85692352 molecules cm-3 s-1
+	NO_scaling_factor_0.59_RH_0.81_SZA_51_T_293.00_VOC_scaling_factor_1.0
+			Max NOx : 0.706920300075353 ppbv
+			Max O3 : 42.1165390014648 ppbv
+			Max HNO3 : 7.59282636764169e-11 molecules/molecule
+			Max H2O2 : 2.47301734646044e-10 molecules/molecule
+			Max HO2 : 1.3796208099548e-11 molecules/molecule
+			Max OH : 1.75319082710602e-13 molecules/molecule
+			Max HCHO : 1.61003488319267e-09 molecules/molecule
+			Max RO2NO2 : 3.07199488069898e-10 molecules/molecule
+			Max RONO2 : 3.2290176088523e-10 molecules/molecule
+			Max VOCR : 29.5321578979492 s-1
+			Total NOx emissions : 89482384 molecules cm-3 s-1
+	NO_scaling_factor_0.67_RH_0.81_SZA_51_T_293.00_VOC_scaling_factor_1.0
+			Max NOx : 0.848882075743518 ppbv
+			Max O3 : 43.2280158996582 ppbv
+			Max HNO3 : 9.54931134167225e-11 molecules/molecule
+			Max H2O2 : 2.51817150465072e-10 molecules/molecule
+			Max HO2 : 1.3979746180115e-11 molecules/molecule
+			Max OH : 1.91798860864692e-13 molecules/molecule
+			Max HCHO : 1.76829828557601e-09 molecules/molecule
+			Max RO2NO2 : 3.69695607460585e-10 molecules/molecule
+			Max RONO2 : 3.60219798434258e-10 molecules/molecule
+			Max VOCR : 29.3955631256104 s-1
+			Total NOx emissions : 105136528 molecules cm-3 s-1
+	NO_scaling_factor_0.69_RH_0.81_SZA_51_T_293.00_VOC_scaling_factor_1.0
+			Max NOx : 0.885901685343526 ppbv
+			Max O3 : 43.5197982788086 ppbv
+			Max HNO3 : 1.00617333909092e-10 molecules/molecule
+			Max H2O2 : 2.52506099363004e-10 molecules/molecule
+			Max HO2 : 1.40154303093776e-11 molecules/molecule
+			Max OH : 1.95624088759547e-13 molecules/molecule
+			Max HCHO : 1.80698633833742e-09 molecules/molecule
+			Max RO2NO2 : 3.86133458540883e-10 molecules/molecule
+			Max RONO2 : 3.6908220923948e-10 molecules/molecule
+			Max VOCR : 29.3611316680908 s-1
+			Total NOx emissions : 109167440 molecules cm-3 s-1
+	NO_scaling_factor_0.77_RH_0.81_SZA_51_T_293.00_VOC_scaling_factor_1.0
+			Max NOx : 1.04013464508057 ppbv
+			Max O3 : 44.7125511169434 ppbv
+			Max HNO3 : 1.21861701285475e-10 molecules/molecule
+			Max H2O2 : 2.53592008503389e-10 molecules/molecule
+			Max HO2 : 1.41294797043057e-11 molecules/molecule
+			Max OH : 2.09699323335498e-13 molecules/molecule
+			Max HCHO : 1.9583670241019e-09 molecules/molecule
+			Max RO2NO2 : 4.54345172595794e-10 molecules/molecule
+			Max RONO2 : 4.02686495259985e-10 molecules/molecule
+			Max VOCR : 29.2226047515869 s-1
+			Total NOx emissions : 125717568 molecules cm-3 s-1
+	NO_scaling_factor_0.79_RH_0.81_SZA_51_T_293.00_VOC_scaling_factor_1.0
+			Max NOx : 1.08025510758836 ppbv
+			Max O3 : 45.0039596557617 ppbv
+			Max HNO3 : 1.27305388453181e-10 molecules/molecule
+			Max H2O2 : 2.53461668320298e-10 molecules/molecule
+			Max HO2 : 1.41541726256245e-11 molecules/molecule
+			Max OH : 2.13041213901859e-13 molecules/molecule
+			Max HCHO : 1.99473859652244e-09 molecules/molecule
+			Max RO2NO2 : 4.71874650465054e-10 molecules/molecule
+			Max RONO2 : 4.10639577896887e-10 molecules/molecule
+			Max VOCR : 29.1878185272217 s-1
+			Total NOx emissions : 129953600 molecules cm-3 s-1
+NOx_variations-Temp_293.5
+	NO_scaling_factor_0.31_RH_0.81_SZA_51_T_293.50_VOC_scaling_factor_1.0
+			Max NOx : 0.294989588311978 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 2.38321046924783e-11 molecules/molecule
+			Max H2O2 : 2.11512765635469e-10 molecules/molecule
+			Max HO2 : 1.26687878937437e-11 molecules/molecule
+			Max OH : 1.09812109221324e-13 molecules/molecule
+			Max HCHO : 1.03539388174312e-09 molecules/molecule
+			Max RO2NO2 : 1.43088971227279e-10 molecules/molecule
+			Max RONO2 : 1.77969444736803e-10 molecules/molecule
+			Max VOCR : 30.0078182220459 s-1
+			Total NOx emissions : 42139040 molecules cm-3 s-1
+NOx_variations-Temp_294
+	NO_scaling_factor_0.31_RH_0.81_SZA_51_T_294.00_VOC_scaling_factor_1.0
+			Max NOx : 0.302658342832274 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 2.52464819883169e-11 molecules/molecule
+			Max H2O2 : 2.17411311176363e-10 molecules/molecule
+			Max HO2 : 1.28307937191652e-11 molecules/molecule
+			Max OH : 1.13475167576229e-13 molecules/molecule
+			Max HCHO : 1.0569390918036e-09 molecules/molecule
+			Max RO2NO2 : 1.42898567978555e-10 molecules/molecule
+			Max RONO2 : 1.82212828159223e-10 molecules/molecule
+			Max VOCR : 29.9303379058838 s-1
+			Total NOx emissions : 42964524 molecules cm-3 s-1
+NOx_variations-Temp_294.5
+	NO_scaling_factor_0.31_RH_0.81_SZA_51_T_294.50_VOC_scaling_factor_1.0
+			Max NOx : 0.310569181483089 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 2.67358097466586e-11 molecules/molecule
+			Max H2O2 : 2.23492876982867e-10 molecules/molecule
+			Max HO2 : 1.29950642260845e-11 molecules/molecule
+			Max OH : 1.17227137285542e-13 molecules/molecule
+			Max HCHO : 1.07902398127635e-09 molecules/molecule
+			Max RO2NO2 : 1.42594464014323e-10 molecules/molecule
+			Max RONO2 : 1.86551704639548e-10 molecules/molecule
+			Max VOCR : 29.8528537750244 s-1
+			Total NOx emissions : 43806848 molecules cm-3 s-1
+NOx_variations-Temp_295
+	NO_scaling_factor_0.31_RH_0.81_SZA_51_T_295.00_VOC_scaling_factor_1.0
+			Max NOx : 0.31872510186659 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 2.8302816687531e-11 molecules/molecule
+			Max H2O2 : 2.29761196179901e-10 molecules/molecule
+			Max HO2 : 1.31615707915644e-11 molecules/molecule
+			Max OH : 1.2106807255937e-13 molecules/molecule
+			Max HCHO : 1.10164788402756e-09 molecules/molecule
+			Max RO2NO2 : 1.42176034834129e-10 molecules/molecule
+			Max RONO2 : 1.90984977832542e-10 molecules/molecule
+			Max VOCR : 29.7753639221191 s-1
+			Total NOx emissions : 44666088 molecules cm-3 s-1
+NOx_variations-Temp_295.5
+	NO_scaling_factor_0.31_RH_0.81_SZA_51_T_295.50_VOC_scaling_factor_1.0
+			Max NOx : 0.327129601185305 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 2.99502124490036e-11 molecules/molecule
+			Max H2O2 : 2.36219765969992e-10 molecules/molecule
+			Max HO2 : 1.33302787211353e-11 molecules/molecule
+			Max OH : 1.24997749781017e-13 molecules/molecule
+			Max HCHO : 1.12480835756656e-09 molecules/molecule
+			Max RO2NO2 : 1.41643585749307e-10 molecules/molecule
+			Max RONO2 : 1.95511440370666e-10 molecules/molecule
+			Max VOCR : 29.697868347168 s-1
+			Total NOx emissions : 45542320 molecules cm-3 s-1
+NOx_variations-Temp_296
+	NO_scaling_factor_0.31_RH_0.81_SZA_51_T_296.00_VOC_scaling_factor_1.0
+			Max NOx : 0.335783817417834 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 3.16805158495637e-11 molecules/molecule
+			Max H2O2 : 2.42871611710882e-10 molecules/molecule
+			Max HO2 : 1.35011411772634e-11 molecules/molecule
+			Max OH : 1.29015504876651e-13 molecules/molecule
+			Max HCHO : 1.14849918464444e-09 molecules/molecule
+			Max RO2NO2 : 1.41006178955294e-10 molecules/molecule
+			Max RONO2 : 2.00128483229811e-10 molecules/molecule
+			Max VOCR : 29.6203746795654 s-1
+			Total NOx emissions : 46435676 molecules cm-3 s-1
+NOx_variations-Temp_296.5
+	NO_scaling_factor_0.31_RH_0.81_SZA_51_T_296.50_VOC_scaling_factor_1.0
+			Max NOx : 0.344687972608781 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 3.34960600922862e-11 molecules/molecule
+			Max H2O2 : 2.4971991141598e-10 molecules/molecule
+			Max HO2 : 1.36741121897765e-11 molecules/molecule
+			Max OH : 1.33120741535077e-13 molecules/molecule
+			Max HCHO : 1.17271492516835e-09 molecules/molecule
+			Max RO2NO2 : 1.40311706697815e-10 molecules/molecule
+			Max RONO2 : 2.04833899841717e-10 molecules/molecule
+			Max VOCR : 29.5428829193115 s-1
+			Total NOx emissions : 47346148 molecules cm-3 s-1
+NOx_variations-Temp_297
+	NO_scaling_factor_0.31_RH_0.81_SZA_51_T_297.00_VOC_scaling_factor_1.0
+			Max NOx : 0.353970325273067 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 3.53988331702748e-11 molecules/molecule
+			Max H2O2 : 2.56767190842666e-10 molecules/molecule
+			Max HO2 : 1.38491345128e-11 molecules/molecule
+			Max OH : 1.37313337783551e-13 molecules/molecule
+			Max HCHO : 1.19744569815339e-09 molecules/molecule
+			Max RO2NO2 : 1.39508044005865e-10 molecules/molecule
+			Max RONO2 : 2.09623957081462e-10 molecules/molecule
+			Max VOCR : 29.4653759002686 s-1
+			Total NOx emissions : 48273828 molecules cm-3 s-1
+NOx_variations-Temp_297.5
+	NO_scaling_factor_0.31_RH_0.81_SZA_51_T_297.50_VOC_scaling_factor_1.0
+			Max NOx : 0.363526986291163 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 3.73909861406396e-11 molecules/molecule
+			Max H2O2 : 2.64015864726019e-10 molecules/molecule
+			Max HO2 : 1.40261352879478e-11 molecules/molecule
+			Max OH : 1.41590732194441e-13 molecules/molecule
+			Max HCHO : 1.22268217772614e-09 molecules/molecule
+			Max RO2NO2 : 1.38597494592219e-10 molecules/molecule
+			Max RONO2 : 2.14496059802727e-10 molecules/molecule
+			Max VOCR : 29.387882232666 s-1
+			Total NOx emissions : 49218636 molecules cm-3 s-1
+NOx_variations-Temp_298
+	NO_scaling_factor_0.31_RH_0.81_SZA_51_T_298.00_VOC_scaling_factor_1.0
+			Max NOx : 0.373343522763747 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 3.94743196463487e-11 molecules/molecule
+			Max H2O2 : 2.71468125756513e-10 molecules/molecule
+			Max HO2 : 1.42050425241957e-11 molecules/molecule
+			Max OH : 1.45950322682532e-13 molecules/molecule
+			Max HCHO : 1.24841414983479e-09 molecules/molecule
+			Max RO2NO2 : 1.37582500947531e-10 molecules/molecule
+			Max RONO2 : 2.19447071625467e-10 molecules/molecule
+			Max VOCR : 29.3104095458984 s-1
+			Total NOx emissions : 50180548 molecules cm-3 s-1
+NOx_variations-Temp_298.5
+	NO_scaling_factor_0.31_RH_0.81_SZA_51_T_298.50_VOC_scaling_factor_1.0
+			Max NOx : 0.383421211447299 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 4.16504088163183e-11 molecules/molecule
+			Max H2O2 : 2.79126166624621e-10 molecules/molecule
+			Max HO2 : 1.43857885673282e-11 molecules/molecule
+			Max OH : 1.50391987275081e-13 molecules/molecule
+			Max HCHO : 1.2746317334944e-09 molecules/molecule
+			Max RO2NO2 : 1.36465949651665e-10 molecules/molecule
+			Max RONO2 : 2.24473772902911e-10 molecules/molecule
+			Max VOCR : 29.2329444885254 s-1
+			Total NOx emissions : 51159536 molecules cm-3 s-1
+NOx_variations-Temp_299
+	NO_scaling_factor_0.31_RH_0.81_SZA_51_T_299.00_VOC_scaling_factor_1.0
+			Max NOx : 0.393758220473828 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 4.39198087620607e-11 molecules/molecule
+			Max H2O2 : 2.86991624909305e-10 molecules/molecule
+			Max HO2 : 1.45682962221505e-11 molecules/molecule
+			Max OH : 1.5491232428777e-13 molecules/molecule
+			Max HCHO : 1.30132105091718e-09 molecules/molecule
+			Max RO2NO2 : 1.35250491362093e-10 molecules/molecule
+			Max RONO2 : 2.29572139076595e-10 molecules/molecule
+			Max VOCR : 29.1555118560791 s-1
+			Total NOx emissions : 52155516 molecules cm-3 s-1
+NOx_variations-Temp_299.5
+	NO_scaling_factor_0.31_RH_0.81_SZA_51_T_299.50_VOC_scaling_factor_1.0
+			Max NOx : 0.404352967775523 ppbv
+			Max O3 : 40.0842514038086 ppbv
+			Max HNO3 : 4.62833105174809e-11 molecules/molecule
+			Max H2O2 : 2.95065888389345e-10 molecules/molecule
+			Max HO2 : 1.47524770177654e-11 molecules/molecule
+			Max OH : 1.59507688090796e-13 molecules/molecule
+			Max HCHO : 1.32846633693617e-09 molecules/molecule
+			Max RO2NO2 : 1.33938984903104e-10 molecules/molecule
+			Max RONO2 : 2.34737757009995e-10 molecules/molecule
+			Max VOCR : 29.0781173706055 s-1
+			Total NOx emissions : 53168400 molecules cm-3 s-1
+NOx_variations-Temp_300
+	NO_scaling_factor_0.31_RH_0.81_SZA_51_T_300.00_VOC_scaling_factor_1.0
+			Max NOx : 0.415205203552205 ppbv
+			Max O3 : 40.178596496582 ppbv
+			Max HNO3 : 4.87413789884705e-11 molecules/molecule
+			Max H2O2 : 3.03350455865825e-10 molecules/molecule
+			Max HO2 : 1.49382502895312e-11 molecules/molecule
+			Max OH : 1.64174744762477e-13 molecules/molecule
+			Max HCHO : 1.3560548239866e-09 molecules/molecule
+			Max RO2NO2 : 1.32535107888465e-10 molecules/molecule
+			Max RONO2 : 2.3996690745598e-10 molecules/molecule
+			Max VOCR : 29.000789642334 s-1
+			Total NOx emissions : 54198120 molecules cm-3 s-1
+NOx_variations-Temp_300.5
+NOx_variations-Temp_301
+NOx_variations-Temp_301.5
+NOx_variations-Temp_302.5
+NOx_variations-Temp_302
+NOx_variations-Temp_303
+NOx_variations-Temp_303.5
+NOx_variations-Temp_304
+NOx_variations-Temp_304.5
+NOx_variations-Temp_289.5
+	NO_scaling_factor_0.11_RH_0.81_SZA_51_T_289.50_VOC_scaling_factor_1.0
+			Max NOx : 0.0553508627820776 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 2.35824098963888e-12 molecules/molecule
+			Max H2O2 : 1.03819196295429e-10 molecules/molecule
+			Max HO2 : 9.01915521434038e-12 molecules/molecule
+			Max OH : 4.38092623159317e-14 molecules/molecule
+			Max HCHO : 5.81199421922918e-10 molecules/molecule
+			Max RO2NO2 : 6.76151634682043e-11 molecules/molecule
+			Max RONO2 : 4.83727016775681e-11 molecules/molecule
+			Max VOCR : 30.968391418457 s-1
+			Total NOx emissions : 11872338 molecules cm-3 s-1
+	NO_scaling_factor_0.15_RH_0.81_SZA_51_T_289.50_VOC_scaling_factor_1.0
+			Max NOx : 0.0856555798511849 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 3.9272656307543e-12 molecules/molecule
+			Max H2O2 : 1.229155804916e-10 molecules/molecule
+			Max HO2 : 9.79032913767108e-12 molecules/molecule
+			Max OH : 5.10841606374875e-14 molecules/molecule
+			Max HCHO : 6.1803884232603e-10 molecules/molecule
+			Max RO2NO2 : 8.42920802601732e-11 molecules/molecule
+			Max RONO2 : 6.70241709355146e-11 molecules/molecule
+			Max VOCR : 30.9118328094482 s-1
+			Total NOx emissions : 16382610 molecules cm-3 s-1
+	NO_scaling_factor_0.21_RH_0.81_SZA_51_T_289.50_VOC_scaling_factor_1.0
+			Max NOx : 0.138649342007469 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 7.12392037721665e-12 molecules/molecule
+			Max H2O2 : 1.45068665413639e-10 molecules/molecule
+			Max HO2 : 1.06012516473686e-11 molecules/molecule
+			Max OH : 6.28943308566589e-14 molecules/molecule
+			Max HCHO : 7.05995040206631e-10 molecules/molecule
+			Max RO2NO2 : 1.05635222791278e-10 molecules/molecule
+			Max RONO2 : 9.64736276976019e-11 molecules/molecule
+			Max VOCR : 30.8064861297607 s-1
+			Total NOx emissions : 23450030 molecules cm-3 s-1
+	NO_scaling_factor_0.25_RH_0.81_SZA_51_T_289.50_VOC_scaling_factor_1.0
+			Max NOx : 0.178000184036797 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 9.85221713240003e-12 molecules/molecule
+			Max H2O2 : 1.56558044306365e-10 molecules/molecule
+			Max HO2 : 1.09939219186672e-11 molecules/molecule
+			Max OH : 7.11465527334157e-14 molecules/molecule
+			Max HCHO : 7.74135144876453e-10 molecules/molecule
+			Max RO2NO2 : 1.19234344619912e-10 molecules/molecule
+			Max RONO2 : 1.16692933094242e-10 molecules/molecule
+			Max VOCR : 30.7310791015625 s-1
+			Total NOx emissions : 28380404 molecules cm-3 s-1
+	NO_scaling_factor_0.31_RH_0.81_SZA_51_T_289.50_VOC_scaling_factor_1.0
+			Max NOx : 0.241807462941779 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 1.48751202327935e-11 molecules/molecule
+			Max H2O2 : 1.70441119551334e-10 molecules/molecule
+			Max HO2 : 1.14547676899335e-11 molecules/molecule
+			Max OH : 8.38148588077139e-14 molecules/molecule
+			Max HCHO : 8.81908990280067e-10 molecules/molecule
+			Max RO2NO2 : 1.40762498879177e-10 molecules/molecule
+			Max RONO2 : 1.47457338006696e-10 molecules/molecule
+			Max VOCR : 30.6285934448242 s-1
+			Total NOx emissions : 36121968 molecules cm-3 s-1
+	NO_scaling_factor_0.35_RH_0.81_SZA_51_T_289.50_VOC_scaling_factor_1.0
+			Max NOx : 0.287237039708899 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 1.88495313108161e-11 molecules/molecule
+			Max H2O2 : 1.78054057609067e-10 molecules/molecule
+			Max HO2 : 1.1703548720432e-11 molecules/molecule
+			Max OH : 9.23288816278081e-14 molecules/molecule
+			Max HCHO : 9.57255608113883e-10 molecules/molecule
+			Max RO2NO2 : 1.56302706888489e-10 molecules/molecule
+			Max RONO2 : 1.67996450084473e-10 molecules/molecule
+			Max VOCR : 30.555871963501 s-1
+			Total NOx emissions : 41519588 molecules cm-3 s-1
+	NO_scaling_factor_0.41_RH_0.81_SZA_51_T_289.50_VOC_scaling_factor_1.0
+			Max NOx : 0.359458351972819 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 2.57353496152524e-11 molecules/molecule
+			Max H2O2 : 1.87622598013526e-10 molecules/molecule
+			Max HO2 : 1.20148934204534e-11 molecules/molecule
+			Max OH : 1.05148765942083e-13 molecules/molecule
+			Max HCHO : 1.07208386612712e-09 molecules/molecule
+			Max RO2NO2 : 1.82019094241426e-10 molecules/molecule
+			Max RONO2 : 1.98508848248125e-10 molecules/molecule
+			Max VOCR : 30.4419918060303 s-1
+			Total NOx emissions : 49976308 molecules cm-3 s-1
+	NO_scaling_factor_0.45_RH_0.81_SZA_51_T_289.50_VOC_scaling_factor_1.0
+			Max NOx : 0.410237621650822 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 3.09211406479548e-11 molecules/molecule
+			Max H2O2 : 1.92978841240254e-10 molecules/molecule
+			Max HO2 : 1.2190623510655e-11 molecules/molecule
+			Max OH : 1.13664997824104e-13 molecules/molecule
+			Max HCHO : 1.14916631765993e-09 molecules/molecule
+			Max RO2NO2 : 2.0123583355236e-10 molecules/molecule
+			Max RONO2 : 2.18487186676164e-10 molecules/molecule
+			Max VOCR : 30.3636302947998 s-1
+			Total NOx emissions : 55855512 molecules cm-3 s-1
+	NO_scaling_factor_0.51_RH_0.81_SZA_51_T_289.50_VOC_scaling_factor_1.0
+			Max NOx : 0.490323392998704 ppbv
+			Max O3 : 40.5576477050781 ppbv
+			Max HNO3 : 3.95398540298242e-11 molecules/molecule
+			Max H2O2 : 1.99695149305512e-10 molecules/molecule
+			Max HO2 : 1.24161497055963e-11 molecules/molecule
+			Max OH : 1.26170856531646e-13 molecules/molecule
+			Max HCHO : 1.26461263683098e-09 molecules/molecule
+			Max RO2NO2 : 2.33210367683867e-10 molecules/molecule
+			Max RONO2 : 2.47681486431617e-10 molecules/molecule
+			Max VOCR : 30.2433261871338 s-1
+			Total NOx emissions : 65035424 molecules cm-3 s-1
+	NO_scaling_factor_0.55_RH_0.81_SZA_51_T_289.50_VOC_scaling_factor_1.0
+			Max NOx : 0.546278355884056 ppbv
+			Max O3 : 40.9456062316895 ppbv
+			Max HNO3 : 4.58054705276822e-11 molecules/molecule
+			Max H2O2 : 2.03368460960363e-10 molecules/molecule
+			Max HO2 : 1.25445287837977e-11 molecules/molecule
+			Max OH : 1.34255955419778e-13 molecules/molecule
+			Max HCHO : 1.34092026371491e-09 molecules/molecule
+			Max RO2NO2 : 2.56573540191596e-10 molecules/molecule
+			Max RONO2 : 2.66514560420816e-10 molecules/molecule
+			Max VOCR : 30.1616878509521 s-1
+			Total NOx emissions : 71394232 molecules cm-3 s-1
+	NO_scaling_factor_0.61_RH_0.81_SZA_51_T_289.50_VOC_scaling_factor_1.0
+			Max NOx : 0.634137853339212 ppbv
+			Max O3 : 41.5299377441406 ppbv
+			Max HNO3 : 5.59026262780815e-11 molecules/molecule
+			Max H2O2 : 2.07748290792509e-10 molecules/molecule
+			Max HO2 : 1.27077046802038e-11 molecules/molecule
+			Max OH : 1.45877220351052e-13 molecules/molecule
+			Max HCHO : 1.45358114433947e-09 molecules/molecule
+			Max RO2NO2 : 2.94599622474578e-10 molecules/molecule
+			Max RONO2 : 2.93675250784275e-10 molecules/molecule
+			Max VOCR : 30.0424747467041 s-1
+			Total NOx emissions : 81283088 molecules cm-3 s-1
+	NO_scaling_factor_0.65_RH_0.81_SZA_51_T_289.50_VOC_scaling_factor_1.0
+			Max NOx : 0.69569716654172 ppbv
+			Max O3 : 41.9186744689941 ppbv
+			Max HNO3 : 6.30502317022774e-11 molecules/molecule
+			Max H2O2 : 2.09944603368761e-10 molecules/molecule
+			Max HO2 : 1.27982182143715e-11 molecules/molecule
+			Max OH : 1.5324009151451e-13 molecules/molecule
+			Max HCHO : 1.5270755771013e-09 molecules/molecule
+			Max RO2NO2 : 3.21823401261412e-10 molecules/molecule
+			Max RONO2 : 3.11492054372309e-10 molecules/molecule
+			Max VOCR : 29.9783096313477 s-1
+			Total NOx emissions : 88103104 molecules cm-3 s-1
+	NO_scaling_factor_0.71_RH_0.81_SZA_51_T_289.50_VOC_scaling_factor_1.0
+			Max NOx : 0.792084675627081 ppbv
+			Max O3 : 42.5736618041992 ppbv
+			Max HNO3 : 7.43067413155885e-11 molecules/molecule
+			Max H2O2 : 2.12192430293356e-10 molecules/molecule
+			Max HO2 : 1.29079646277175e-11 molecules/molecule
+			Max OH : 1.63645518577032e-13 molecules/molecule
+			Max HCHO : 1.63424029864245e-09 molecules/molecule
+			Max RO2NO2 : 3.65164121163275e-10 molecules/molecule
+			Max RONO2 : 3.37119110405126e-10 molecules/molecule
+			Max VOCR : 29.8812427520752 s-1
+			Total NOx emissions : 98659656 molecules cm-3 s-1
+	NO_scaling_factor_0.75_RH_0.81_SZA_51_T_289.50_VOC_scaling_factor_1.0
+			Max NOx : 0.859052218249445 ppbv
+			Max O3 : 43.0760726928711 ppbv
+			Max HNO3 : 8.21132675743463e-11 molecules/molecule
+			Max H2O2 : 2.13014411665213e-10 molecules/molecule
+			Max HO2 : 1.29699801246219e-11 molecules/molecule
+			Max OH : 1.70121431048234e-13 molecules/molecule
+			Max HCHO : 1.70416236677795e-09 molecules/molecule
+			Max RO2NO2 : 3.95499133443167e-10 molecules/molecule
+			Max RONO2 : 3.53419460363824e-10 molecules/molecule
+			Max VOCR : 29.8160858154297 s-1
+			Total NOx emissions : 105904280 molecules cm-3 s-1
+	NO_scaling_factor_0.81_RH_0.81_SZA_51_T_289.50_VOC_scaling_factor_1.0
+			Max NOx : 0.96366115087676 ppbv
+			Max O3 : 43.8471183776855 ppbv
+			Max HNO3 : 9.42842193207838e-11 molecules/molecule
+			Max H2O2 : 2.13269457649545e-10 molecules/molecule
+			Max HO2 : 1.30485067195707e-11 molecules/molecule
+			Max OH : 1.79105252222193e-13 molecules/molecule
+			Max HCHO : 1.80734016641537e-09 molecules/molecule
+			Max RO2NO2 : 4.42729908289863e-10 molecules/molecule
+			Max RONO2 : 3.76681186242678e-10 molecules/molecule
+			Max VOCR : 29.7178688049316 s-1
+			Total NOx emissions : 117060200 molecules cm-3 s-1
+	NO_scaling_factor_0.85_RH_0.81_SZA_51_T_289.50_VOC_scaling_factor_1.0
+			Max NOx : 1.03620667601945 ppbv
+			Max O3 : 44.3554801940918 ppbv
+			Max HNO3 : 1.0263011968048e-10 molecules/molecule
+			Max H2O2 : 2.1292181906496e-10 molecules/molecule
+			Max HO2 : 1.30874330470099e-11 molecules/molecule
+			Max OH : 1.84593117701082e-13 molecules/molecule
+			Max HCHO : 1.87366966386548e-09 molecules/molecule
+			Max RO2NO2 : 4.7508452727385e-10 molecules/molecule
+			Max RONO2 : 3.91400190036251e-10 molecules/molecule
+			Max VOCR : 29.6521377563477 s-1
+			Total NOx emissions : 124675464 molecules cm-3 s-1
+	NO_scaling_factor_0.91_RH_0.81_SZA_51_T_289.50_VOC_scaling_factor_1.0
+			Max NOx : 1.14929943340059 ppbv
+			Max O3 : 45.1126823425293 ppbv
+			Max HNO3 : 1.15362532027152e-10 molecules/molecule
+			Max H2O2 : 2.12002734811811e-10 molecules/molecule
+			Max HO2 : 1.31260393179677e-11 molecules/molecule
+			Max OH : 1.9248075626855e-13 molecules/molecule
+			Max HCHO : 1.96914351491273e-09 molecules/molecule
+			Max RO2NO2 : 5.24420895597899e-10 molecules/molecule
+			Max RONO2 : 4.12671508076556e-10 molecules/molecule
+			Max VOCR : 29.5532989501953 s-1
+			Total NOx emissions : 136340448 molecules cm-3 s-1
+	NO_scaling_factor_0.95_RH_0.81_SZA_51_T_289.50_VOC_scaling_factor_1.0
+			Max NOx : 1.22758581078131 ppbv
+			Max O3 : 45.6129302978516 ppbv
+			Max HNO3 : 1.23940732676964e-10 molecules/molecule
+			Max H2O2 : 2.10861494931436e-10 molecules/molecule
+			Max HO2 : 1.31387409632588e-11 molecules/molecule
+			Max OH : 1.9735177847393e-13 molecules/molecule
+			Max HCHO : 2.0299617542463e-09 molecules/molecule
+			Max RO2NO2 : 5.57559276526121e-10 molecules/molecule
+			Max RONO2 : 4.26513768747583e-10 molecules/molecule
+			Max VOCR : 29.4873180389404 s-1
+			Total NOx emissions : 144264432 molecules cm-3 s-1
+NOx_variations-Temp_305
+NOx_variations-Temp_305.5
+NOx_variations-Temp_306.5
+NOx_variations-Temp_306
+NOx_variations-Temp_307.5
+NOx_variations-Temp_307
+NOx_variations-Temp_308
+NOx_variations-Temp_308.5
+NOx_variations-Temp_309
+NOx_variations-Temp_309.5
+NOx_variations-Temp_310
+NOx_variations-Temp_310.5
+NOx_variations-Temp_311
+NOx_variations-Temp_311.5
+NOx_variations-Temp_312
+NOx_variations-Temp_312.5
+NOx_variations-Temp_313
+NOx_variations-Temp_288
+	NO_scaling_factor_0.31_RH_0.81_SZA_51_T_288.00_VOC_scaling_factor_1.0
+			Max NOx : 0.225249069396583 ppbv
+			Max O3 : 40 ppbv
+			Max HNO3 : 1.24144878405064e-11 molecules/molecule
+			Max H2O2 : 1.57571192205275e-10 molecules/molecule
+			Max HO2 : 1.10404151099086e-11 molecules/molecule
+			Max OH : 7.54629106598792e-14 molecules/molecule
+			Max HCHO : 8.32790392202298e-10 molecules/molecule
+			Max RO2NO2 : 1.38361572199486e-10 molecules/molecule
+			Max RONO2 : 1.37539243882934e-10 molecules/molecule
+			Max VOCR : 30.8622608184814 s-1
+			Total NOx emissions : 34120784 molecules cm-3 s-1
