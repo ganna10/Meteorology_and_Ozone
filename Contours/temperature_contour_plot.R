@@ -70,11 +70,11 @@ get.plot = function (spc, data) {
     
     df = do.call("rbind", mechanism.data) #combining into 1 data frame
     
-    mozart.data = data %>% filter(Mechanism == "MOZART") #to get labels
+    mcm.data = data %>% filter(Mechanism == "MCM") #to get labels
     temperature.break.points = seq(0, 1, 0.2)
-    temperature.labels = get.labels(temperature.break.points, mozart.data$Temperature, digits = 2) 
+    temperature.labels = get.labels(temperature.break.points, mcm.data$Temperature, digits = 2) 
     NOx.Emissions.break.points = seq(0, 1, 0.2)
-    NOx.Emissions.labels = get.labels(NOx.Emissions.break.points, mozart.data$NOx.Emissions, digits = 2)
+    NOx.Emissions.labels = get.labels(NOx.Emissions.break.points, mcm.data$NOx.Emissions, digits = 2)
     NOx.Emissions.labels = lapply(NOx.Emissions.labels, function (i) sprintf("%0.2e", i))
 
     if (spc == "O3" | spc == "HNO3" | spc == "HCHO" | spc == "H2O2" | spc == "RO2NO2" | spc == "RONO2") {
