@@ -20,7 +20,7 @@ filename = paste0("out_Temperature_NOx_", args[[1]], ".csv")
 d = read.table(file = filename, header = TRUE, sep  = ",")
 d = tbl_df(d)
 
-species = c("O3", "H2O2", "HNO3", "OH", "HO2", "RONO2", "RO2NO2")
+species = c("O3", "H2O2", "HNO3", "OH", "HO2", "RONO2", "RO2NO2", "VOCR")
 
 get.labels = function (break.points, orig.data, digits) {
     labels = lapply(break.points,
