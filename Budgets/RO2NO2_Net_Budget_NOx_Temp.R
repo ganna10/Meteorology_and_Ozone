@@ -5,12 +5,13 @@ library(ggthemes)
 
 args = commandArgs(trailingOnly = TRUE) #date ddmmyyyy
 
-mechanisms = c("CB05", "MCMv3.2", "CRIv2", "MOZART-4", "RADM2")
+mechanisms = c("CB05", "CRIv2", "MOZART-4", "RADM2")
 
 get.data = function(mechanism) {
     filename = paste0(mechanism, "_RO2NO2_budget_", args[[1]], ".txt")
     d = read.csv(filename)
     d$Max.NOx.Mixing.Ratio = d$Max.NOx.Mixing.Ratio * 1e9
+    d = d %>% select(Mechanism, Total.NOx.Emissions, Temperature, Net.Reaction.Rate)
     return(d)
 }
 data.list = lapply(mechanisms, get.data)
