@@ -5,7 +5,7 @@ library(ggthemes)
 
 args = commandArgs(trailingOnly = TRUE) #date ddmmyyyy
 
-mechanisms = c("CB05", "CRIv2", "MOZART-4", "RADM2")
+mechanisms = c("CB05", "MCMv3.2", "CRIv2", "MOZART-4", "RADM2")
 
 get.data = function(mechanism) {
     filename = paste0(mechanism, "_RO2NO2_budget_", args[[1]], ".txt")
@@ -33,6 +33,7 @@ p = p + theme(axis.line = element_line(colour = "black"))
 p = p + theme(axis.title = element_text(face = "bold"))
 p = p + theme(strip.text = element_text(face = "bold"))
 p = p + theme(legend.title = element_blank())
+p = p + scale_y_continuous(limits = c(0, 6e7))
 p = p + scale_colour_manual(values = my.colours)
 
 CairoPDF(file = "RO2NO2_net_budget_NOx_facet_Temp.pdf", width = 20, height = 14)
