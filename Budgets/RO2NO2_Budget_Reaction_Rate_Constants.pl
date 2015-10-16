@@ -6,7 +6,7 @@ use strict;
 use diagnostics;
 
 die "Date (ddmmyyyy) missing : $!" if (@ARGV == 0);
-my @mechanisms = qw( CB05 CRIv2 MOZART-4 RADM2 );
+my @mechanisms = qw( CB05 CRIv2 MCMv3.2 MOZART-4 RADM2 );
 my @data;
 push @data, "Mechanism,Temperature,NOx.Mixing.Ratio,NOx.Emissions,Reaction,Rate.Constant\n";
 
