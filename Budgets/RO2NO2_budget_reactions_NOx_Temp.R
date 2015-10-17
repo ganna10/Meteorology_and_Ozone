@@ -5,7 +5,11 @@ library(ggthemes)
 
 args = commandArgs(trailingOnly = TRUE) #date ddmmyyyy
 
+<<<<<<< HEAD
 mechanisms = c("CB05", "CRIv2", "MCMv3.2", "MOZART-4", "RADM2")
+=======
+mechanisms = c("CB05", "CRIv2", "MOZART-4", "RADM2")
+>>>>>>> 6d2581598d330cb9b1ae9af42242f93ea4294504
 my.colours = c("MCMv3.2" = "#000000", "CB05" = "#0e5c28", "RADM2" = "#f9c500", "MOZART-4" = "#6c254f", "CRIv2" = "#ef6638")
 
 get.production.data = function(mechanism) {
@@ -21,7 +25,11 @@ prod.data.list = lapply(mechanisms, get.production.data)
 prod.data.df = as.data.frame(do.call("rbind", prod.data.list))
 prod.data.df$Temperature = as.numeric(as.character(prod.data.df$Temperature))
 prod.data.df = prod.data.df %>% mutate(Temperature.C = Temperature - 273)
+<<<<<<< HEAD
 prod.data.df$Mechanism = factor(prod.data.df$Mechanism, levels = c("MCMv3.2", "CRIv2", "MOZART-4", "RADM2", "CB05"))
+=======
+#data.df$Mechanism = factor(data.df$Mechanism, levels = c("MCMv3.2", "CRIv2", "MOZART-4", "RADM2", "CB05"))
+>>>>>>> 6d2581598d330cb9b1ae9af42242f93ea4294504
 
 p = ggplot(prod.data.df, aes(x = Total.NOx.Emissions, y = Total.Production, colour = Mechanism))
 p = p + geom_point()
@@ -55,7 +63,11 @@ cons.data.list = lapply(mechanisms, get.consumption.data)
 cons.data.df = as.data.frame(do.call("rbind", cons.data.list))
 cons.data.df$Temperature = as.numeric(as.character(cons.data.df$Temperature))
 cons.data.df = cons.data.df %>% mutate(Temperature.C = Temperature - 273)
+<<<<<<< HEAD
 cons.data.df$Mechanism = factor(cons.data.df$Mechanism, levels = c("MCMv3.2", "CRIv2", "MOZART-4", "RADM2", "CB05"))
+=======
+#data.df$Mechanism = factor(data.df$Mechanism, levels = c("MCMv3.2", "CRIv2", "MOZART-4", "RADM2", "CB05"))
+>>>>>>> 6d2581598d330cb9b1ae9af42242f93ea4294504
 
 p = ggplot(cons.data.df, aes(x = Total.NOx.Emissions, y = Total.Consumption, colour = Mechanism))
 p = p + geom_point()
