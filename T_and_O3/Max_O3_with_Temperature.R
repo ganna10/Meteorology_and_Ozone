@@ -5,7 +5,7 @@ library(Cairo)
 library(directlabels)
 library(ggthemes)
 
-d = read.csv("out_Temperature_NOx_13102015.csv")
+d = read.csv("out_Temperature_NOx_17102015.csv")
 d = tbl_df(d)
 
 filter.temps = function (temp, data) { temp.data = data %>% filter(Temperature == temp)
@@ -14,7 +14,8 @@ filter.temps = function (temp, data) { temp.data = data %>% filter(Temperature =
     return(info.data)
 }
 
-mechanisms = c("MCM", "CB05", "CRI", "MOZART", "RADM2")
+mechanisms = c("CB05")
+#mechanisms = c("MCM", "CB05", "CRI", "MOZART", "RADM2")
 
 get.mechanism.data = function (mechanism, data) {
     filtered = data %>% filter(Mechanism == mechanism) %>% select(Temperature, O3)
@@ -39,7 +40,7 @@ final.df = as.data.frame(do.call("rbind", max.O3.all.data))
 final.df$Max.O3 = as.numeric(as.character(final.df$Max.O3))
 final.df$Temperature = as.numeric(as.character(final.df$Temperature))
 final.df = final.df %>% mutate(Temperature.C = Temperature - 273)
-final.df$Mechanism = factor(final.df$Mechanism, levels = c("MCMv3.2", "CRIv2", "MOZART-4", "RADM2", "CB05"))
+#final.df$Mechanism = factor(final.df$Mechanism, levels = c("MCMv3.2", "CRIv2", "MOZART-4", "RADM2", "CB05"))
 
 my.colours = c("MCMv3.2" = "#000000", "CB05" = "#0e5c28", "RADM2" = "#f9c500", "MOZART-4" = "#6c254f", "CRIv2" = "#ef6638")
 
