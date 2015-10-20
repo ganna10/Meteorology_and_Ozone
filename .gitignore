@@ -18,6 +18,5 @@ nytprof.out
 *.o
 *.bs
 /_eumm/
-MCMv3.2_RO2NO2_budget_*.txt
-MCMv3.2_reaction_rate_constant_file_*.txt
-RO2NO2_budget_reaction_rate_constant_data.csv
+*.txt
+*.csv

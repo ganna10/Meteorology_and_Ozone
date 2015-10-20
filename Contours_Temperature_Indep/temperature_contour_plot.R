@@ -17,7 +17,7 @@ library(scales)
 args = commandArgs(trailingOnly = TRUE)
 
 filename = paste0("out_Temperature_NOx_", args[[1]], ".csv")
-d = read.table(file = filename, header = TRUE, sep  = ",")
+d = read.csv(file = filename)
 d = tbl_df(d)
 
 species = args[[2]]
