@@ -31,18 +31,15 @@ get.labels = function (break.points, orig.data, digits) {
 
 get.data = function (mechanism, spc, dataframe) {
     data = dataframe %>% filter(Mechanism == mechanism)
-    #data = data %>% mutate(Scaled.Temperature = (Temperature - min(Temperature))/(max(Temperature) - min(Temperature)), Scaled.NOx = (NOx - min(NOx))/(max(NOx) - min(NOx)))
-    if (spc == "HOx") {
-        data = data %>% mutate(HOx = OH + HO2) %>% select(-OH, -HO2)
-    }
+    data = data %>% mutate(Scaled.Temperature = (Temperature - min(Temperature))/(max(Temperature) - min(Temperature)), Scaled.NOx.Emissions = (NOx.Emissions - min(NOx.Emissions))/(max(NOx.Emissions) - min(NOx.Emissions)))
 
     colnum = match(spc, names(data))
-    fld = with(data, interp(x = Temperature, y = NOx, z = data[[colnum]]))
-    #fld = with(data, interp(x = Scaled.Temperature, y = Scaled.NOx, z = data[[colnum]], duplicate = "strip"))
+    #fld = with(data, interp(x = Temperature, y = NOx.Emissions, z = data[[colnum]]))
+    fld = with(data, interp(x = Scaled.Temperature, y = Scaled.NOx.Emissions, z = data[[colnum]], duplicate = "strip"))
     df = melt(fld$z, na.rm = TRUE)
     names(df) = c("x", "y", "O3")
     df$Temperature = fld$x[df$x]
-    df$NOx = fld$y[df$y]
+    df$NOx.Emissions = fld$y[df$y]
     
     if (mechanism == "MOZART") {
         df$Mechanism = rep("MOZART-4", length(df$O3))
@@ -57,27 +54,22 @@ get.data = function (mechanism, spc, dataframe) {
 }
 
 get.plot = function (spc, data) { 
-    if (spc == "HOx") {
-        columns = c("Mechanism", "OH", "HO2", "NOx", "Temperature")
-    } else {
-        columns = c("Mechanism", spc, "NOx", "Temperature")
-    }
+    columns = c("Mechanism", spc, "NOx.Emissions", "Temperature")
     column.numbers = match(columns, names(data))
     data = data %>% select(column.numbers)
     
-    mechanisms = c("CB05")
+    mechanisms = c("CB05", "MOZART-4", "CRIv2", "RADM2")
 #    #mechanisms = c("MCM", "MOZART", "CRI", "RADM2", "CB05")
     mechanism.data = lapply(mechanisms, get.data, spc = spc, dataframe = data) #returns list of dataframes
     
     df = do.call("rbind", mechanism.data) #combining into 1 data frame
-    max(df$NOx)
     
 #    mcm.data = data %>% filter(Mechanism == "CB05") #to get labels
 #    temperature.break.points = seq(0, 1, 0.2)
 #    temperature.labels = get.labels(temperature.break.points, mcm.data$Temperature, digits = 2) 
-#    NOx.break.points = seq(0, 1, 0.2)
-#    NOx.labels = get.labels(NOx.break.points, mcm.data$NOx, digits = 2)
-#    NOx.labels = lapply(NOx.labels, function (i) sprintf("%0.2e", i))
+#    NOx.Emissions.break.points = seq(0, 1, 0.2)
+#    NOx.Emissions.labels = get.labels(NOx.Emissions.break.points, mcm.data$NOx.Emissions, digits = 2)
+#    NOx.Emissions.labels = lapply(NOx.Emissions.labels, function (i) sprintf("%0.2e", i))
 
     if (spc == "O3" | spc == "HNO3" | spc == "HCHO" | spc == "H2O2" | spc == "RO2NO2" | spc == "RONO2") {
         title = paste(spc, "Mixing Ratio (ppbv) Contour Plot")
@@ -87,7 +79,7 @@ get.plot = function (spc, data) {
         title = "No title as yet"
     }
     
-    p = ggplot(df, aes(x = Temperature, y = NOx, z = O3))
+    p = ggplot(df, aes(x = Temperature, y = NOx.Emissions, z = O3))
     p = p + stat_contour(aes(colour = ..level..)) 
     p = p + facet_wrap(~ Mechanism, scales = "free_x") 
     p = p + theme_tufte() 
@@ -97,7 +89,7 @@ get.plot = function (spc, data) {
     p = p + theme(strip.text = element_text(face = "bold")) 
     p = p + theme(panel.margin = unit("5", "mm"))
     p = p + xlab("Temperature (K)") 
-    p = p + ylab("NOx mixing ratio (ppbv)") 
+    p = p + ylab("NOx.Emissions mixing ratio (ppbv)") 
     p = p + theme(axis.title = element_text(face = "bold")) 
     p = p + scale_colour_continuous(name = "O3 (ppbv)")
 #    p = p + scale_x_continuous(breaks = temperature.break.points, labels = temperature.labels)

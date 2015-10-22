@@ -66,11 +66,12 @@ lm_eqn = function(m) {
   as.character(as.expression(eq));                 
 }
 
-p = ggplot(final.df, aes(x = Temperature.C, y = log.Max.O3, colour = Mechanism, group = Mechanism))
+p = ggplot(final.df, aes(x = Temperature.C, y = Max.O3, colour = Mechanism, group = Mechanism))
 p = p + geom_point()
 p = p + geom_line()
 p = p + stat_smooth(method = lm, se = FALSE, formula = y ~ x)
-p = p + geom_text(aes(x = 20, y = 4.4, label = lm_eqn(lm(log.Max.O3 ~ Temperature.C, final.df))), parse = TRUE, show_guide = FALSE)
+## using linear approximation as this is what is typically reported and the R2 is not that bad
+p = p + geom_text(aes(x = 20, y = 4.4, label = lm_eqn(lm(Max.O3 ~ Temperature.C, final.df))), parse = TRUE, show_guide = FALSE)
 p = p + theme_tufte()
 p = p + ggtitle("Temperature Independent BVOC Emissions, Maximum O3 at each Temperature")
 p = p + theme(plot.title = element_text(face = "bold"))
@@ -80,7 +81,7 @@ p = p + theme(legend.title = element_blank())
 p = p + theme(legend.position = c(0.5, 1), legend.justification = c(0.5, 1))
 p = p + theme(axis.title = element_text(face = "bold"))
 p = p + scale_x_continuous(limits = c(15, 40), expand = c(0, 0.2), breaks = seq(15, 40, 5))
-p = p + scale_y_continuous(limits = c(4, 4.6), expand = c(0, 0))
+#p = p + scale_y_continuous(limits = c(4, 4.6), expand = c(0, 0))
 p = p + scale_colour_manual(values = my.colours, guide = guide_legend(direction = "horizontal"))
 
 CairoPDF(file = "Max_O3_with_Temperature.pdf", width = 10, height = 7)
