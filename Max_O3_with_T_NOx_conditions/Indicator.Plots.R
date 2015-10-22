@@ -26,8 +26,6 @@ plot.lines = function () {
 p = ggplot(h2o2.hno3, aes(x = NOx.Emissions, y = H2O2.HNO3.Ratio, colour = Mechanism))
 p = p + ylab("H2O2/HNO3 in ppbv/ppbv")
 p = p + scale_y_continuous(limits = c(0, 250), breaks = seq(0, 250, 25))
-p = p + geom_hline(y = 5)
-p = p + geom_hline(y = 20)
 p = p + plot.lines()
 
 CairoPDF(file = "H2O2_HNO3_ratios_facet_T.pdf", width = 12, height = 9)
@@ -41,4 +39,30 @@ p1 = p1 + plot.lines()
 
 CairoPDF(file = "O3_NOz_ratios_facet_T.pdf", width = 12, height = 9)
 print(p1)
+dev.off()
+
+max.h2o2.hno3 = h2o2.hno3 %>% group_by(Mechanism, Temperature) %>% summarise(Max.Ratio = median(H2O2.HNO3.Ratio))
+p2 = ggplot(max.h2o2.hno3, aes(x = Temperature, y = Max.Ratio, colour = Mechanism))
+p2 = p2 + geom_point() + geom_line()
+#p2 = p2 + plot.lines()
+p2 = p2 + ylab("Max H2O2 / HNO3 Ratio (ppbv / ppbv)")
+p2 = p2 + stat_smooth(method = lm, se = FALSE)
+
+max.h2o2.hno3 %>% group_by(Mechanism) %>% do(model = lm(Max.Ratio ~ Temperature, data = .)) %>% mutate(Slope = summary(model)$coeff[2], Intercept = summary(model)$coeff[1], R2 = summary(model)$r.squared) %>% select(-model)
+
+CairoPDF(file = "Max_H2O2_HNO3_ratios_facet_T.pdf", width = 12, height = 9)
+print(p2)
+dev.off()
+
+max.O3 = d %>% select(Mechanism, Temperature, NOx.Emissions, O3)
+max.O3 = max.O3 %>% group_by(Mechanism, Temperature) %>% summarise(Max.O3 = max(O3))
+p3 = ggplot(max.h2o2.hno3, aes(x = Temperature, y = Max.Ratio, colour = Mechanism))
+p3 = p3 + geom_point() + geom_line()
+p3 = p3 + ylab("Max O3 Ratio (ppbv)")
+p3 = p3 + stat_smooth(method = lm, se = FALSE)
+
+max.O3 %>% group_by(Mechanism) %>% do(model = lm(Max.O3 ~ Temperature, data = .)) %>% mutate(Slope = summary(model)$coeff[2], Intercept = summary(model)$coeff[1], R2 = summary(model)$r.squared) %>% select(-model)
+
+CairoPDF(file = "Max_O3_ratios_facet_T.pdf", width = 12, height = 9)
+print(p3)
 dev.off()

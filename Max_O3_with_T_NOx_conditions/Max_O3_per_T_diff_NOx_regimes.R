@@ -17,8 +17,10 @@ d = tbl_df(d)
 d = d %>% mutate(H2O2.HNO3.Ratio = H2O2/HNO3, Temperature.C = Temperature - 273)
 o3.data = d %>% select(Mechanism, NOx.Emissions, Temperature.C, O3, H2O2.HNO3.Ratio)
 o3.data = o3.data %>% rowwise() %>% mutate(NOx.Condition = get_NOx_condition(H2O2.HNO3.Ratio))
+#print.data.frame(o3.data %>% filter(NOx.Condition == "High-NOx") %>% group_by(Mechanism, Temperature.C) %>% summarise(Max.NOx.Emissions = min(NOx.Emissions)))
 o3.data = o3.data %>% group_by(Mechanism, Temperature.C, NOx.Condition) %>% summarise(Max.O3 = max(O3))
 o3.data$NOx.Condition = factor(o3.data$NOx.Condition, levels = c("Low-NOx", "Maximal-O3", "High-NOx"))
+
 
 my.colours = c("MCMv3.2" = "#000000", "CB05" = "#0e5c28", "RADM2" = "#f9c500", "MOZART-4" = "#6c254f", "CRIv2" = "#ef6638")
 
