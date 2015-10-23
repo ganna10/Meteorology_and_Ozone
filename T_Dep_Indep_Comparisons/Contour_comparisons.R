@@ -24,18 +24,19 @@ get_data = function (run) {
     d = read.csv(filename)
     data = lapply(mechanisms, mechanism_data_frame, dataframe = d)
     df = do.call("rbind", data)
-    df$Run = rep(paste("Temperature", run), length(df$NOx)) 
+    df$Run = rep(paste("Temperature", run, "Isoprene Emissions"), length(df$NOx)) 
     return(df)
 }
 run.data = lapply(runs, get_data)
 
 df = do.call("rbind", run.data) #combining into 1 data frame
-colnum = match(spc, names(df))
+colnum = match(spc, names(df)) 
+df = df %>% mutate(Temperature.C = Temperature - 273)
 
-p = ggplot(df, aes(x = Temperature, y = NOx, z = df[[colnum]]))
+p = ggplot(df, aes(x = Temperature.C, y = NOx, z = df[[colnum]]))
 p = p + facet_grid(Mechanism ~ Run)
 p = p + stat_contour(aes(colour = ..level..))
-p = p + xlab("Temperature (K)") + ylab("NOx Mixing Ratio (ppbv)")
+p = p + xlab(expression(bold(paste("Temperature (", degree, "C)")))) + ylab("NOx Mixing Ratio (ppbv)")
 p = p + scale_y_continuous(limits = c(0, 9.6))
 p = p + theme_tufte()
 p = p + theme(axis.line = element_line())
@@ -43,6 +44,7 @@ p = p + theme(axis.title = element_text(face = "bold"))
 p = p + theme(strip.text = element_text(face = "bold"))
 p = p + theme(strip.text.y = element_text(angle = 0))
 p = p + theme(panel.margin = unit(5, "mm"))
+p = p + scale_colour_gradient(low = "#252525", high = "#bdbdbd")
 
 filename = paste0(spc, "_comparison.pdf")
 CairoPDF(file = filename, width = 10, height = 7)
