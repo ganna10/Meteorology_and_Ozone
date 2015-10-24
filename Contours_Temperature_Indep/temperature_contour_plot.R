@@ -64,12 +64,12 @@ get.plot = function (spc, data) {
     
     df = do.call("rbind", mechanism.data) #combining into 1 data frame
     
-#    mcm.data = data %>% filter(Mechanism == "CB05") #to get labels
-#    temperature.break.points = seq(0, 1, 0.2)
-#    temperature.labels = get.labels(temperature.break.points, mcm.data$Temperature, digits = 2) 
-#    NOx.Emissions.break.points = seq(0, 1, 0.2)
-#    NOx.Emissions.labels = get.labels(NOx.Emissions.break.points, mcm.data$NOx.Emissions, digits = 2)
-#    NOx.Emissions.labels = lapply(NOx.Emissions.labels, function (i) sprintf("%0.2e", i))
+    mcm.data = data %>% filter(Mechanism == "CB05") #to get labels
+    temperature.break.points = seq(0, 1, 0.2)
+    temperature.labels = get.labels(temperature.break.points, mcm.data$Temperature, digits = 2) 
+    NOx.Emissions.break.points = seq(0, 1, 0.2)
+    NOx.Emissions.labels = get.labels(NOx.Emissions.break.points, mcm.data$NOx.Emissions, digits = 2)
+    NOx.Emissions.labels = lapply(NOx.Emissions.labels, function (i) sprintf("%0.2e", i))
 
     if (spc == "O3" | spc == "HNO3" | spc == "HCHO" | spc == "H2O2" | spc == "RO2NO2" | spc == "RONO2") {
         title = paste(spc, "Mixing Ratio (ppbv) Contour Plot")
@@ -92,8 +92,8 @@ get.plot = function (spc, data) {
     p = p + ylab("NOx.Emissions mixing ratio (ppbv)") 
     p = p + theme(axis.title = element_text(face = "bold")) 
     p = p + scale_colour_continuous(name = "O3 (ppbv)")
-#    p = p + scale_x_continuous(breaks = temperature.break.points, labels = temperature.labels)
-#    p = p + scale_y_continuous(breaks = NOx.break.points, labels = NOx.labels)
+    p = p + scale_x_continuous(breaks = temperature.break.points, labels = temperature.labels)
+    p = p + scale_y_continuous(breaks = NOx.Emissions.break.points, labels = NOx.Emissions.labels)
 
     filename = paste0("plot_temperature_NOx_", spc, ".pdf")
     CairoPDF(file = filename, width = 10, height = 7)
