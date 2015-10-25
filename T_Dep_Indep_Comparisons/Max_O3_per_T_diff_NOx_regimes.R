@@ -7,7 +7,7 @@ mechanisms = c("CB05", "RADM2")
 get_NOx_condition = function (x) {
     if (x > 0.5) {
         condition = "Low-NOx"
-    } else if (x < 0.05) {
+    } else if (x < 0.08) {
         condition = "High-NOx"
     } else {
         condition = "Maximal-O3"
@@ -38,7 +38,7 @@ get_data = function (run) {
 list.data = lapply(runs, get_data)
 data = do.call("rbind", list.data)
 
-my.colours = c("MCMv3.2" = "#000000", "CB05" = "#0e5c28", "RADM2" = "#f9c500", "MOZART-4" = "#6c254f", "CRIv2" = "#ef6638")
+my.colours = c("MCMv3.2" = "#000000", "CB05" = "#0e5c28", "RADM2" = "#e6ab02", "MOZART-4" = "#6c254f", "CRIv2" = "#ef6638")
 
 regression.data = data %>% group_by(Mechanism, NOx.Condition, Run) %>% do(model = lm(Max.O3 ~ Temperature.C, data = .)) %>% mutate(Slope = summary(model)$coeff[2], Intercept = summary(model)$coeff[1], R2 = summary(model)$r.squared) %>% select(-model)
 write.table(regression.data, file = "Regressions_statistics_Max_O3_T_NOx.txt", quote = FALSE, row.name = FALSE, sep = ",")
