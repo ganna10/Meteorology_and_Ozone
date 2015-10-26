@@ -1,5 +1,6 @@
 # Plot max O3 at each Temperature for different NOx conditions, determined on H2O2/HNO3 ratio. Each mechanism and run
 # Version 0: Jane Coates 24/10/2015
+# Version 1: Jane Coates 26/10/2015 modified H2O2 HNO3 ratio assignments
 
 runs = c("Dependent", "Independent")
 mechanisms = c("CB05", "RADM2")
@@ -7,7 +8,7 @@ mechanisms = c("CB05", "RADM2")
 get_NOx_condition = function (x) {
     if (x > 0.5) {
         condition = "Low-NOx"
-    } else if (x < 0.08) {
+    } else if (x < 0.3) {
         condition = "High-NOx"
     } else {
         condition = "Maximal-O3"
