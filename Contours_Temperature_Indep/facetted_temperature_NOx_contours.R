@@ -20,7 +20,7 @@ filename = paste0("out_Temperature_NOx_", args[[1]], ".csv")
 d = read.table(file = filename, header = TRUE, sep  = ",")
 d = tbl_df(d)
 
-species = c("O3", "H2O2", "HNO3", "OH", "HO2", "HOx", "RONO2", "RO2NO2", "VOCR", "PAN")
+species = c("O3", "H2O2", "HNO3", "OH", "HO2", "HOx", "RONO2", "RO2NO2", "PAN")
 
 get.labels = function (break.points, orig.data, digits) {
     labels = lapply(break.points,
@@ -59,8 +59,8 @@ get.plot = function (spc, data) {
     column.numbers = match(columns, names(data))
     data = data %>% select(column.numbers)
     
-    mechanisms = c("CB05", "MOZART-4", "RADM2", "CRIv2")
-    #mechanisms = c("MCM", "MOZART", "CRI", "RADM2", "CB05")
+    #mechanisms = c("CB05", "MOZART-4", "RADM2", "CRIv2")
+    mechanisms = c("MCMv3.2", "MOZART-4", "CRIv2", "RADM2", "CB05")
     mechanism.data = lapply(mechanisms, get.data, spc = spc, dataframe = data) #returns list of dataframes
     
     df = do.call("rbind", mechanism.data) #combining into 1 data frame 

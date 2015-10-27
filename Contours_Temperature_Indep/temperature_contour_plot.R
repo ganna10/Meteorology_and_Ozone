@@ -58,8 +58,7 @@ get.plot = function (spc, data) {
     column.numbers = match(columns, names(data))
     data = data %>% select(column.numbers)
     
-    mechanisms = c("CB05", "MOZART-4", "CRIv2", "RADM2")
-#    #mechanisms = c("MCM", "MOZART", "CRI", "RADM2", "CB05")
+    mechanisms = c("CB05", "MCMv3.2", "MOZART-4", "CRIv2", "RADM2")
     mechanism.data = lapply(mechanisms, get.data, spc = spc, dataframe = data) #returns list of dataframes
     
     df = do.call("rbind", mechanism.data) #combining into 1 data frame
