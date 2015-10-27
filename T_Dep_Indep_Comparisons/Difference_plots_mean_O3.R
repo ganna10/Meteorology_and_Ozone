@@ -1,5 +1,6 @@
 # Calculate differences in max O3 at each Temperature for different NOx conditions, determined on H2O2/HNO3 ratio. Each mechanism and run
 # Version 0: Jane Coates 24/10/2015
+# Version 1: Jane Coates 27/10/2015 correcting NOx condition indicator and using mean not max O3.
 
 runs = c("Dependent", "Independent")
 mechanisms = c("CB05", "RADM2")
@@ -7,7 +8,7 @@ mechanisms = c("CB05", "RADM2")
 get_NOx_condition = function (x) {
     if (x > 0.5) {
         condition = "Low-NOx"
-    } else if (x < 0.08) {
+    } else if (x < 0.3) {
         condition = "High-NOx"
     } else {
         condition = "Maximal-O3"
@@ -22,7 +23,7 @@ mechanism_data_frame = function (mechanism, dataframe) {
                             rowwise() %>% 
                             mutate(NOx.Condition = get_NOx_condition(H2O2.HNO3.Ratio))
     summarised.data = data %>%  group_by(Mechanism, Temperature.C, NOx.Condition) %>%
-                                summarise(Max.O3 = max(O3))
+                                summarise(Mean.O3 = mean(O3))
     summarised.data$NOx.Condition = factor(summarised.data$NOx.Condition, levels = c("Low-NOx", "Maximal-O3", "High-NOx"))
     return(summarised.data)
 }
@@ -39,8 +40,8 @@ list.data = lapply(runs, get_data)
 indep = tbl_df(list.data[[2]])
 dep = tbl_df(list.data[[1]])
 
-Abs.O3.Diff = dep$Max.O3 - indep$Max.O3
-Rel.O3.Diff = Abs.O3.Diff / dep$Max.O3
+Abs.O3.Diff = dep$Mean.O3 - indep$Mean.O3
+Rel.O3.Diff = Abs.O3.Diff / dep$Mean.O3
 df = data.frame(Abs.O3.Diff, Rel.O3.Diff, Mechanism = dep$Mechanism, Temperature.C = dep$Temperature.C, NOx.Condition = dep$NOx.Condition)
 
 my.colours = c("MCMv3.2" = "#000000", "CB05" = "#0e5c28", "RADM2" = "#e6ab02", "MOZART-4" = "#6c254f", "CRIv2" = "#ef6638")

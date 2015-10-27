@@ -18,7 +18,7 @@ d = d %>%   mutate(h2o2.hno3.ratio  = H2O2 / HNO3, Temperature.C = Temperature -
             rowwise() %>% 
             mutate(NOx.Condition = get_NOx_condition(h2o2.hno3.ratio)) %>% 
             group_by(Mechanism, Temperature.C, NOx.Condition) %>% 
-            summarise(Mean.O3 = max(O3))
+            summarise(Mean.O3 = mean(O3))
 d$NOx.Condition = factor(d$NOx.Condition, levels = c("Low-NOx", "Maximal-O3", "High-NOx"))
 
 

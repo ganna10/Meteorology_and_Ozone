@@ -1,5 +1,6 @@
-# Plots of differences in O3 from NOx and Temperature for each mechanism from MCM. Date of file (ddmmyyyy) are the input args
+# Plots of differences in O3 from NOx and Temperature for each mechanism from MCMv3.2. Date of file (ddmmyyyy) are the input args
 # Version 0: Jane Coates 28/9/2015
+# Version 1: Jane Coates 27/10/2015 proper naming
 
 library(reshape2)
 library(methods)
@@ -20,8 +21,8 @@ filename = paste0("out_Temperature_NOx_", args[[1]], ".csv")
 d = read.csv(file = filename)
 d = tbl_df(d)
 
-mcm.data = d %>% filter(Mechanism == "MCM") %>% select(NOx.Emissions, Temperature, O3)
-d = d %>% filter(Mechanism != "MCM") %>% select(Mechanism, NOx.Emissions, Temperature, O3)
+mcm.data = d %>% filter(Mechanism == "MCMv3.2") %>% select(NOx.Emissions, Temperature, O3)
+d = d %>% filter(Mechanism != "MCMv3.2") %>% select(Mechanism, NOx.Emissions, Temperature, O3)
 
 get.labels = function (break.points, orig.data, digits) {
     labels = lapply(break.points,
@@ -39,25 +40,18 @@ get.data = function (mechanism, dataframe, mcm.data) {
     names(df) = c("x", "y", "O3.Difference")
     df$Temperature = fld$x[df$x]
     df$NOx.Emissions = fld$y[df$y]
-    
-    if (mechanism == "MOZART") {
-        df$Mechanism = rep("MOZART-4", length(df$O3))
-    } else if (mechanism == "CRI") {
-        df$Mechanism = rep("CRIv2", length(df$O3))
-    } else {
-        df$Mechanism = rep(mechanism, length(df$O3))
-    }
+    df$Mechanism = rep(mechanism, length(df$O3))
     return (df)
 }
 
-mechanisms = c("MOZART", "CRI", "RADM2", "CB05")
+mechanisms = c("MOZART-4", "CRIv2", "RADM2", "CB05")
 mechanism.data = lapply(mechanisms, get.data, dataframe = d, mcm.data = mcm.data) #returns list of dataframes
 
 df = do.call("rbind", mechanism.data) #combining into 1 data frame
 #df = tbl_df(df)
 #df
 
-mozart.data = d %>% filter(Mechanism == "MOZART") #to get labels
+mozart.data = d %>% filter(Mechanism == "MOZART-4") #to get labels
 temperature.break.points = seq(0, 1, 0.2)
 temperature.labels = get.labels(temperature.break.points, mozart.data$Temperature, digits = 2) 
 NOx.Emissions.break.points = seq(0, 1, 0.2)
