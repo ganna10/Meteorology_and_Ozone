@@ -15,6 +15,7 @@ my @variables = qw( NOx.Emissions NOx Temperature O3 H2O2 OH HO2 HOx HCHO RO2NO2
 my $base = cwd();
 opendir DIR, $base or die $!;
 my @files = grep { $_ =~ /_check_Temperature_${date}\.txt$/ } readdir DIR;
+#my @files = grep { $_ =~ /MCMv3\.2_check_Temperature_${date}\.txt$/ } readdir DIR;
 close DIR;
 
 my $out_file = "out_Temperature_NOx_${date}.csv";
