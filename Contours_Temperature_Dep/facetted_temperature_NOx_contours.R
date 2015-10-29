@@ -1,5 +1,6 @@
 # Plots of NOx and Temperature facetted by variable and mechanism. date of file (ddmmyyyy) is the input arg
 # Version 0: Jane Coates 29/9/2015
+# Version 1: Jane Coates 29/10/2015 removed VOCR and added MOZART-4
 
 library(reshape2)
 library(methods)
@@ -20,7 +21,7 @@ filename = paste0("out_Temperature_NOx_", args[[1]], ".csv")
 d = read.table(file = filename, header = TRUE, sep  = ",")
 d = tbl_df(d)
 
-species = c("O3", "H2O2", "HNO3", "OH", "HO2", "HOx", "RONO2", "RO2NO2", "VOCR", "PAN")
+species = c("O3", "H2O2", "HNO3", "OH", "HO2", "HOx", "RONO2", "RO2NO2", "PAN")
 
 get.labels = function (break.points, orig.data, digits) {
     labels = lapply(break.points,
@@ -40,16 +41,7 @@ get.data = function (mechanism, spc, dataframe) {
     names(df) = c("x", "y", spc)
     df$Temperature = fld$x[df$x]
     df$NOx = fld$y[df$y]
-        
-    if (mechanism == "MOZART") {
-        df$Mechanism = rep("MOZART-4", length(df$Temperature))
-    } else if (mechanism == "MCM") {
-        df$Mechanism = rep("MCMv3.2", length(df$Temperature))
-    } else if (mechanism == "CRI") {
-        df$Mechanism = rep("CRIv2", length(df$Temperature))
-    } else {
-        df$Mechanism = rep(mechanism, length(df$Temperature))
-    }
+    df$Mechanism = rep(mechanism, length(df$Temperature))
     df = df %>% select(-x, -y) %>% gather(Species, Mixing.Ratio, -Mechanism, -Temperature, -NOx)
     return (df)
 }
@@ -59,7 +51,7 @@ get.plot = function (spc, data) {
     column.numbers = match(columns, names(data))
     data = data %>% select(column.numbers)
     
-    mechanisms = c("CB05", "RADM2")
+    mechanisms = c("CB05", "RADM2", "MOZART-4")
     #mechanisms = c("MCM", "MOZART", "CRI", "RADM2", "CB05")
     mechanism.data = lapply(mechanisms, get.data, spc = spc, dataframe = data) #returns list of dataframes
     

@@ -3,7 +3,7 @@
 # Version 1: Jane Coates 27/10/2015 correcting NOx condition indicator and using mean not max O3.
 
 runs = c("Dependent", "Independent")
-mechanisms = c("CB05", "RADM2")
+mechanisms = c("CB05", "RADM2", "MOZART-4")
 
 get_NOx_condition = function (x) {
     if (x > 0.5) {

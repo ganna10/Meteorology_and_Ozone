@@ -39,17 +39,8 @@ get.data = function (mechanism, spc, dataframe) {
     df = melt(fld$z, na.rm = TRUE)
     names(df) = c("x", "y", "O3")
     df$Temperature = fld$x[df$x]
-    df$NOx.Emissions = fld$y[df$y]
-    
-    if (mechanism == "MOZART") {
-        df$Mechanism = rep("MOZART-4", length(df$O3))
-    } else if (mechanism == "MCM") {
-        df$Mechanism = rep("MCMv3.2", length(df$O3))
-    } else if (mechanism == "CRI") {
-        df$Mechanism = rep("CRIv2", length(df$O3))
-    } else {
-        df$Mechanism = rep(mechanism, length(df$O3))
-    }
+    df$NOx.Emissions = fld$y[df$y] 
+    df$Mechanism = rep(mechanism, length(df$O3))
     return (df)
 }
 
@@ -58,7 +49,7 @@ get.plot = function (spc, data) {
     column.numbers = match(columns, names(data))
     data = data %>% select(column.numbers)
     
-    mechanisms = c("CB05", "RADM2")
+    mechanisms = c("CB05", "RADM2", "MOZART-4")
 #    #mechanisms = c("MCM", "MOZART", "CRI", "RADM2", "CB05")
     mechanism.data = lapply(mechanisms, get.data, spc = spc, dataframe = data) #returns list of dataframes
     

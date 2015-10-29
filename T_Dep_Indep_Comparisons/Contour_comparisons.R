@@ -5,7 +5,7 @@ args = commandArgs(trailingOnly = TRUE)
 spc = args[[1]]
 
 runs = c("Dependent", "Independent")
-mechanisms = c("CB05", "RADM2")
+mechanisms = c("CB05", "RADM2", "MOZART-4")
 
 mechanism_data_frame = function (mechanism, dataframe) {
     data = dataframe %>% filter(Mechanism == mechanism)
