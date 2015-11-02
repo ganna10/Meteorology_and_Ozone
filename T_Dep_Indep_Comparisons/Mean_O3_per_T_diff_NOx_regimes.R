@@ -16,8 +16,7 @@ get_NOx_condition = function (x) {
 }
 
 mechanism_data_frame = function (mechanism, dataframe) {
-    data = dataframe %>%    filter(Mechanism == mechanism) %>% 
-                            mutate(H2O2.HNO3.Ratio = H2O2/HNO3, Temperature.C = Temperature - 273) %>% 
+    data = dataframe %>%    mutate(H2O2.HNO3.Ratio = H2O2/HNO3, Temperature.C = Temperature - 273) %>% 
                             select(Mechanism, NOx.Emissions, Temperature.C, O3, H2O2.HNO3.Ratio) %>%
                             rowwise() %>% 
                             mutate(NOx.Condition = get_NOx_condition(H2O2.HNO3.Ratio))

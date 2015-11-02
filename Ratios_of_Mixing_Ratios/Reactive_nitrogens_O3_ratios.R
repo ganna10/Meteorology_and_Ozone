@@ -22,10 +22,10 @@ plot.lines = function () {
 
 #PAN
 pan.o3 = d %>% mutate(O3.PAN = O3/PAN) %>% select(Mechanism, Temperature, O3.PAN)
-pan.o3 = pan.o3 %>% group_by(Mechanism, Temperature) %>% summarise(Max.Ratio = max(O3.PAN)) %>% mutate(Temperature.C = Temperature - 273)
-#pan.o3 = pan.o3 %>% group_by(Mechanism, Temperature) %>% summarise(Max.O3 = max(O3), Max.PAN = max(PAN)) %>% mutate(Temperature.C = Temperature - 273, Max.O3.PAN = Max.O3 / Max.PAN)
+pan.o3 = pan.o3 %>% group_by(Mechanism, Temperature) %>% summarise(Mean.Ratio = max(O3.PAN)) %>% mutate(Temperature.C = Temperature - 273)
+#pan.o3 = pan.o3 %>% group_by(Mechanism, Temperature) %>% summarise(Mean.O3 = max(O3), Mean.PAN = max(PAN)) %>% mutate(Temperature.C = Temperature - 273, Mean.O3.PAN = Mean.O3 / Mean.PAN)
 
-p = ggplot(pan.o3, aes(x = Temperature.C, y = Max.Ratio, colour = Mechanism))
+p = ggplot(pan.o3, aes(x = Temperature.C, y = Mean.Ratio, colour = Mechanism))
 p = p + plot.lines()
 p = p + ylab("O3 / PAN mixing ratio (ppbv / ppbv)")
 
@@ -35,9 +35,9 @@ dev.off()
 
 #RONO2
 rono2.data = d %>% mutate(O3.RONO2.Ratio = O3 / RONO2) %>% select(Mechanism, Temperature, O3.RONO2.Ratio)
-ratio.rono2 = rono2.data %>% group_by(Mechanism, Temperature) %>% summarise(Max.Ratio = max(O3.RONO2.Ratio)) %>% mutate(Temperature.C = Temperature - 273)
+ratio.rono2 = rono2.data %>% group_by(Mechanism, Temperature) %>% summarise(Mean.Ratio = max(O3.RONO2.Ratio)) %>% mutate(Temperature.C = Temperature - 273)
 
-p1 = ggplot(ratio.rono2, aes(x = Temperature.C, y = Max.Ratio, colour = Mechanism)) 
+p1 = ggplot(ratio.rono2, aes(x = Temperature.C, y = Mean.Ratio, colour = Mechanism)) 
 p1 = p1 + plot.lines()
 p = p + ylab("O3 / RONO2 (ppbv/ppbv)")
 
@@ -47,8 +47,8 @@ dev.off()
 
 #RO2NO2
 ro2no2.data = d %>% mutate(O3.RO2NO2.Ratio = O3 / RO2NO2) %>% select(Mechanism, Temperature, O3.RO2NO2.Ratio)
-ratio.ro2no2 = ro2no2.data %>% group_by(Mechanism, Temperature) %>% summarise(Max.Ratio = max(O3.RO2NO2.Ratio)) %>% mutate(Temperature.C = Temperature - 273)
-p2 = ggplot(ratio.ro2no2, aes(x = Temperature.C, y = Max.Ratio, colour = Mechanism)) 
+ratio.ro2no2 = ro2no2.data %>% group_by(Mechanism, Temperature) %>% summarise(Mean.Ratio = max(O3.RO2NO2.Ratio)) %>% mutate(Temperature.C = Temperature - 273)
+p2 = ggplot(ratio.ro2no2, aes(x = Temperature.C, y = Mean.Ratio, colour = Mechanism)) 
 p2 = p2 + plot.lines()
 p = p + ylab("O3 / RO2NO2 (ppbv/ppbv)")
 
@@ -58,8 +58,8 @@ dev.off()
 
 #NOy
 NOy.data = d %>% mutate(NOy = NOx + HNO3 + RO2NO2 + RONO2, O3.NOy.Ratio = O3 / NOy) %>% select(Mechanism, Temperature, O3.NOy.Ratio)
-ratio.NOy = NOy.data %>% group_by(Mechanism, Temperature) %>% summarise(Max.Ratio = max(O3.NOy.Ratio)) %>% mutate(Temperature.C = Temperature - 273)
-p3 = ggplot(ratio.NOy, aes(x = Temperature.C, y = Max.Ratio, colour = Mechanism)) 
+ratio.NOy = NOy.data %>% group_by(Mechanism, Temperature) %>% summarise(Mean.Ratio = max(O3.NOy.Ratio)) %>% mutate(Temperature.C = Temperature - 273)
+p3 = ggplot(ratio.NOy, aes(x = Temperature.C, y = Mean.Ratio, colour = Mechanism)) 
 p3 = p3 + plot.lines()
 p = p + ylab("O3 / NOy (ppbv/ppbv)")
 
