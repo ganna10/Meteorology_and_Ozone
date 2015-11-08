@@ -1,14 +1,16 @@
 # Compare Contours of species (argument) for each mechanism between temperature dep and indep runs
 # Version 0: Jane Coates 23/10/2015
 
-args = commandArgs(trailingOnly = TRUE)
-spc = args[[1]]
-
+setwd("~/Documents/Analysis/2015_Meteorology_and_Ozone/T_Dep_Indep_Comparisons/")
+#args = commandArgs(trailingOnly = TRUE)
+#spc = args[[1]]
+spc = "O3"
 runs = c("Dependent", "Independent")
-mechanisms = c("CB05", "RADM2", "MOZART-4")
+mechanisms = c("MCMv3.2")
+#mechanisms = c("CB05", "RADM2", "MOZART-4", "CRIv2", "MCMv3.2")
 
 mechanism_data_frame = function (mechanism, dataframe) {
-    data = dataframe %>% filter(Mechanism == mechanism)
+    data = dataframe %>% filter(Mechanism == mechanism) %>% arrange(Temperature)
     data = data %>% mutate(Scaled.Temperature = (Temperature - min(Temperature))/(max(Temperature) - min(Temperature)), Scaled.NOx.Emissions = (NOx.Emissions - min(NOx.Emissions))/(max(NOx.Emissions) - min(NOx.Emissions)))
     colnum = match(spc, names(data))
     fld = with(data, interp(x = Scaled.Temperature, y = Scaled.NOx.Emissions, z = data[[colnum]]))
@@ -51,10 +53,10 @@ NOx.Emissions.labels = lapply(NOx.Emissions.labels, function (i) sprintf("%0.1e"
 
 p = ggplot(df, aes(x = Temperature, y = NOx.Emissions, z = df[[colnum]]))
 p = p + facet_grid(Mechanism ~ Run)
-p = p + stat_contour(aes(colour = ..level..), binwidth = 5)
+p = p + stat_contour(aes(colour = ..level..), binwidth = 4)
 p = p + xlab(expression(bold(paste("Temperature (", degree, "C)")))) + ylab("NOx Emissions (molecules cm-3 s-1)")
 p = p + scale_x_continuous(breaks = temperature.break.points, labels = temperature.labels)
-p = p + scale_y_continuous(breaks = NOx.Emissions.break.points, labels = NOx.Emissions.labels)
+p = p + scale_y_continuous(breaks = NOx.Emissions.break.points, labels = NOx.Emissions.labels, expand = c(0, 0.03))
 p = p + theme_tufte()
 p = p + theme(axis.line = element_line())
 p = p + theme(axis.title = element_text(face = "bold"))
@@ -62,8 +64,8 @@ p = p + theme(strip.text = element_text(face = "bold"))
 p = p + theme(strip.text.y = element_text(angle = 0))
 p = p + theme(panel.margin = unit(5, "mm"))
 p = p + scale_colour_gradient(low = "#252525", high = "#bdbdbd")
-
-filename = paste0(spc, "_comparison.pdf")
-CairoPDF(file = filename, width = 7, height = 10)
-print(direct.label(p))
-dev.off()
+direct.label(p)
+#filename = paste0(spc, "_comparison.pdf")
+#CairoPDF(file = filename, width = 7, height = 10)
+#print(direct.label(p))
+#dev.off()

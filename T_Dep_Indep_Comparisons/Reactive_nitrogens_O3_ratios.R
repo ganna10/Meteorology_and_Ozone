@@ -2,7 +2,7 @@
 # Version 0: Jane Coates 30/10/2015
 
 runs = c("Dependent", "Independent")
-mechanisms = c("CB05", "RADM2", "MOZART-4")
+mechanisms = c("CB05", "RADM2", "MOZART-4", "CRIv2", "MCMv3.2")
 
 get_data = function (run) {
     filename = paste0("Temperature_", run, "_data.csv")

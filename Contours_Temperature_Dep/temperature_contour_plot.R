@@ -35,7 +35,7 @@ get.data = function (mechanism, spc, dataframe) {
 
     colnum = match(spc, names(data))
     #fld = with(data, interp(x = Temperature, y = NOx.Emissions, z = data[[colnum]]))
-    fld = with(data, interp(x = Scaled.Temperature, y = Scaled.NOx.Emissions, z = data[[colnum]], duplicate = "strip"))
+    fld = with(data, interp(x = Scaled.Temperature, y = Scaled.NOx.Emissions, z = data[[colnum]]))
     df = melt(fld$z, na.rm = TRUE)
     names(df) = c("x", "y", "O3")
     df$Temperature = fld$x[df$x]
@@ -49,7 +49,7 @@ get.plot = function (spc, data) {
     column.numbers = match(columns, names(data))
     data = data %>% select(column.numbers)
     
-    mechanisms = c("CB05", "RADM2", "MOZART-4")
+    mechanisms = c("CB05", "RADM2", "MOZART-4", "CRIv2", "MCMv3.2")
 #    #mechanisms = c("MCM", "MOZART", "CRI", "RADM2", "CB05")
     mechanism.data = lapply(mechanisms, get.data, spc = spc, dataframe = data) #returns list of dataframes
     

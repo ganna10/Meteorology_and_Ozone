@@ -3,6 +3,7 @@
 # Version 0: Jane Coates 29/9/2015
 # Version 1: Jane Coates 13/10/2015 outputting VOCR data
 # Version 2: Jane Coates 29/10/2015 removing VOCR
+# Version 3: Jane Coates 7/11/2015 new directory structure
 
 use strict;
 use diagnostics;
@@ -56,10 +57,8 @@ sub extract_data {
             }
         } elsif ($variable eq "Temperature") {
             foreach my $line (@lines) { 
-                if ($line =~ /NO_scaling/) {
-                    (my $temperature = $line) =~ s/^(.*?)_T//;
-                    $temperature =~ s/VOC_(.*?)$//;
-                    $temperature =~ s/_//g;
+                if ($line =~ /^T_/) {
+                    (my $temperature = $line) =~ s/^T_(.*?)_NOSF_(.*?)$/$1/;
                     push @temperature, $temperature;
                 }
             }

@@ -58,10 +58,8 @@ sub extract_data {
             }
         } elsif ($variable eq "Temperature") {
             foreach my $line (@lines) { 
-                if ($line =~ /NO_scaling/) {
-                    (my $temperature = $line) =~ s/^(.*?)_T//;
-                    $temperature =~ s/VOC_(.*?)$//;
-                    $temperature =~ s/_//g;
+                if ($line =~ /^T_/) {
+                    (my $temperature = $line) =~ s/^T_(.*?)_NOSF(.*?)$/$1/;
                     push @temperature, $temperature;
                 }
             }
