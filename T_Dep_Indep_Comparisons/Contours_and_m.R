@@ -1,3 +1,7 @@
+# Plot O3 contours with m_O3-T as tile. facet run ~ mechanism
+# Version 0: Jane Coates 09/11/2015
+#setwd("~/Documents//Analysis//2015_Meteorology_and_Ozone//T_Dep_Indep_Comparisons")
+
 get.labels = function (break.points, orig.data, digits) {
     labels = lapply(break.points,
                     function (i) round ((i * (max(orig.data) - min(orig.data))) + min(orig.data), digits )
@@ -5,110 +9,79 @@ get.labels = function (break.points, orig.data, digits) {
     return (labels)
 }
 
-#temp independent
-ind_data = read.csv("../Contours_Temperature_Indep/out_Temperature_NOx_22102015.csv")
-ind_d = ind_data %>% select(Mechanism, Temperature, NOx.Emissions, O3)
-ind_d = ind_d %>%   filter(Mechanism == "CB05") %>% 
-            mutate(Temperature.C = Temperature - 273, Scaled.Temperature = (Temperature - min(Temperature))/(max(Temperature) - min(Temperature)), Scaled.NOx.Emissions = (NOx.Emissions - min(NOx.Emissions))/(max(NOx.Emissions) - min(NOx.Emissions)))
+contour_mechanism_data_frame = function (mechanism, dataframe) {
+  data = dataframe %>% filter(Mechanism == mechanism)
+  data = data %>% mutate(Scaled.Temperature = (Temperature - min(Temperature))/(max(Temperature) - min(Temperature)), Scaled.NOx.Emissions = (NOx.Emissions - min(NOx.Emissions))/(max(NOx.Emissions) - min(NOx.Emissions)))
+  fld = with(data, interp(x = Scaled.Temperature, y = Scaled.NOx.Emissions, z = O3))
+  df = melt(fld$z, na.rm = TRUE)
+  names(df) = c("x", "y", "O3")
+  df$Temperature = fld$x[df$x]
+  df$NOx.Emissions = fld$y[df$y] 
+  df$Mechanism = rep(mechanism, length(df$NOx))
+  return (df)
+}
 
-ind_fld = with(ind_d, interp(x = Scaled.Temperature, y = Scaled.NOx.Emissions, z = O3))
-ind_df = melt(ind_fld$z, na.rm = TRUE)
-names(ind_df) = c("x", "y", "O3")
-ind_df$Temperature = ind_fld$x[ind_df$x]
-ind_df$NOx.Emissions = ind_fld$y[ind_df$y]
-ind_df$Run = rep("Temperature Independent", length(ind_df$O3))
-ind_df$Mechanism = rep("CB05", length(ind_df$O3))
+get_contour_data = function (run) {
+  filename = paste0("Temperature_", run, "_data.csv")
+  d = read.csv(filename)
+  data = lapply(mechanisms, contour_mechanism_data_frame, dataframe = d)
+  df = do.call("rbind", data)
+  df$Run = rep(paste("Temperature", run, "\nIsoprene Emissions"), length(df$NOx)) 
+  return(df)
+}
 
+get_slope_data = function (run) {
+  filename = paste0("Temperature_", run, "_data.csv")
+  d = read.csv(filename)
+  slopes = d %>%  mutate(Scaled.NOx.Emissions = (NOx.Emissions - min(NOx.Emissions))/(max(NOx.Emissions) - min(NOx.Emissions))) %>%  
+    select(-NOx.Emissions) %>% 
+    group_by(Mechanism, Scaled.NOx.Emissions) %>%
+    do(model = lm(O3 ~ Temperature, data = .)) %>%
+    mutate(Slope = sprintf("%.1f", abs(summary(model)$coeff[2])), R2 = summary(model)$r.squared) %>%
+    select(-model) 
+  slopes$Run = rep(paste("Temperature", run, "\nIsoprene Emissions"), length(slopes$Mechanism)) 
+  slopes$NOx.Start = slopes$Scaled.NOx.Emissions
+  NOx.End = as.data.frame(as.numeric(levels(factor(slopes$Scaled.NOx.Emissions))))
+  names(NOx.End) = c("NOx.End")
+  NOx.End = NOx.End %>% filter(NOx.End != 0)
+  NOx.End = rbind(NOx.End, Inf)
+  slopes$NOx.End = NOx.End$NOx.End
+  names(slopes) = c("Mechanism", "NOx.Emissions", "Slope", "R2", "Run", "NOx.Start", "NOx.End")
+  return(slopes)
+}
+
+runs = c("Dependent", "Independent")
+mechanisms = c("CB05", "RADM2", "MCMv3.2", "MOZART-4", "CRIv2")
+
+#O3 Contours
+contour.data = lapply(runs, get_contour_data)
+df = do.call("rbind", contour.data) #combining into 1 data frame
+#m_O3-T
+slopes.data = lapply(runs, get_slope_data)
+slopes = do.call("rbind", slopes.data)
+#labels
+d = read.csv(file = "Temperature_Dependent_data.csv") %>% filter(Mechanism == "CB05") %>% mutate(Temperature.C = Temperature - 273)
 temperature.break.points = seq(0, 1, 0.2)
-temperature.labels = get.labels(temperature.break.points, ind_d$Temperature.C, digits = 2) 
+temperature.labels = get.labels(temperature.break.points, d$Temperature.C, digits = 2) 
 NOx.Emissions.break.points = seq(0, 1, 0.2)
-NOx.Emissions.labels = get.labels(NOx.Emissions.break.points, ind_d$NOx.Emissions, digits = 2)
-NOx.Emissions.labels = lapply(NOx.Emissions.labels, function (i) sprintf("%0.2e", i))
+NOx.Emissions.labels = get.labels(NOx.Emissions.break.points, d$NOx.Emissions, digits = 2)
+NOx.Emissions.labels = lapply(NOx.Emissions.labels, function (i) sprintf("%0.1e", i))
 
-ind_slopes = ind_d %>%  group_by(Mechanism, Scaled.NOx.Emissions) %>%
-                do(model = lm(O3 ~ Temperature, data = .)) %>%
-                mutate(Slope = sprintf("%.1f", abs(summary(model)$coeff[2])), R2 = summary(model)$r.squared) %>%
-                select(-model)
-
-ind_test = ind_slopes[rep(seq_len(nrow(ind_slopes)), each = length(ind_df$Temperature)),] %>% cbind(ind_df$Temperature)
-names(ind_test) = c("Mechanism", "NOx.Emissions", "Slope", "R2", "Temperature")
-ind_test$Run = rep("Temperature Independent", length(ind_test$R2))
-
-#temp dependent
-dep_data = read.csv("../Contours_Temperature_Dep/out_Temperature_NOx_23102015.csv")
-dep_d = dep_data %>% select(Mechanism, Temperature, NOx.Emissions, O3)
-dep_d = dep_d %>%   filter(Mechanism == "CB05") %>% 
-            mutate(Temperature.C = Temperature - 273, Scaled.Temperature = (Temperature - min(Temperature))/(max(Temperature) - min(Temperature)), Scaled.NOx.Emissions = (NOx.Emissions - min(NOx.Emissions))/(max(NOx.Emissions) - min(NOx.Emissions)))
-
-dep_fld = with(dep_d, interp(x = Scaled.Temperature, y = Scaled.NOx.Emissions, z = O3))
-dep_df = melt(dep_fld$z, na.rm = TRUE)
-names(dep_df) = c("x", "y", "O3")
-dep_df$Temperature = dep_fld$x[dep_df$x]
-dep_df$NOx.Emissions = dep_fld$y[dep_df$y]
-dep_df$Run = rep("Temperature Dependent", length(dep_df$O3))
-dep_df$Mechanism = rep("CB05", length(dep_df$O3))
-
-dep_slopes = dep_d %>%  group_by(Mechanism, Scaled.NOx.Emissions) %>%
-                do(model = lm(O3 ~ Temperature, data = .)) %>%
-                mutate(Slope = sprintf("%.1f", abs(summary(model)$coeff[2])), R2 = summary(model)$r.squared) %>%
-                select(-model)
-
-dep_test = dep_slopes[rep(seq_len(nrow(dep_slopes)), each = length(dep_df$Temperature)),] %>% cbind(dep_df$Temperature)
-names(dep_test) = c("Mechanism", "NOx.Emissions", "Slope", "R2", "Temperature")
-dep_test$Run = rep("Temperature Dependent", length(dep_test$R2))
-
-df = rbind(ind_df, dep_df)
-test = rbind(ind_test, dep_test)
-
-#my.colours = c( "0.0" = "#f0f0f0", 
-#                "0.1" = "#e8e8e8", 
-#                "0.2" = "#d8d8d8", 
-#                "0.3" = "#c8c8c8", 
-#                "0.4" = "#b8b8b8", 
-#                "0.5" = "#a8a8a8", 
-#                "0.6" = "#989898", 
-#                "0.7" = "#909090", 
-#                "0.8" = "#888888", 
-#                "0.9" = "#787878", 
-#                "1.0" = "#686868", 
-#                "1.1" = "#585858",
-#                "1.2" = "#484848",
-#                "1.3" = "#303030",
-#                "1.4" = "#181818",
-#                "1.5" = "#000000")
-my.colours = c( "0.0" = "#000000",
-                "0.1" = "#080808",
-                "0.2" = "#0f0f0f",
-                "0.3" = "#171717",
-                "0.4" = "#1f1f1f",
-                "0.5" = "#262626",
-                "0.6" = "#2e2e2e",
-                "0.7" = "#363636",
-                "0.8" = "#3d3d3d",
-                "0.9" = "#454545",
-                "1.0" = "#4d4d4d",
-                "1.1" = "#545454",
-                "1.2" = "#5c5c5c",
-                "1.3" = "#636363",
-                "1.4" = "#6b6b6b",
-                "1.5" = "#737373")
-
-p = ggplot(df, aes(x = Temperature, y = NOx.Emissions))
-p = p + geom_tile(data  = test, aes(fill = factor(Slope)))
-p = p + stat_contour(aes(z = O3, colour = ..level..)) 
+p = ggplot(df, aes(y = NOx.Emissions))
+p = p + geom_rect(data = slopes, aes(xmin = 0, xmax = Inf, ymin = NOx.Start, ymax = NOx.End, fill = factor(Slope)))
+p = p + stat_contour(aes(x = Temperature, z = O3, colour = ..level..), binwidth = 5) 
 p = p + facet_grid(Mechanism ~ Run)
-p = p + scale_colour_gradient(low = "#7d3f96", high = "#7d3f96")
-p = p + scale_fill_grey(limits = rev(levels(factor(test$Slope))), name = expression(bold(paste(m[O3-T]))))
-#p = p + scale_fill_manual(values = my.colours, limits = rev(levels(factor(test$Slope))), name = expression(bold(paste(m[O3-T]))))
+p = p + scale_colour_gradient(low = "#cc6329", high = "#ef6638")
+p = p + scale_fill_grey(limits = rev(levels(factor(slopes$Slope))), name = expression(bold(paste(m[O3-T]))))
 p = p + xlab(expression(bold(paste("Temperature (", degree, "C)")))) + ylab("NOx Emissions (molecules cm-3 s-1)")
 p = p + scale_x_continuous(breaks = temperature.break.points, labels = temperature.labels)
-p = p + scale_y_continuous(breaks = NOx.Emissions.break.points, labels = NOx.Emissions.labels, expand = c(0, 0))
+p = p + scale_y_continuous(breaks = NOx.Emissions.break.points, labels = NOx.Emissions.labels)
 p = p + theme_tufte()
-p = p + theme(panel.margin = unit(0.2, "mm"))
 p = p + theme(axis.title = element_text(face = "bold"))
 p = p + theme(strip.text = element_text(face = "bold"))
 p = p + theme(strip.text.y = element_text(angle = 0))
 
-CairoPDF(file = "O3_contours_with_m.pdf", width = 10, height = 7)
-print(direct.label(p))
+#direct.label(p)
+CairoPDF(file = "O3_contours_with_m.pdf", width = 7, height = 10)
+print(direct.label(p, list('top.pieces', cex = 0.6)))
 dev.off()

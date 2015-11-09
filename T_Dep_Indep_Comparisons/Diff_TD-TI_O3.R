@@ -2,7 +2,7 @@
 # Version 0: Jane Coates 08/11/2015
 
 setwd("~/Documents//Analysis//2015_Meteorology_and_Ozone//T_Dep_Indep_Comparisons")
-mechanisms = c("CRIv2", "RADM2", "MOZART-4", "CB05")
+mechanisms = c("CRIv2", "RADM2", "MOZART-4", "CB05", "MCMv3.2")
 runs = c("Dependent", "Independent")
 
 mechanism_data_frame = function (mechanism, td.df, ti.df) {
