@@ -16,7 +16,7 @@ foreach my $mechanism (@mechanisms) {
     my @lines = <$in>;
     close $in;
 
-    my $thermal_decomposition;
+    my $thermal_decomposition = "PAN = CH3CO3 \+";
     if ($mechanism eq "MCMv3.2" or $mechanism eq "CRIv2" or $mechanism eq "MOZART-4") {
         $thermal_decomposition = "PAN = CH3CO3 \+";
     } elsif ($mechanism eq "CB05") {

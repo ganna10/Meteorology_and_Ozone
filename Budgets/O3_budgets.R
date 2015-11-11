@@ -1,48 +1,67 @@
-# analyse O3 Budgets
+# analyse O3 Budgets, absolute rates
 # Version 0: Jane Coates 09/11/2015
 
 setwd("~/Documents//Analysis/2015_Meteorology_and_Ozone/Budgets/")
 
 select_data = function (data) {
-  df = data %>% select(Mechanism, Temperature, Total.NOx.Emissions, Reaction, Rate) %>%
-    mutate(Reactants = sapply(str_split(Reaction, " = "), "[", 1)) %>%
-    select(-Reaction) %>%
+  df = data %>% select(Mechanism, Temperature, NOx.Emissions, Reaction, Rate, H2O2, HNO3) %>%
+    mutate(Temperature.C = Temperature - 273) %>%
+    rowwise() %>% 
+    mutate(Reactants = ifelse( is.na(str_match(Reaction, " = ")[1,1]), Reaction, sapply(str_split(Reaction, " = "), "[", 1))) %>%
     arrange(Temperature) %>% 
-    filter(Total.NOx.Emissions == 540678848)
+    rowwise() %>%
+    mutate(NOx.Condition = get_NOx_condition(H2O2/HNO3)) %>%
+    select(Mechanism, Temperature.C, Reactants, Rate, NOx.Condition) %>%
+    group_by(Mechanism, Temperature.C, Reactants, NOx.Condition) %>%
+    summarise(Rate = mean(Rate))
   return(df)
 }
 
+get_NOx_condition = function (x) {
+  if (x > 0.5) {
+    condition = "Low-NOx"
+  } else if (x < 0.3) {
+    condition = "High-NOx"
+  } else {
+    condition = "Maximal-O3"
+  }
+  return (condition)
+}
+
 get_td_data = function (mechanism) {
-  data = read.csv(file = paste0("TD_O3/", mechanism, "_O3_budget_07112015.txt"))
+  data = read.csv(file = paste0("TD_O3/", mechanism, "_O3_budget_10112015.txt"))
   df = select_data(data)
   df$Run = rep("Temperature Dependent\nIsoprene Emissions", length(df$Mechanism))
   return(df)
 }
 
 get_ti_data = function (mechanism) {
-  data = read.csv(file = paste0("TI_O3/", mechanism, "_O3_budget_07112015.txt"))
+  data = read.csv(file = paste0("TI_O3/", mechanism, "_O3_budget_10112015.txt"))
   df = select_data(data)
   df$Run = rep("Temperature Independent\nIsoprene Emissions", length(df$Mechanism))
   return(df)
 }
 
 mechanisms = c("CB05")
+#mechanisms = c("CB05", "RADM2", "MOZART-4", "CRIv2", "MCMv3.2")
 #temperature dependent
+##### to do -> need to add others by summing reaction rates
 td.list = lapply(mechanisms, get_td_data)
 td.df = do.call("rbind", td.list)
 tbl_df(td.df)
-levels(factor(td.df$Total.NOx.Emissions))
 #temperature independent
 ti.list = lapply(mechanisms, get_ti_data)
 ti.df = do.call("rbind", ti.list)
 tbl_df(ti.df)
 
-#df = rbind(ti.df, td.df)
+df = rbind(ti.df, td.df)
 
-p = ggplot(ti.df, aes(x = Temperature, y = Rate, fill = Reactants))
-p = p + geom_bar(data = subset(ti.df, Rate < 0), stat = "identity")
-p = p + geom_bar(data = subset(ti.df, Rate > 0), stat = "identity")
-p = p + facet_grid(Mechanism ~ Total.NOx.Emissions)
+p = ggplot(df, aes(x = Temperature.C, y = Rate, colour = Reactants))
+p = p + geom_line(data = subset(df, Rate < 0))
+#p = p + geom_bar(data = subset(df, Rate < 0), stat = "identity")
+#p = p + geom_bar(data = subset(df, Rate > 0), stat = "identity")
+p = p + geom_line(data = subset(df, Rate > 0))
+p = p + facet_grid(NOx.Condition ~ Run)
 p = p + scale_x_continuous(expand = c(0, 0))
 p = p + scale_y_continuous(expand = c(0, 0))
 p = p + theme_tufte()
