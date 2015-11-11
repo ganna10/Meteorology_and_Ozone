@@ -19,7 +19,7 @@ pan.df$Rate.Constant = as.double(as.character(pan.df$Rate.Constant))
 
 # get maximum difference in rate constant
 #pan.df %>% filter(Reaction == "PAN = CH3CO3 + NO2")  %>% select(Mechanism, Rate.Constant) %>% group_by(Mechanism) %>% mutate(Max = max(Rate.Constant)) %>% distinct(Mechanism, Max)
-pan.df %>% filter(Reaction == "CH3CO3 + NO2 = PAN")  %>% select(Mechanism, Rate.Constant) %>% group_by(Mechanism) %>% mutate(Max = max(Rate.Constant)) %>% distinct(Mechanism, Max)
+#pan.df %>% filter(Reaction == "CH3CO3 + NO2 = PAN")  %>% select(Mechanism, Rate.Constant) %>% group_by(Mechanism) %>% mutate(Max = max(Rate.Constant)) %>% distinct(Mechanism, Max)
 
 my.colours = c("MCMv3.2" = "#6c254f", "CRIv2" = "#ef6638", "MOZART-4" = "#2b9eb3", "CB05" = "#0e5c28", "RADM2" = "#f9c500")
 

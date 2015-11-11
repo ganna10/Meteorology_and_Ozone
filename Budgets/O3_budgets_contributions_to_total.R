@@ -63,8 +63,48 @@ get_ti_cons_data = function (mechanism) {
   return(df)
 }
 
-mechanisms = c("RADM2")
-#mechanisms = c("CB05", "RADM2", "MOZART-4", "CRIv2", "MCMv3.2")
+production_plot = function (mechanism, td.df, ti.df) {
+  mech.td = td.df %>% as.data.frame() %>% filter(Mechanism == mechanism)
+  mech.ti = ti.df %>% as.data.frame() %>% filter(Mechanism == mechanism)
+  df = rbind(mech.td, mech.ti)
+  title = paste(mechanism, " : Contributions to total Ox Production Budget")
+  
+  p = ggplot(df, aes(x = Temperature.C, y = Fraction, colour = Reactants, ymax = 1))
+  p = p + geom_line()
+  p = p + facet_grid(NOx.Condition ~ Run)
+  p = p + scale_y_continuous(labels = percent)
+  p = p + ggtitle(title)
+  p = p + theme_tufte()
+  p = p + theme(axis.line = element_line(colour = "black"))
+  p = p + theme(strip.text = element_text(face = "bold"))
+  p = p + theme(axis.title = element_text(face = "bold"))
+  p = p + theme(plot.title = element_text(face = "bold"))
+  p = p + theme(strip.text.y = element_text(angle = 0))
+  return(p)
+}
+
+consumption_plot = function (mechanism, td.df, ti.df) {
+  mech.td = td.df %>% as.data.frame() %>% filter(Mechanism == mechanism)
+  mech.ti = ti.df %>% as.data.frame() %>% filter(Mechanism == mechanism)
+  df = rbind(mech.td, mech.ti)
+  title = paste(mechanism, " : Contributions to total Ox Consumption Budget")
+  
+  p = ggplot(df, aes(x = Temperature.C, y = Fraction, colour = Reactants, ymax = 1))
+  p = p + geom_line()
+  p = p + facet_grid(NOx.Condition ~ Run)
+  p = p + scale_y_continuous(labels = percent)
+  p = p + ggtitle(title)
+  p = p + theme_tufte()
+  p = p + theme(axis.line = element_line(colour = "black"))
+  p = p + theme(strip.text = element_text(face = "bold"))
+  p = p + theme(axis.title = element_text(face = "bold"))
+  p = p + theme(plot.title = element_text(face = "bold"))
+  p = p + theme(strip.text.y = element_text(angle = 0))
+  return(p)
+}
+
+#mechanisms = c("RADM2")
+mechanisms = c("CB05", "RADM2", "MOZART-4", "CRIv2", "MCMv3.2")
 #temperature dependent
 td.prod.list = lapply(mechanisms, get_td_prod_data)
 td.prod.df = do.call("rbind", td.prod.list)
@@ -83,40 +123,27 @@ ti.cons.list = lapply(mechanisms, get_ti_cons_data)
 ti.cons.df = do.call("rbind", ti.cons.list)
 tbl_df(ti.cons.df)
 
-prod.df = rbind(ti.prod.df, td.prod.df)
-cons.df = rbind(ti.cons.df, td.cons.df)
+prod.plots = lapply(mechanisms, production_plot, td.df = td.prod.df, ti.df = ti.prod.df)
+cons.plots = lapply(mechanisms, consumption_plot, td.df = td.cons.df, ti.df = ti.cons.df)
+prod.plots[[5]]
+cons.plots[[1]]
 
-#production plot
-p = ggplot(data = prod.df, aes(x = Temperature.C, y = Fraction, colour = Reactants, ymax = 1))
-p = p + geom_line(position = "stack")
+#compare HO2 + NO contribution to Ox budget
+df = rbind(ti.prod.df, td.prod.df)
+df = df %>% as.data.frame() %>% filter(Reactants == "HO2 + NO")
+tbl_df(df)
+p = ggplot(df, aes(x = Temperature.C, y = Fraction, colour = Mechanism))
+p = p + geom_line(size = 2)
 p = p + facet_grid(NOx.Condition ~ Run)
-p = p + scale_y_continuous(labels = percent)
-p = p + theme_tufte()
-p = p + theme(axis.line = element_line(colour = "black"))
-p = p + theme(strip.text = element_text(face = "bold"))
-p = p + theme(strip.text.y = element_text(angle = 0))
-direct.label(p, list("last.points", cex = 0.6))
-direct.label(p, "last.qp")
+p 
 
-#need to fine tune the direct labelling
-p + geom_dl(aes(label = Reactants), method = list(defaultpf.ggplot("line",,,), cex = 0.7))
-p1 = direct.label(p, list("far.from.others.borders", cex = 0.8))
-p1
-p2 = ggplot_gtable(ggplot_build(p1))
-p2$layout$clip[p2$layout$name == "panel"] = "off"
-grid.draw(p2)
+#direct.label(p, list("last.points", cex = 0.6))
+#direct.label(p, "last.qp")
 
-#consumption plot
-c = ggplot(data = subset(cons.df, Run == "Temperature Dependent\nIsoprene Emissions"), aes(x = Temperature.C, y = Fraction, colour = Mechanism))
-c = c + geom_line()
-c = c + facet_grid(NOx.Condition ~ Reactants)
-c = c + scale_y_continuous(labels = percent, expand = c(0, 0))
-c = c + scale_x_continuous(expand = c(0, 0))
-c = c + theme_tufte()
-c = c + theme(axis.line = element_line(colour = "black"))
-c = c + theme(strip.text = element_text(face = "bold"))
-c = c + theme(strip.text.y = element_text(angle = 0))
-c = c + theme(panel.margin = unit(3.5, "mm"))
-c
-
-
+##need to fine tune the direct labelling
+#p + geom_dl(aes(label = Reactants), method = list(defaultpf.ggplot("line",,,), cex = 0.7))
+#p1 = direct.label(p, list("far.from.others.borders", cex = 0.8))
+#p1
+#p2 = ggplot_gtable(ggplot_build(p1))
+#p2$layout$clip[p2$layout$name == "panel"] = "off"
+#grid.draw(p2)

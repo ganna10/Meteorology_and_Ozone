@@ -42,8 +42,8 @@ get_ti_data = function (mechanism) {
   return(df)
 }
 
-mechanisms = c("CB05")
-#mechanisms = c("CB05", "RADM2", "MOZART-4", "CRIv2", "MCMv3.2")
+#mechanisms = c("CB05")
+mechanisms = c("CB05", "RADM2", "MOZART-4", "CRIv2", "MCMv3.2")
 #temperature dependent
 ##### to do -> need to add others by summing reaction rates
 td.list = lapply(mechanisms, get_td_data)
@@ -70,3 +70,11 @@ p = p + theme(strip.text = element_text(face = "bold"))
 p = p + theme(strip.text.y = element_text(angle = 0))
 p
 
+#HO2 + NO contribution
+df = rbind(ti.df, td.df)
+df = df %>% as.data.frame() %>% filter(Reactants == "HO2 + NO")
+tbl_df(df)
+p = ggplot(df, aes(x = Temperature.C, y = Rate, colour = Mechanism))
+p = p + geom_line(size = 2)
+p = p + facet_grid(NOx.Condition ~ Run)
+p 
