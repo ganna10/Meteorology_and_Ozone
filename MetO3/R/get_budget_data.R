@@ -5,7 +5,7 @@
 #' @param Species The species whose budgets are being analysed
 #' @param Run.Label Run from which to get the data (TD/, I)
 #' @param Date The data processing date (ddmmyyyy)
-#' @value Data frame containing raw budget data for further analysis
+#' @return Data frame containing raw budget data for further analysis
 #' @export
 
 get_budget_data <- function (Mechanism, Species, Run.Label, Date) {

@@ -15,6 +15,9 @@ get_budget_data(Mechanism, Species, Run.Label, Date)
 
 \item{Date}{The data processing date (ddmmyyyy)}
 }
+\value{
+Data frame containing raw budget data for further analysis
+}
 \description{
 Get the raw data of the budgets of a Species in a Mechanisms from a Run, that was processed at a Date
 }

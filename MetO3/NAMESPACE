@@ -2,7 +2,9 @@
 
 export(get_budget_data)
 export(get_net_budget_data)
+export(get_species_budget)
 export(plot_contours)
 export(plot_net_budgets)
+export(plot_species_budgets)
 export(plot_theme)
 export(read_mixing_ratio_data)

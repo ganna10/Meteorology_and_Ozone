@@ -5,7 +5,7 @@
 setwd("~/Documents//Analysis/2015_Meteorology_and_Ozone/Budgets/")
 spc <- "RO2NO2"
 date <- "12112015"
-mechanisms = c("CB05", "RADM2", "MOZART-4", "CRIv2")
+mechanisms = c("CB05", "RADM2", "MCMv3.2", "MOZART-4", "CRIv2")
 
 #temperature dependent
 td.list <- lapply(mechanisms, get_budget_data, Species = spc, Run.Label = "TD", Date = date)
