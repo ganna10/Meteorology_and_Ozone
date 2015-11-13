@@ -22,3 +22,4 @@ nytprof.out
 *.csv
 .Rhistory
 markdown_O3_budgets.pdf
+.Rproj.user

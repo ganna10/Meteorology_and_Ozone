@@ -4,24 +4,37 @@
 setwd("~/Documents//Analysis/2015_Meteorology_and_Ozone/Budgets/")
 
 select_data = function (data) {
-  df = data %>% select(Mechanism, Temperature, NOx.Condition, Net.Reaction.Rate) %>%
+  df = data %>% select(Mechanism, Temperature, H2O2, HNO3, Net.Reaction.Rate) %>%
     arrange(Temperature) %>%
     mutate(Temperature.C = Temperature - 273) %>%
-    select(-Temperature) %>%
+    rowwise() %>%
+    mutate(NOx.Condition = get_NOx_condition(H2O2/HNO3)) %>%
+    select(-Temperature, -H2O2, -HNO3) %>%
     group_by(Mechanism, Temperature.C, NOx.Condition) %>%
     summarise(Mean.Rate = mean(Net.Reaction.Rate)) 
   return(df)
 }
 
+get_NOx_condition = function (x) {
+  if (x > 0.5) {
+    condition = "Low-NOx"
+  } else if (x < 0.3) {
+    condition = "High-NOx"
+  } else {
+    condition = "Maximal-O3"
+  }
+  return (condition)
+}
+
 get_td_data = function (mechanism) {
-  data = read.csv(file = paste0("TD_RO2NO2/", mechanism, "_RO2NO2_budget_with_NOx-Condition_07112015.txt"))
+  data = read.csv(file = paste0("TD_RO2NO2/", mechanism, "_RO2NO2_budget_12112015.txt"))
   df = select_data(data)
   df$Run = rep("Temperature Dependent\nIsoprene Emissions", length(df$Mechanism))
   return(df)
 }
 
 get_ti_data = function (mechanism) {
-  data = read.csv(file = paste0("TI_RO2NO2/", mechanism, "_RO2NO2_budget_with_NOx-Condition_07112015.txt"))
+  data = read.csv(file = paste0("TI_RO2NO2/", mechanism, "_RO2NO2_budget_12112015.txt"))
   df = select_data(data)
   df$Run = rep("Temperature Independent\nIsoprene Emissions", length(df$Mechanism))
   return(df)

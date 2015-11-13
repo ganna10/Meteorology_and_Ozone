@@ -1,0 +1,11 @@
+Package: MetO3
+Title: functions used to analyse data from Meteorology effects with NOx of O3
+Version: 0.0.0.9000
+Author: Jane Coates <jane.coates@iass-potsdam.de>
+Maintainer: Jane Coates <jane.coates@iass-potsdam.de>
+Description: What the package does (one paragraph).
+Depends:
+    R (>= 3.2.2)
+License: GNU
+LazyData: true
+RoxygenNote: 5.0.1

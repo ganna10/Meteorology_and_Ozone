@@ -1,12 +1,12 @@
 # Plot O3 contours with m_O3-T as tile. facet run ~ mechanism
 # Version 0: Jane Coates 09/11/2015
-#setwd("~/Documents//Analysis//2015_Meteorology_and_Ozone//T_Dep_Indep_Comparisons")
+
+setwd("~/Documents//Analysis//2015_Meteorology_and_Ozone//T_Dep_Indep_Comparisons")
 
 get.labels = function (break.points, orig.data, digits) {
-    labels = lapply(break.points,
-                    function (i) round ((i * (max(orig.data) - min(orig.data))) + min(orig.data), digits )
-            )
-    return (labels)
+  labels = lapply(break.points,
+  function (i) round ((i * (max(orig.data) - min(orig.data))) + min(orig.data), digits ))
+  return (labels)
 }
 
 contour_mechanism_data_frame = function (mechanism, dataframe) {

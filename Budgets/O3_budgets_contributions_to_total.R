@@ -125,17 +125,34 @@ tbl_df(ti.cons.df)
 
 prod.plots = lapply(mechanisms, production_plot, td.df = td.prod.df, ti.df = ti.prod.df)
 cons.plots = lapply(mechanisms, consumption_plot, td.df = td.cons.df, ti.df = ti.cons.df)
-prod.plots[[5]]
-cons.plots[[1]]
+
+prod.df = rbind(td.prod.df, ti.prod.df)
+tbl_df(prod.df)
+p = ggplot(prod.df, aes(x = Temperature.C, y = Fraction, colour = Reactants, linetype = Run))
+p = p + geom_line()
+p = p + facet_grid(NOx.Condition ~ Mechanism)
+p = p + ggtitle("Stacked Ox Budgets")
+p = p + scale_x_continuous(expand = c(0, 0))
+p = p + scale_y_continuous(expand = c(0, 0))
+p = p + theme_tufte()
+p = p + theme(axis.line = element_line(colour = "black"))
+p = p + theme(strip.text = element_text(face = "bold"))
+p = p + theme(strip.text.y = element_text(angle = 0))
+p = p + theme(plot.title = element_text(face = "bold"))
+p
+
+CairoPDF(file = "Contributions_Ox_budgets.pdf", width = 7, height = 10)
+print(p)
+dev.off()
 
 #compare HO2 + NO contribution to Ox budget
-df = rbind(ti.prod.df, td.prod.df)
-df = df %>% as.data.frame() %>% filter(Reactants == "HO2 + NO")
-tbl_df(df)
-p = ggplot(df, aes(x = Temperature.C, y = Fraction, colour = Mechanism))
-p = p + geom_line(size = 2)
-p = p + facet_grid(NOx.Condition ~ Run)
-p 
+# df = rbind(ti.prod.df, td.prod.df)
+# df = df %>% as.data.frame() %>% filter(Reactants == "HO2 + NO")
+# tbl_df(df)
+# p = ggplot(df, aes(x = Temperature.C, y = Fraction, colour = Mechanism))
+# p = p + geom_line(size = 2)
+# p = p + facet_grid(NOx.Condition ~ Run)
+# p 
 
 #direct.label(p, list("last.points", cex = 0.6))
 #direct.label(p, "last.qp")
