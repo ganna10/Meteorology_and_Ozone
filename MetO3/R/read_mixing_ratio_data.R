@@ -8,10 +8,10 @@
 #' @export
 
 read_mixing_ratio_data <- function (run.label, spc, mechanisms) {
-  filename = paste0("Temperature_", run.label, "_data.csv")
-  d = read.csv(filename)
-  data = lapply(mechanisms, get_contour_data, species = spc, dataframe = d)
-  df = do.call("rbind", data)
-  df$Run = rep(paste("Temperature", run.label, "\nIsoprene Emissions"), length(df$Temperature)) 
+  filename <- paste0("Temperature_", run.label, "_data.csv")
+  d <- read.csv(filename)
+  data <- lapply(mechanisms, get_contour_data, species = spc, dataframe = d)
+  df <- do.call("rbind", data)
+  df$Run <- rep(paste("Temperature", run.label, "\nIsoprene Emissions"), length(df$Temperature)) 
   return(df)
 }

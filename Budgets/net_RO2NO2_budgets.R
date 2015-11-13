@@ -1,81 +1,34 @@
 # analyse RO2NO2 Budgets
 # Version 0: Jane Coates 11/11/2015
+# Version 1: Jane Coates 13/11/2015 Using MetO3 package
 
 setwd("~/Documents//Analysis/2015_Meteorology_and_Ozone/Budgets/")
+spc <- "RO2NO2"
+date <- "12112015"
+mechanisms = c("CB05", "RADM2", "MOZART-4", "CRIv2")
 
-select_data = function (data) {
-  df = data %>% select(Mechanism, Temperature, H2O2, HNO3, Net.Reaction.Rate) %>%
-    arrange(Temperature) %>%
-    mutate(Temperature.C = Temperature - 273) %>%
-    rowwise() %>%
-    mutate(NOx.Condition = get_NOx_condition(H2O2/HNO3)) %>%
-    select(-Temperature, -H2O2, -HNO3) %>%
-    group_by(Mechanism, Temperature.C, NOx.Condition) %>%
-    summarise(Mean.Rate = mean(Net.Reaction.Rate)) 
-  return(df)
-}
-
-get_NOx_condition = function (x) {
-  if (x > 0.5) {
-    condition = "Low-NOx"
-  } else if (x < 0.3) {
-    condition = "High-NOx"
-  } else {
-    condition = "Maximal-O3"
-  }
-  return (condition)
-}
-
-get_td_data = function (mechanism) {
-  data = read.csv(file = paste0("TD_RO2NO2/", mechanism, "_RO2NO2_budget_12112015.txt"))
-  df = select_data(data)
-  df$Run = rep("Temperature Dependent\nIsoprene Emissions", length(df$Mechanism))
-  return(df)
-}
-
-get_ti_data = function (mechanism) {
-  data = read.csv(file = paste0("TI_RO2NO2/", mechanism, "_RO2NO2_budget_12112015.txt"))
-  df = select_data(data)
-  df$Run = rep("Temperature Independent\nIsoprene Emissions", length(df$Mechanism))
-  return(df)
-}
-
-mechanisms = c("CB05", "RADM2", "MOZART-4", "MCMv3.2", "CRIv2")
 #temperature dependent
-td.list = lapply(mechanisms, get_td_data)
-td.df = do.call("rbind", td.list)
+td.list <- lapply(mechanisms, get_budget_data, Species = spc, Run.Label = "TD", Date = date)
+td.df <- do.call("rbind", td.list)
 tbl_df(td.df)
 
 #temperature independent
-ti.list = lapply(mechanisms, get_ti_data)
-ti.df = do.call("rbind", ti.list)
+ti.list <- lapply(mechanisms, get_budget_data, Species = spc, Run.Label = "TI", Date = date)
+ti.df <- do.call("rbind", ti.list)
 tbl_df(ti.df)
 
-df = rbind(ti.df, td.df)
-my.colours = c("MCMv3.2" = "#6c254f", "CRIv2" = "#ef6638", "MOZART-4" = "#2b9eb3", "CB05" = "#0e5c28", "RADM2" = "#f9c500")
+df <- rbind(ti.df, td.df)
+net.data <- get_net_budget_data(df)
+tbl_df(net.data)
+levels(factor(net.data$NOx.Condition))
 
-p = ggplot(df, aes(x = Temperature.C, y = Mean.Rate, colour = Mechanism, linetype = Run))
-p = p + geom_line(size = 2)
-p = p + facet_wrap( ~ NOx.Condition)
-p = p + theme_tufte()
-p = p + theme(axis.line = element_line(colour = "black"))
-p = p + theme(strip.text = element_text(face = "bold"))
-p = p + theme(axis.title = element_text(face = "bold"))
-p = p + xlab(expression(bold(paste("Temperature (", degree, "C)")))) + ylab("Mean Net RO2NO2 Production (molecules cm-3)")
-p = p + scale_colour_manual(values = my.colours)
-p
+plot_net_budgets(net.data)
 
 #diff from MCM
-ti.max = ti.df %>% select(Mechanism, Mean.Rate, NOx.Condition) %>% 
-  group_by(Mechanism, NOx.Condition) %>%
-  summarise(Max = max(Mean.Rate))
-ti.max %>% spread(Mechanism, Max, drop = FALSE) %>%
-  gather(Mechanism, Max.Rate, -NOx.Condition, -MCMv3.2) %>%
-  mutate(Diff.from.MCM = (Max.Rate - MCMv3.2)/MCMv3.2)
-
-td.max = td.df %>% select(Mechanism, Mean.Rate, NOx.Condition) %>% 
-  group_by(Mechanism, NOx.Condition) %>%
-  summarise(Max = max(Mean.Rate))
-td.max %>% spread(Mechanism, Max, drop = FALSE) %>%
-  gather(Mechanism, Max.Rate, -NOx.Condition, -MCMv3.2) %>%
+max.data <- net.data %>% select(Mechanism, Run, Net.Rate, NOx.Condition) %>% 
+  group_by(Run, Mechanism, NOx.Condition) %>%
+  summarise(Max.Rate = max(Net.Rate))
+tbl_df(max.data)
+max.data %>% spread(Mechanism, Max.Rate, drop = FALSE) %>%
+  gather(Mechanism, Max.Rate, -NOx.Condition, -MCMv3.2, -Run) %>%
   mutate(Diff.from.MCM = (Max.Rate - MCMv3.2)/MCMv3.2)

@@ -6,7 +6,7 @@
 #' @param digits Number of digits to round the label to.
 #' @return Sequence of labels for axis labelling
 
-get_contour_axis_label = function (break.points, orig.data, digits) {
-  labels = lapply(break.points, function (i) round ((i * (max(orig.data) - min(orig.data))) + min(orig.data), digits ))
+get_contour_axis_label <- function (break.points, orig.data, digits) {
+  labels <- lapply(break.points, function (i) round ((i * (max(orig.data) - min(orig.data))) + min(orig.data), digits ))
   return (labels)
 }
