@@ -22,7 +22,8 @@ net.data <- get_net_budget_data(df)
 tbl_df(net.data)
 levels(factor(net.data$NOx.Condition))
 
-plot_net_budgets(net.data)
+p <- plot_net_budgets(net.data)
+direct.label(p, "last.bumpup")
 
 #diff from MCM
 max.data <- net.data %>% select(Mechanism, Run, Net.Rate, NOx.Condition) %>% 

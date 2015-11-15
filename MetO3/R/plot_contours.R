@@ -18,7 +18,7 @@ plot_contours <- function (dataframe, spc) {
   
   colnum <- match(spc, names(dataframe))
   p <- ggplot(dataframe, aes(x = Temperature, y = NOx.Emissions, colour = ..level..))
-  p <- p + stat_contour(aes_string(z = spc)) 
+  p <- p + stat_contour(aes_string(z = spc), binwidth = 5) 
   p <- p + facet_grid(Mechanism ~ Run)
   p <- p + xlab(expression(bold(paste("Temperature (", degree, "C)")))) + ylab("NOx Emissions (molecules cm-3 s-1)")
   p <- p + scale_x_continuous(breaks = temperature.break.points, labels = temperature.labels)
