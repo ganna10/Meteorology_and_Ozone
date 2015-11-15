@@ -4,6 +4,7 @@
 # Version 1: Jane Coates 13/10/2015 outputting VOCR data
 # Version 2: Jane Coates 29/10/2015 removing VOCR
 # Version 3: Jane Coates 7/11/2015 new directory structure
+# Version 4: Jane Coates 14/11/2015 adding ketones and aldeydes
 
 use strict;
 use diagnostics;
@@ -11,7 +12,7 @@ use Cwd qw( cwd );
 
 die "Need date" if (@ARGV == 0);
 my $date = $ARGV[0];
-my @variables = qw( NOx.Emissions NOx Temperature O3 H2O2 OH HO2 HOx HCHO RO2NO2 RONO2 HNO3 PAN );
+my @variables = qw( NOx.Emissions NOx Temperature O3 H2O2 OH HO2 HOx HCHO RO2NO2 RONO2 HNO3 PAN Ketones Aldehydes);
 
 my $base = cwd();
 opendir DIR, $base or die $!;
@@ -28,17 +29,18 @@ print $out "\n";
 
 foreach my $checkfile (@files) { 
     (my $mechanism = $checkfile) =~ s/^(.*?)_check_(.*?)$/$1/;
-    my ($nox_emission, $NOx, $temperature, $O3, $H2O2, $OH, $HO2, $HOx, $HCHO, $RO2NO2, $RONO2, $HNO3, $PAN) = extract_data($checkfile, \@variables);
+    my ($nox_emission, $NOx, $temperature, $O3, $H2O2, $OH, $HO2, $HOx, $HCHO, $RO2NO2, $RONO2, $HNO3, $PAN, $Ketones, $Aldehydes) = extract_data($mechanism, $checkfile, \@variables);
 
     for (0..$#$nox_emission) {
-        print $out "$mechanism,$nox_emission->[$_],$NOx->[$_],$temperature->[$_],$O3->[$_],$H2O2->[$_],$OH->[$_],$HO2->[$_],$HOx->[$_],$HCHO->[$_],$RO2NO2->[$_],$RONO2->[$_],$HNO3->[$_],$PAN->[$_]\n";
+        $Ketones->[$_] = 0 if ($mechanism eq "CB05");
+        print $out "$mechanism,$nox_emission->[$_],$NOx->[$_],$temperature->[$_],$O3->[$_],$H2O2->[$_],$OH->[$_],$HO2->[$_],$HOx->[$_],$HCHO->[$_],$RO2NO2->[$_],$RONO2->[$_],$HNO3->[$_],$PAN->[$_],$Ketones->[$_],$Aldehydes->[$_]\n";
     }
 }
 
 close $out;
 
 sub extract_data {
-    my ($file, $variables) = @_;
+    my ($mechanism, $file, $variables) = @_;
 
     print "Extracting data from $file\n";
     open my $in, '<:encoding(utf-8)', $file or die $!;
@@ -47,7 +49,7 @@ sub extract_data {
     close $in; 
     my @lines = split /\n/, $all_lines;
 
-    my (@nox_emissions, @NOx, @temperature, @O3, @H2O2, @OH, @HO2, @HOx, @HCHO, @RONO2, @RO2NO2, @HNO3, @PAN);
+    my (@nox_emissions, @NOx, @temperature, @O3, @H2O2, @OH, @HO2, @HOx, @HCHO, @RONO2, @RO2NO2, @HNO3, @PAN, @Ketones, @Aldehydes);
     foreach my $variable (@$variables) { 
         if ($variable eq "NOx.Emissions") {
             foreach my $line (@lines) { 
@@ -85,6 +87,10 @@ sub extract_data {
                         push @RONO2, get_value($line) * 1e9;
                     } elsif ($variable eq "PAN") {
                         push @PAN, get_value($line) * 1e9;
+                    } elsif ($variable eq "Ketones") {
+                        push @Ketones, get_value($line) * 1e9;
+                    } elsif ($variable eq "Aldehydes") {
+                        push @Aldehydes, get_value($line) * 1e9;
                     } elsif ($variable eq "O3") {
                         push @O3, get_value($line) * 1e9;
                         #} elsif ($variable eq "VOCR") {
@@ -96,7 +102,7 @@ sub extract_data {
             }
         }
     }
-    return \@nox_emissions, \@NOx, \@temperature, \@O3, \@H2O2, \@OH, \@HO2, \@HOx, \@HCHO, \@RO2NO2, \@RONO2, \@HNO3, \@PAN;
+    return \@nox_emissions, \@NOx, \@temperature, \@O3, \@H2O2, \@OH, \@HO2, \@HOx, \@HCHO, \@RO2NO2, \@RONO2, \@HNO3, \@PAN, \@Ketones, \@Aldehydes;
     #my ($nox_emission, $NOx, $temperature, $O3, $H2O2, $OH, $HO2, $HOx, $HCHO, $RO2NO2, $RONO2, $HNO3, $PAN) = extract_data($checkfile, \@variables);
 }
 

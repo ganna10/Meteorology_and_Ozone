@@ -19,10 +19,17 @@ tbl_df(ti.df)
 
 df <- rbind(ti.df, td.df)
 net.data <- get_net_budget_data(df)
+net.data$NOx.Condition <- factor(net.data$NOx.Condition, levels = c("Low-NOx", "Maximal-O3", "High-NOx"))
 tbl_df(net.data)
 levels(factor(net.data$NOx.Condition))
 
-plot_net_budgets(net.data)
+p <- plot_net_budgets(net.data)
+
+cri <- dl.move("CRIv2", vjust = 2.65)
+mozart <- dl.move("MOZART-4", vjust = 1, hjust = 2.85)
+CairoPDF(file = "net_CH3CHO_budgets.pdf", width = 10, height = 7)
+print(direct.label(p, list(top.bumpup, mozart, cri)))
+dev.off()
 
 #diff from MCM
 max.data <- net.data %>% select(Mechanism, Run, Net.Rate, NOx.Condition) %>% 
