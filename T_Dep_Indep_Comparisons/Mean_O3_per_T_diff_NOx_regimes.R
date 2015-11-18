@@ -1,8 +1,10 @@
 # Plot mean O3 at each Temperature for different NOx conditions, determined on H2O2/HNO3 ratio. Each mechanism and run
 # Version 0: Jane Coates 27/10/2015
+# Version 1: Jane Coates 16/11/2015 using MetO3 package
 
-runs = c("Dependent", "Independent")
-mechanisms = c("CB05", "RADM2", "MOZART-4", "CRIv2", "MCMv3.2")
+setwd("~/Documents//Analysis//2015_Meteorology_and_Ozone//T_Dep_Indep_Comparisons")
+runs <- c("Dependent", "Independent")
+mechanisms <- c("MCMv3.2", "CRIv2", "MOZART-4", "CB05", "RADM2")
 
 get_NOx_condition = function (x) {
     if (x > 0.5) {
@@ -16,35 +18,35 @@ get_NOx_condition = function (x) {
 }
 
 mechanism_data_frame = function (mechanism, dataframe) {
-    data = dataframe %>%    mutate(H2O2.HNO3.Ratio = H2O2/HNO3, Temperature.C = Temperature - 273) %>% 
-                            select(Mechanism, NOx.Emissions, Temperature.C, O3, H2O2.HNO3.Ratio) %>%
-                            rowwise() %>% 
-                            mutate(NOx.Condition = get_NOx_condition(H2O2.HNO3.Ratio))
-    summarised.data = data %>%  group_by(Mechanism, Temperature.C, NOx.Condition) %>%
-                                summarise(Mean.O3 = max(O3))
-    summarised.data$NOx.Condition = factor(summarised.data$NOx.Condition, levels = c("Low-NOx", "Maximal-O3", "High-NOx"))
-    return(summarised.data)
+  data = dataframe %>% mutate(H2O2.HNO3.Ratio = H2O2/HNO3, Temperature.C = Temperature - 273) %>% 
+    select(Mechanism, NOx.Emissions, Temperature.C, O3, H2O2.HNO3.Ratio) %>%
+    rowwise() %>% 
+    mutate(NOx.Condition = get_NOx_condition(H2O2.HNO3.Ratio))
+  summarised.data = data %>%  group_by(Mechanism, Temperature.C, NOx.Condition) %>% 
+    summarise(Mean.O3 = max(O3))
+  summarised.data$NOx.Condition = factor(summarised.data$NOx.Condition, levels = c("Low-NOx", "Maximal-O3", "High-NOx"))
+  return(summarised.data)
 }
 
 get_data = function (run) {
-    filename = paste0("Temperature_", run, "_data.csv")
-    d = read.csv(filename)
-    data = lapply(mechanisms, mechanism_data_frame, dataframe = d)
-    df = do.call("rbind", data)
-    df$Run = rep(paste("Temperature", run, "\nIsoprene Emissions"), length(df$NOx.Condition)) 
-    df$Print = rep(paste("Temperature", run), length(df$NOx.Condition)) 
-    return(df)
+  filename = paste0("Temperature_", run, "_data.csv")
+  d = read.csv(filename)
+  data = lapply(mechanisms, mechanism_data_frame, dataframe = d)
+  df = do.call("rbind", data)
+  df$Run = rep(paste("Temperature", run, "\nIsoprene Emissions"), length(df$NOx.Condition)) 
+  df$Print = rep(paste("Temperature", run), length(df$NOx.Condition)) 
+  return(df)
 }
 list.data = lapply(runs, get_data)
 data = do.call("rbind", list.data)
 
-my.colours = c("MCMv3.2" = "#000000", "CB05" = "#0e5c28", "RADM2" = "#e6ab02", "MOZART-4" = "#6c254f", "CRIv2" = "#ef6638")
+my.colours = c("MCMv3.2" = "#6c254f", "CRIv2" = "#ef6638", "MOZART-4" = "#2b9eb3", "CB05" = "#0e5c28", "RADM2" = "#f9c500")
 
 regression.data = data %>%  select(-Run) %>% 
-                            group_by(Mechanism, NOx.Condition, Print) %>% 
-                            do(model = lm(Mean.O3 ~ Temperature.C, data = .)) %>% 
-                            mutate(Slope = summary(model)$coeff[2], Intercept = summary(model)$coeff[1], R2 = summary(model)$r.squared) %>% 
-                            select(-model)
+  group_by(Mechanism, NOx.Condition, Print) %>% 
+  do(model = lm(Mean.O3 ~ Temperature.C, data = .)) %>% 
+  mutate(Slope = summary(model)$coeff[2], Intercept = summary(model)$coeff[1], R2 = summary(model)$r.squared) %>% 
+  select(-model)
 write.table(regression.data, file = "Regressions_statistics_Mean_O3_T_NOx.txt", quote = FALSE, row.name = FALSE, sep = ",")
 regression.data$NOx.Condition = factor(regression.data$NOx.Condition, levels = c("Low-NOx", "Maximal-O3", "High-NOx"))
 
@@ -60,7 +62,7 @@ reg.p = reg.p + theme(axis.title.x = element_blank())
 reg.p = reg.p + theme(legend.title = element_blank())
 reg.p = reg.p + theme(legend.position = "top")
 reg.p = reg.p + scale_colour_manual(values = my.colours)
-
+reg.p
 CairoPDF(file = "Slope_O3_T_NOx.pdf", width = 10, height = 7)
 print(reg.p)
 dev.off()
@@ -79,7 +81,7 @@ p = p + theme(legend.title = element_blank())
 p = p + theme(legend.position = "top")
 p = p + theme(strip.text.y = element_text(angle = 0))
 p = p + scale_colour_manual(values = my.colours)
-
+p
 CairoPDF(file = "Mean_O3_T_NOx_conditions.pdf", width = 7, height = 10)
 print(p)
 dev.off()

@@ -6,26 +6,26 @@ mechanisms = c("CRIv2", "RADM2", "MOZART-4", "CB05", "MCMv3.2")
 runs = c("Dependent", "Independent")
 
 mechanism_data_frame = function (mechanism, td.df, ti.df) {
-    mech.td = td %>% filter(Mechanism == mechanism)
-    mech.ti = ti %>% filter(Mechanism == mechanism)
-    diff = td %>% filter(Mechanism == mechanism) %>% select(NOx.Emissions, Temperature, O3)
-    diff$O3.Diff = mech.td$O3 - mech.ti$O3
-    
-    diff = diff %>% mutate(Scaled.Temperature = (Temperature - min(Temperature))/(max(Temperature) - min(Temperature)), Scaled.NOx.Emissions = (NOx.Emissions - min(NOx.Emissions))/(max(NOx.Emissions) - min(NOx.Emissions)))
-    fld = with(diff, interp(x = Scaled.Temperature, y = Scaled.NOx.Emissions, z = O3.Diff))
-    df = melt(fld$z, na.rm = TRUE)
-    names(df) = c("x", "y", "O3.Diff")
-    df$Temperature = fld$x[df$x]
-    df$NOx.Emissions = fld$y[df$y] 
-    df$Mechanism = rep(mechanism, length(df$NOx))
-    return (df)
+  mech.td = td %>% filter(Mechanism == mechanism)
+  mech.ti = ti %>% filter(Mechanism == mechanism)
+  diff = td %>% filter(Mechanism == mechanism) %>% select(NOx.Emissions, Temperature, O3)
+  diff$O3.Diff = mech.td$O3 - mech.ti$O3
+  
+  diff = diff %>% mutate(Scaled.Temperature = (Temperature - min(Temperature))/(max(Temperature) - min(Temperature)), Scaled.NOx.Emissions = (NOx.Emissions - min(NOx.Emissions))/(max(NOx.Emissions) - min(NOx.Emissions)))
+  fld = with(diff, interp(x = Scaled.Temperature, y = Scaled.NOx.Emissions, z = O3.Diff))
+  df = melt(fld$z, na.rm = TRUE)
+  names(df) = c("x", "y", "O3.Diff")
+  df$Temperature = fld$x[df$x]
+  df$NOx.Emissions = fld$y[df$y] 
+  df$Mechanism = rep(mechanism, length(df$NOx))
+  return (df)
 }
 
 get.labels = function (break.points, orig.data, digits) {
-    labels = lapply(break.points,
-                    function (i) round ((i * (max(orig.data) - min(orig.data))) + min(orig.data), digits )
-            )
-    return (labels)
+  labels = lapply(break.points,
+    function (i) round ((i * (max(orig.data) - min(orig.data))) + min(orig.data), digits )
+  )
+  return (labels)
 }
 
 td = read.csv(file = "Temperature_Dependent_data.csv")
@@ -37,6 +37,9 @@ data = lapply(mechanisms, mechanism_data_frame, td.df = td, ti.df = ti)
 df = do.call("rbind", data) #combining into 1 data frame
 df$O3.Diff = sprintf("%.0f", abs(df$O3.Diff))
 df$O3.Diff = factor(df$O3.Diff, levels = seq(0, 16, 1))
+
+df %>% group_by(Mechanism) %>%
+  summarise(Max.O3.Diff = max(O3.Diff))
 
 data = read.csv("Temperature_Dependent_data.csv")
 cb05.data = data %>% filter(Mechanism == "CB05") %>% mutate(Temperature.C = Temperature - 273)
@@ -64,6 +67,6 @@ p = p + theme(strip.text.y = element_text(angle = 0))
 p = p + theme(panel.margin = unit(5, "mm"))
 p = p + scale_fill_manual(values = get.palette(colour.count), name = "O3 (ppb)")
 
-CairoPDF(file = "Difference_O3_TD-TI.pdf")
-print(p)
-dev.off()
+# CairoPDF(file = "Difference_O3_TD-TI.pdf")
+# print(p)
+# dev.off()
