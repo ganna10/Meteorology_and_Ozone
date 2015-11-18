@@ -20,7 +20,7 @@ get_species_budget <- function (dataframe, Reactants, Absolute) {
   
   if (Reactants == TRUE) {
     df = df %>% rowwise() %>% 
-      mutate(Reaction = ifelse( is.na(str_match(Reaction, " = ")[1,1]), Reaction, sapply(str_split(Reaction, " = "), "[", 1)))
+      mutate(Reaction = ifelse( is.na(str_match(Reaction, " = ")[1, 1]), Reaction, sapply(str_split(Reaction, " = "), "[", 1)))
   }
   
   if (Absolute == FALSE) {
