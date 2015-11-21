@@ -3,6 +3,7 @@
 #' NOx-Condition is determined from H2O2/HNO3 ratio based on values from Sillman:1995.
 #' @param x Ratio of H2O2 to HNO3 mixing ratios
 #' @return The NOx-Condition associated with ratio
+#' @export
 
 get_NOx_condition <- function (x) {
   if (x > 0.5) {

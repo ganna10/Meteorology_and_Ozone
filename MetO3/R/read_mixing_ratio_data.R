@@ -8,10 +8,20 @@
 #' @export
 
 read_mixing_ratio_data <- function (run.label, spc, mechanisms) {
-  filename <- paste0("Temperature_", run.label, "_data.csv")
+  if (run.label %in% c("Low", "High")) {
+    filename <- paste0(run.label, "_Isoprene_emissions.csv")
+  } else {
+    filename <- paste0("Temperature_", run.label, "_data.csv")
+  }
   d <- read.csv(filename)
   data <- lapply(mechanisms, get_contour_data, species = spc, dataframe = d)
   df <- do.call("rbind", data)
-  df$Run <- rep(paste("Temperature", run.label, "\nIsoprene Emissions"), length(df$Temperature)) 
+  if (run.label == "Low") {
+    df$Run <- rep("Low Isoprene Emissions", length(df$Temperature))
+  } else if (run.label == "High") {
+    df$Run <- rep("High Isoprene Emissions", length(df$Temperature))
+  } else {
+    df$Run <- rep(paste("Temperature", run.label, "\nIsoprene Emissions"), length(df$Temperature)) 
+  }
   return(df)
 }
