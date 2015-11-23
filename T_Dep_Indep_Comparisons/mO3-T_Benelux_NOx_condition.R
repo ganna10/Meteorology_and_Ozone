@@ -118,9 +118,9 @@ whole.data <- combined.df %>%
   select(-Time, -Temperature) %>%
   filter(Temperature.C >= 15 & Temperature.C <= 40) %>%
   group_by(Temperature.C) %>%
-  summarise(O3 = mean(O3, na.rm = TRUE))
+  summarise(O3 = mean(O3, na.rm = TRUE))tn
 
-wd.plot <- ggplot(whole.data, aes(x = Temperature, y = O3)) + geom_point() + stat_smooth(method = lm)
+wd.plot <- ggplot(whole.data, aes(x = Temperature.C, y = O3)) + geom_point() + stat_smooth(method = lm)
 wd.plot
 wd.model = lm(Mean.O3 ~ Temperature, data = whole.data)
 wd.Slope = sprintf("%.1f", abs(summary(wd.model)$coeff[2]))
@@ -128,7 +128,18 @@ wd.R2 = summary(wd.model)$r.squared
 wd.Slope
 wd.R2
 
+my.colours <- c("MCMv3.2" = "#6c254f", "CRIv2" = "#ef6638", "MOZART-4" = "#2b9eb3", "CB05" = "#0e5c28", "RADM2" = "#f9c500")
 ### plot everything
 p <- ggplot(t.o3, aes(x = Temperature.C, y = O3))
 p <- p + geom_line(size = 1, aes(colour = Mechanism, linetype = Run))
-p + geom_line(data = whole.data, colour = "black", size = 2)
+p <- p + scale_colour_manual(values = my.colours)
+p <- p + geom_line(data = whole.data, colour = "black", size = 2)
+p <- p + plot_theme()
+p <- p + theme(legend.position = "top", legend.title = element_blank())
+p <- p + scale_x_continuous(limits = c(15, 43), breaks = seq(15, 40, 5), expand = c(0, 0))
+p <- p + annotate("text", x = 35, y = 77.9, label = "ERA-Interim")
+p
+
+CairoPDF(file = "ERA_vs_boxmodel_benelux.pdf", width = 10, height = 7)
+print(direct.label(p, "last.bumpup"))
+dev.off()

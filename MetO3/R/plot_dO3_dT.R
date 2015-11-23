@@ -5,7 +5,7 @@
 #' @export
 
 plot_dO3_dT <- function (df) {
-  my.colours = c("MCMv3.2" = "#6c254f", "CRIv2" = "#ef6638", "MOZART-4" = "#2b9eb3", "CB05" = "#0e5c28", "RADM2" = "#f9c500")
+  my.colours <- c("MCMv3.2" = "#6c254f", "CRIv2" = "#ef6638", "MOZART-4" = "#2b9eb3", "CB05" = "#0e5c28", "RADM2" = "#f9c500")
   p <- ggplot(df, aes(x = Temperature.C, y = O3, colour = Mechanism))
   p <- p + geom_line(size = 1)
   p <- p + facet_grid(NOx.Condition ~ Run)
