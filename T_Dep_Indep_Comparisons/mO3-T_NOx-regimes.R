@@ -28,5 +28,7 @@ slopes <- t.o3  %>%
   select(-model)  %>% 
   rowwise() %>%
   mutate(Run = str_replace(Run, "\nIsoprene Emissions", " "))
-
+slopes %>%
+  select(-R2) %>%
+  spread(NOx.Condition, Slope, drop = FALSE)
 # write.table(slopes, file = "Regressions_statistics_Mean_O3_T_NOx.txt", quote = FALSE, row.names = FALSE, sep = ",")
