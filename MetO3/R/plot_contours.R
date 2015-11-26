@@ -12,7 +12,7 @@ plot_contours <- function (dataframe, spc) {
     mutate(Temperature.C = Temperature - 273)
   temperature.break.points = seq(0, 1, 0.2)
   temperature.labels <- get_contour_axis_label(temperature.break.points, orig$Temperature.C, digits = 2) 
-  NOx.Emissions.break.points <- seq(0, 1, 0.2)
+  NOx.Emissions.break.points <- seq(0, 1, 0.3333)
   NOx.Emissions.labels <- get_contour_axis_label(NOx.Emissions.break.points, orig$NOx.Emissions, digits = 2)
   NOx.Emissions.labels <- lapply(NOx.Emissions.labels, function (i) sprintf("%0.1e", i))
   
