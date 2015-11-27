@@ -99,7 +99,7 @@ ti.df$Run <- rep("TI", length(ti.df$Mechanism))
 
 all <- rbind(td.df, ti.df)
 all %>%
-  group_by(Mechanism) %>%
+  group_by(Mechanism, Run) %>%
   summarise(Max = max(Diff), Min = min(Diff))
 
 all$Diff <- sprintf("%.0f", all$Diff)
@@ -110,7 +110,7 @@ get.palette = colorRampPalette(brewer.pal(9, "Oranges"))
 
 p = ggplot(all, aes(x = Temperature, y = NOx.Emissions))
 p = p + geom_tile(aes(fill = factor(Diff)))
-p = p + facet_grid(Mechanism ~ .)
+p = p + facet_grid(Mechanism ~ Run)
 p = p + xlab(expression(bold(paste("Temperature (", degree, "C)")))) + ylab("NOx Emissions (molecules cm-3 s-1)")
 # p = p + scale_x_continuous(breaks = temperature.break.points, labels = temperature.labels, expand = c(0, 0))
 # p = p + scale_y_continuous(breaks = NOx.Emissions.break.points, labels = NOx.Emissions.labels, expand = c(0, 0))
@@ -122,3 +122,6 @@ p = p + theme(strip.text.y = element_text(angle = 0))
 p = p + theme(panel.margin = unit(5, "mm"))
 p = p + scale_fill_manual(values = get.palette(colour.count), name = "%Increase")
 p
+CairoPDF(file = "Differences_from_MCM.pdf", width = 10, height = 10)
+print(p)
+dev.off()

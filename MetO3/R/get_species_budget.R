@@ -9,7 +9,7 @@
 
 get_species_budget <- function (dataframe, Reactants, Absolute) {
   dataframe$Reaction <- as.character(dataframe$Reaction)
-  df = dataframe %>% select(Mechanism, Temperature, NOx.Emissions, Run, Reaction, Rate, H2O2, HNO3) %>%
+  df = dataframe %>% select(Mechanism, Temperature, Run, Reaction, Rate, H2O2, HNO3) %>%
     mutate(Temperature.C = Temperature - 273) %>%
     arrange(Temperature) %>% 
     rowwise() %>%
