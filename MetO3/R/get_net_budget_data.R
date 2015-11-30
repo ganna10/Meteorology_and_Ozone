@@ -6,7 +6,7 @@
 #' @export
 
 get_net_budget_data <- function (dataframe) {
-  df <- dataframe %>% select(Mechanism, Temperature, NOx.Emissions, Net.Reaction.Rate, Run, H2O2, HNO3) %>%
+  df <- dataframe %>% select(Mechanism, Temperature, Net.Reaction.Rate, Run, H2O2, HNO3) %>%
      mutate(Temperature.C = Temperature - 273) %>%
      arrange(Temperature) %>%
      rowwise() %>%

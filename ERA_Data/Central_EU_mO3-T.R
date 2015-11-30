@@ -8,148 +8,99 @@ subLon <- function (x) {
   return (x)
 }
 
-lon.max <- 15
-lon.min <- 6
-lat.max <- 55
-lat.min <- 47
+get_subdata <- function (tmax.data, o3.data, lon.min, lon.max, lat.min, lat.max) {
+  tmax.filter <- tmax.data %>%
+    filter(between(Lon, lon.min, lon.max), between(Lat, lat.min, lat.max)) %>%
+    arrange(Lon, Lat, Time)
+  
+  o3.filter <- o3.data %>%
+    filter(between(Lon, lon.min, lon.max), between(Lat, lat.min, lat.max)) %>%
+    arrange(Lon, Lat, Time)
+    
+  combined.df <- data.frame(O3 = o3.filter$O3, Tmax = tmax.filter$T.Max)
+  upper.quantile <- quantile(combined.df$O3, 0.95, names = FALSE) # get 95th percentile
+  lower.quantile <- quantile(combined.df$O3, 0.05, names = FALSE) # get 5th percentile
+  
+  no.outliers <- combined.df %>%
+    filter(between(O3, lower.quantile, upper.quantile))
+  return(combined.df)
+}
 
+# get all temperature data
 tmax.nc <- nc_open("tmax_EU_1998-2012.nc")
-tmax.lon.ind <- which(tmax.nc$dim$longitude$vals >= lon.min & tmax.nc$dim$longitude$vals <= lon.max)
-tmax.lat.ind <- which(tmax.nc$dim$latitude$vals >= lat.min & tmax.nc$dim$latitude$vals <= lat.max)
-tmax <- ncvar_get(tmax.nc, "tmax")[tmax.lon.ind, tmax.lat.ind,]
+tmax <- ncvar_get(tmax.nc, "tmax")
 tmax[tmax == "-32767"] <- NA
 nc_close(tmax.nc)
 
-lon <- tmax.nc$dim$longitude$vals[tmax.lon.ind]
-lat <- tmax.nc$dim$latitude$vals[tmax.lat.ind]
-lat <- rev(lat)
+lon <- tmax.nc$dim$longitude$vals
+lat <- rev(tmax.nc$dim$latitude$vals)
 time <- tmax.nc$dim$time$vals - 0.75
 time <- parse_date_time(time,"%Y%m%d")
-# test <- tmax[,,1]
-# filled.contour(lon, lat, test)
 
+# get all O3 data
 o3.nc <- nc_open("surfO3.mda8.eu.set.1998-2012.nc")
-o3.lon <- o3.nc$dim$lon$vals
-o3.lon <- sapply(o3.lon, subLon)
-o3.lon.ind <- which(o3.lon >= lon.min & o3.lon <= lon.max)
-o3.lat.ind <- which(o3.nc$dim$lat$vals >= lat.min & o3.nc$dim$lat$vals <= lat.max)
-o3 <- ncvar_get(o3.nc, "MDA8_SurfO3")[o3.lon.ind, o3.lat.ind,]
+o3 <- ncvar_get(o3.nc, "MDA8_SurfO3")
 o3[o3 == "-999"] <- NA
 nc_close(o3.nc)
 
-lat.o3 <- o3.nc$dim$lat$vals[o3.lat.ind]
-lon.o3 <- o3.nc$dim$lon$val[o3.lon.ind]
+o3.lon <- o3.nc$dim$lon$vals
+o3.lon <- sapply(o3.lon, subLon)
+o3.lat <- o3.nc$dim$lat$vals
 time.o3 <- o3.nc$dim$time$vals
 time.o3 <- parse_date_time(time.o3, "%Y%m%d")
-# test <- o3[,,1]
-# filled.contour(lon.o3, lat.o3, test)
 
-# ozone
-o3.dim.names <- list(lon.o3, lat.o3, time.o3)
-dimnames(o3) <- o3.dim.names
-o3.df <- o3 %>%
-  melt(na.rm = TRUE)
-colnames(o3.df) <- c("Lon", "Lat", "Time", "O3.Max")
-# o3.df <- o3.df %>%
-#   group_by(Time) %>%
-#   summarise(O3.Max = mean(O3.Max))
-tbl_df(o3.df)
-
-# temperature
-tmax.dim.names <- list(lon, lat, time)
-dimnames(tmax) <- tmax.dim.names
+#convert tmax array to data frame
+dimnames(tmax) <- list(lon, lat, time)
 tmax.df <- tmax %>%
-  melt(na.rm = TRUE)
-colnames(tmax.df) <- c("Lon", "Lat", "Time", "T.Max")
-# tmax.df <- tmax.df %>%
-#   group_by(Time) %>%
-#   summarise(T.Max = mean(T.Max))
-tbl_df(tmax.df)
+  melt(na.rm = TRUE, varnames = names(dimnames(tmax)))
+names(tmax.df) <- c("Lon", "Lat", "Time", "T.Max")
 
-combined.df <- data.frame(O3 = o3.df$O3.Max, Tmax = tmax.df$T.Max)
-# combined.df$Temperature <- round(combined.df$Temperature, digits = 0)
-tbl_df(combined.df)
+#convert ozone array to data frame
+dimnames(o3) <- list(o3.lat, o3.lon, time.o3)
+o3.df <- o3 %>%
+  melt(na.rm = TRUE, varnames = names(dimnames(o3)))
+names(o3.df) <- c("Lat", "Lon", "Time", "O3")
 
-upper.quantile <- quantile(combined.df$O3, 0.95) # get 95th percentile
-lower.quantile <- quantile(combined.df$O3, 0.05) # get 5th percentile
+#get data over specific regions
+NE.France = get_subdata(tmax.df, o3.df, lon.min = 2, lon.max = 5, lat.min = 48, lat.max = 49)
+NE.France$Area <- rep("NE France", length(NE.France$O3))
 
-no.outliers <- combined.df %>%
-  filter(O3 < upper.quantile & O3 > lower.quantile)
-tbl_df(no.outliers)
+Netherlands = get_subdata(tmax.df, o3.df, lon.min = 5, lon.max = 7, lat.min = 52, lat.max = 53)
+Netherlands$Area <- rep("Netherlands", length(Netherlands$O3))
 
-# plottig quadratic and exponential linear regression
-wd.plot <- ggplot(no.outliers, aes(x = Tmax, y = O3)) + geom_point() + stat_smooth(method = lm)
-wd.plot
-wd.model = lm(O3 ~ Tmax, data = no.outliers)
-wd.Slope = sprintf("%.4f", abs(summary(wd.model)$coeff[2]))
-wd.R2 = summary(wd.model)$r.squared
-wd.Slope
-wd.R2
+E.Germany = get_subdata(tmax.df, o3.df, lon.min = 12, lon.max = 14, lat.min = 52, lat.max = 54)
+E.Germany$Area <- rep("Eastern Germany", length(E.Germany$O3))
 
-# factored by year
-# no.outliers$Time <- as.POSIXct(no.outliers$Time, origin = origin)
-# yearly.data <- no.outliers %>%
-#   rowwise() %>%
-#   mutate(Year = year(Time)) %>%
-#   select(-Time) %>%
-#   group_by(Year, Temperature) %>%
-#   filter(O3 <= quantile(O3, 0.95) & O3 >= quantile(O3, 0.05)) %>%
-#   summarise(Mean.O3 = mean(O3))
-# 
-# y.plot <- ggplot(yearly.data, aes(x = Temperature, y = Mean.O3)) + geom_point() + stat_smooth(method = lm) + facet_wrap(~ Year)
-# y.plot
-# y.slopes = yearly.data %>%  
-#   group_by(Year) %>%
-#   do(model = lm(Mean.O3 ~ Temperature, data = .)) %>%
-#   mutate(Slope = sprintf("%.1f", abs(summary(model)$coeff[2])), R2 = summary(model)$r.squared) %>%
-#   select(-model) 
-# y.slopes
-# 
-# getSeason <- function (month) {
-#   if (month %in% c(12, 1, 2)) {
-#     season = "DJF"
-#   } else if (month %in% c(3, 4, 5)) {
-#     season = "MAM"
-#   } else if (month %in% c(6, 7, 8)) {
-#     season = "JJA"
-#   } else if (month %in% c(9, 10, 11)) {
-#     season = "SON"
-#   }
-#   return (season)
-# }
-# 
-# #factored by season
-# season <- no.outliers %>%
-#   rowwise() %>%
-#   mutate(Season = getSeason(month(Time))) %>%
-#   select(-Time) %>%
-#   group_by(Season, Temperature) %>%
-#   filter(O3 <= quantile(O3, 0.95) & O3 >= quantile(O3, 0.05)) %>%
-#   summarise(Mean.O3 = mean(O3))
-# 
-# s.plot <- ggplot(season, aes(x = Temperature, y = Mean.O3)) + geom_point() + facet_grid(~ Season) + stat_smooth(method = lm)
-# s.plot
-# s.slopes <- season %>%
-#   group_by(Season) %>%
-#   do(model = lm(Mean.O3 ~ Temperature, data = .)) %>%
-#   mutate(Slope = sprintf("%.1f", abs(summary(model)$coeff[2])), R2 = summary(model)$r.squared) %>%
-#   select(-model)
-# s.slopes
-# 
-# # factored by year and season
-# season.year <- no.outliers %>%
-#   rowwise() %>%
-#   mutate(Year = year(Time), Season = getSeason(month(Time))) %>%
-#   select(-Time) %>%
-#   group_by(Year, Season, Temperature) %>%
-#   filter(O3 <= quantile(O3, 0.95) & O3 >= quantile(O3, 0.05)) %>%
-#   summarise(Mean.O3 = mean(O3))
-# 
-# sy.plot <- ggplot(season.year, aes(x = Temperature, y = Mean.O3)) + geom_point() + facet_grid(Season ~ Year) + stat_smooth(method = lm)
-# sy.plot
-# sy.slopes <- season.year %>%
-#   group_by(Year, Season) %>%
-#   do(model = lm(Mean.O3 ~ Temperature, data = .)) %>%
-#   mutate(Slope = sprintf("%.1f", abs(summary(model)$coeff[2])), R2 = summary(model)$r.squared) %>%
-#   select(-model)
-# sy.slopes
+SW.Poland = get_subdata(tmax.df, o3.df, lon.min = 12, lon.max = 14, lat.min = 52, lat.max = 54)
+SW.Poland$Area <- rep("SW Poland", length(SW.Poland$O3))
+
+W.Austria = get_subdata(tmax.df, o3.df, lon.min = 14, lon.max = 16, lat.min = 47, lat.max = 48)
+W.Austria$Area <- rep("W Austria", length(W.Austria$O3))
+
+Czech.Rep = get_subdata(tmax.df, o3.df, lon.min = 14, lon.max = 17, lat.min = 49, lat.max = 50)
+Czech.Rep$Area <- rep("Czech Republic", length(Czech.Rep$O3))
+
+all.data <- rbind(NE.France, Netherlands, E.Germany, SW.Poland, W.Austria, Czech.Rep)
+all.data <- all.data %>%
+  mutate(Tmax.C = Tmax - 273) %>%
+  select(-Tmax)
+
+regression.data <- all.data %>%
+  group_by(Area) %>%
+  do(model = lm(O3 ~ Tmax.C, data = .)) %>%
+  mutate(Slope = paste("m = ", sprintf("%.2f", abs(summary(model)$coeff[2]))), R2 = paste("R2 = ", sprintf("%.3f", summary(model)$r.squared))) %>%
+  mutate(text = paste("m = ", sprintf("%.2f", abs(summary(model)$coeff[2])), " ppbv/C, R2 = ", sprintf("%.3f", summary(model)$r.squared))) %>%
+  select(-model)
+regression.data
+
+wd.plot <- ggplot(all.data, aes(x = Tmax.C, y = O3))
+wd.plot <- wd.plot + geom_point(alpha = 0.1)
+wd.plot <- wd.plot + stat_smooth(method = "lm", formula = y ~ x, se = FALSE, size = 1, colour = "red")
+wd.plot <- wd.plot + plot_theme()
+wd.plot <- wd.plot + facet_wrap( ~ Area, scales = "free_x")
+wd.plot <- wd.plot + geom_text(data = regression.data, aes(x = 5, y = 100, label = text, size = 10), show_guide = FALSE)
+wd.plot <- wd.plot + xlab(expression(bold(paste("Maximum Daily Temperature (", degree, "C)")))) + ylab("Maximum 8-Hour daily mean O3 Mixing Ratio (ppv)")
+
+CairoPDF(file = "Central_Europe_mO3-T", width = 10, height = 7)
+print(wd.plot)
+dev.off()
