@@ -12,7 +12,7 @@ plot_dO3_dT <- function (df) {
   p <- p + xlab(expression(bold(paste("Temperature (", degree, "C)")))) + ylab("O3 Mixing Ratio (ppv)")
   p <- p + plot_theme()
   p <- p + theme(legend.position = "top", legend.title = element_blank())
-  p <- p + scale_x_continuous(expand = c(0, 0)) + scale_y_continuous(expand = c(0, 0))
+  p <- p + scale_x_continuous(limits = c(15, 45), breaks = seq(15, 40, 5), expand = c(0, 0))
   p <- p + theme(panel.margin = unit(5, "mm"))
   p <- p + scale_colour_manual(values = my.colours)
   return (p)

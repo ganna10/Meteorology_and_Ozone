@@ -3,7 +3,7 @@
 
 setwd("~/Documents//Analysis//2015_Meteorology_and_Ozone//T_Dep_Indep_Comparisons")
 
-runs <- c("Dependent", "Independent", "Low", "High")
+runs <- c("Dependent", "Independent")
 mechanisms <- c("CB05", "RADM2", "MOZART-4", "CRIv2")
 data.list <- lapply(runs, get_all_mixing_ratio_data)
 data.df <- do.call("rbind", data.list)
@@ -19,16 +19,24 @@ t.o3 <- data.df %>%
 t.o3$NOx.Condition <- factor(t.o3$NOx.Condition, levels = c("Low-NOx", "Maximal-O3", "High-NOx"))
 t.o3$Run <- factor(t.o3$Run, levels = c("Temperature Dependent\nIsoprene Emissions", "Temperature Independent\nIsoprene Emissions", "Low Isoprene Emissions", "High Isoprene Emissions"))
 
-plot_dO3_dT(t.o3)
+p <- plot_dO3_dT(t.o3)
+CairoPDF(file = "Model_O3-T_correlation.pdf", width = 10, height = 7)
+p1 = direct.label(p, list("last.bumpup", cex = 0.7))
+p2 = ggplot_gtable(ggplot_build(p1))
+p2$layout$clip[p2$layout$name == "panel"] = "off"
+print(grid.draw(p2))
+dev.off()
 
 slopes <- t.o3  %>% 
   group_by(Mechanism, Run, NOx.Condition) %>%
   do(model = lm(O3 ~ Temperature.C, data = .)) %>%
-  mutate(Slope = sprintf("%.1f", abs(summary(model)$coeff[2])), R2 = summary(model)$r.squared) %>%
+  mutate(Slope = sprintf("%.3f", abs(summary(model)$coeff[2])), R2 = summary(model)$r.squared) %>%
   select(-model)  %>% 
   rowwise() %>%
-  mutate(Run = str_replace(Run, "\nIsoprene Emissions", " "))
-slopes %>%
+  mutate(Run = str_replace(Run, "\nIsoprene Emissions", ""))
+
+arranged.slopes <- slopes %>%
   select(-R2) %>%
-  spread(NOx.Condition, Slope, drop = FALSE)
-# write.table(slopes, file = "Regressions_statistics_Mean_O3_T_NOx.txt", quote = FALSE, row.names = FALSE, sep = ",")
+  spread(Run, Slope, drop = FALSE) %>%
+  arrange(NOx.Condition)
+write.table(arranged.slopes, file = "Regressions_statistics_Mean_O3_T_NOx.txt", quote = FALSE, row.names = FALSE, sep = ",")
