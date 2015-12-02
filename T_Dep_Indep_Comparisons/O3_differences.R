@@ -22,9 +22,18 @@ difference <- df %>%
   group_by(Mechanism, NOx.Condition, Temperature, Run) %>%
   summarise(O3 = mean(O3)) %>%
   spread(Temperature, O3, drop = FALSE) %>%
-  mutate(Difference = (Increased - Reference)/Reference)
+  mutate(Difference = (Increased - Reference))
 
-ggplot(difference, aes(x = NOx.Condition, y = Difference, shape = Run)) + geom_point(size = 2) + scale_y_continuous(labels = percent) + facet_wrap(~ Mechanism, scales = "free")
+difference$Mechanism <- factor(difference$Mechanism, levels = c("MCMv3.2", "CRIv2", "MOZART-4", "CB05", "RADM2"))
+difference$NOx.Condition <- factor(difference$NOx.Condition, levels = c("Low-NOx", "Maximal-O3", "High-NOx"))
+output <- difference %>%
+  select(Mechanism, NOx.Condition, Run, Difference) %>%
+  spread(Run, Difference) %>%
+  mutate(Emissions = TD - TI) %>%
+  arrange(NOx.Condition)
+print.data.frame(output)
+
+ggplot(difference, aes(x = NOx.Condition, y = Difference, shape = Run)) + geom_point(size = 2) + facet_wrap(~ Mechanism, scales = "free")
 
 difference.from.mcm.293 <- df %>%
   filter(Temperature == 293) %>%
