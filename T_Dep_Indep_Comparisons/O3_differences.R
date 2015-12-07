@@ -30,7 +30,10 @@ output <- difference %>%
   select(Mechanism, NOx.Condition, Run, Difference) %>%
   spread(Run, Difference) %>%
   mutate(Emissions = TD - TI) %>%
-  arrange(NOx.Condition)
+  arrange(NOx.Condition) %>%
+  select(Mechanism, NOx.Condition, Chemistry = TI, Emissions) %>%
+  gather(Source, Difference, -Mechanism, -NOx.Condition) %>%
+  spread(NOx.Condition, Difference, drop = FALSE)
 print.data.frame(output)
 
 ggplot(difference, aes(x = NOx.Condition, y = Difference, shape = Run)) + geom_point(size = 2) + facet_wrap(~ Mechanism, scales = "free")
@@ -55,8 +58,15 @@ difference.from.mcm.313 <- df %>%
   summarise(O3 = mean(O3)) %>%
   spread(Mechanism, O3, drop = FALSE) %>%
   gather(Mechanism, O3, -NOx.Condition, -Run, -MCMv3.2) %>%
-  mutate(Difference.from.MCM = (MCMv3.2 - O3)/MCMv3.2, Temperature = "Increased")
+  mutate(Difference.from.MCM = MCMv3.2 - O3) %>%
+  select(-O3, -MCMv3.2) %>%
+  spread(Run, Difference.from.MCM, drop = FALSE) %>%
+  mutate(Emissions = TD - TI) %>%
+  select(Mechanism, NOx.Condition, Chemistry = TI, Emissions) %>%
+  gather(Source, Difference, -Mechanism, -NOx.Condition) %>%
+  spread(NOx.Condition, Difference, drop = FALSE)
+difference.from.mcm.313$Mechanism <- factor(difference.from.mcm.313$Mechanism, levels = c("CRIv2", "MOZART-4", "CB05", "RADM2"))
+print.data.frame(difference.from.mcm.313 %>% arrange(Mechanism))
+# difference.from.mcm <- rbind(difference.from.mcm.293, difference.from.mcm.313)
 
-difference.from.mcm <- rbind(difference.from.mcm.293, difference.from.mcm.313)
-
-ggplot(difference.from.mcm, aes(x = NOx.Condition, y = Difference.from.MCM, shape = Run)) + scale_y_continuous(labels = percent) + geom_point(size = 4) + facet_grid(Mechanism ~ Temperature)
+# ggplot(difference.from.mcm, aes(x = NOx.Condition, y = Difference.from.MCM, shape = Run)) + scale_y_continuous(labels = percent) + geom_point(size = 4) + facet_grid(Mechanism ~ Temperature)

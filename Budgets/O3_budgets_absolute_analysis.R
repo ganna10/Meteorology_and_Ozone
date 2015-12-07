@@ -1,10 +1,10 @@
 # analyse O3 production Budgets, absolute increases and differences
 # Version 0: Jane Coates 27/11/2015
-# Version 1: Jane Coates 27/11/2015 using O3 production budgets normalised by NMVOC emissions
+# Version 1: Jane Coates 3/12/2015 using Ox = O3 + NO2 + O definition of budget and allocated production reactions to different categories
 
 setwd("~/Documents//Analysis/2015_Meteorology_and_Ozone/Budgets/")
 spc <- "O3"
-date <- "28112015"
+date <- "03122015"
 mechanisms <- c("MCMv3.2", "CRIv2", "MOZART-4", "CB05", "RADM2")
 
 #temperature dependent
@@ -19,40 +19,182 @@ tbl_df(ti.df)
 
 df <- rbind(ti.df, td.df)
 tbl_df(df)
-d <- get_species_budget(dataframe = subset(df, Rate > 0), Reactants = TRUE, Absolute = TRUE)
+d <- df %>%
+  rowwise() %>%
+  mutate(NOx.Condition = get_NOx_condition(H2O2/HNO3), Temperature.C = Temperature - 273) %>%
+  group_by(Mechanism, Temperature.C, Category, Run, NOx.Condition) %>%
+  summarise(Rate = mean(Rate))
 d$Run[d$Run == "Temperature Dependent\nIsoprene Emissions"] <- "TD"
 d$Run[d$Run == "Temperature Independent\nIsoprene Emissions"] <- "TI"
 tbl_df(d)
+d$Category <- factor(d$Category, levels = c("Inorganic", "Other Organic", "ARO2", "RO2", "HO2", "RO2NO2"))
+d$NOx.Condition <- factor(d$NOx.Condition, levels = c("High-NOx", "Maximal-O3", "Low-NOx"))
 
-# total production
-my.colours <- c("MCMv3.2" = "#6c254f", "CRIv2" = "#ef6638", "MOZART-4" = "#2b9eb3", "CB05" = "#0e5c28", "RADM2" = "#f9c500")
-total.prod <- d %>%
-  group_by(Mechanism, Run, Temperature.C, NOx.Condition) %>%
-  summarise(Total = sum(Rate))
-p <- ggplot(total.prod, aes(x = Temperature.C, y = Total, colour = Mechanism, linetype = Run)) + geom_line(size = 2) + facet_wrap( ~ NOx.Condition) + plot_theme() + scale_colour_manual(values = my.colours)
-p
+my.colours = c("Inorganic" = "#b569b3", "Other Organic" = "#2b9eb3", "ARO2" = "#ef6638", "RO2" = "#0e5c28", "HO2" = "#f9c500", "RO2NO2" = "#6c254f")
 
-CairoPDF(file = "Budgets.pdf", width = 10, height = 7)
-print(p)
-dev.off()
+# temperature dependent plots
+td <- d %>%
+  filter(Run == "TD")
+td.plot <- ggplot(td, aes(x = Temperature.C, y = Rate, fill = Category, order = Category))
+td.plot <- td.plot + geom_bar(stat = "identity") 
+td.plot <- td.plot + facet_grid(Mechanism ~ NOx.Condition) 
+td.plot <- td.plot + plot_theme()
+td.plot <- td.plot + theme(legend.position = "top")
+td.plot <- td.plot + theme(legend.key.width = unit(1, "cm"))
+td.plot <- td.plot + theme(legend.title = element_blank())
+td.plot <- td.plot + ggtitle("(a) Temperature-Dependent Isoprene Emissions")
+td.plot <- td.plot + scale_x_continuous(limits = c(15, 40), breaks = seq(15, 40, 5), expand = c(0, 0))
+td.plot <- td.plot + scale_y_continuous(limits = c(0, 3.5e9), breaks = seq(0, 3e9, 1e9), expand = c(0, 0))
+td.plot <- td.plot + scale_fill_manual(values = my.colours, labels = c("Inorganic ", "Other Organic ", "ARO2 ", "RO2 ", "HO2 ", "RO2NO2 "))
+td.plot <- td.plot + theme(panel.margin = unit(4, "mm"))
+td.plot <- td.plot + xlab(expression(bold(paste("Temperature (", degree, "C)"))))
+td.plot <- td.plot + ylab("Production Rate (molecules cm-3)")
+td.plot
+  
+# CairoPDF(file = "TD_Ox_absolute_categorys.pdf", width = 10, height = 7)
+# print(p)
+# dev.off()
 
-# difference between T = 40°C and T = 15°C
-difference <- total.prod %>%
-  filter(Temperature.C == 15 | Temperature.C == 40) %>%
-  rowwise() %>%
-  mutate(Temperature.C = ifelse(Temperature.C == 15, "Low", "High")) %>%
-  spread(Temperature.C, Total, drop = FALSE) %>%
-  mutate(Difference = (High - Low)/Low) %>%
-  select(-High, -Low)
+# contributions to total
+td.contributions <- td %>%
+  group_by(Mechanism, Run, NOx.Condition, Temperature.C) %>%
+  mutate(Sum = sum(Rate), Fraction = Rate/Sum) %>%
+  select(-Rate, -Sum)
+tbl_df(td.contributions)
+td.contributions$NOx.Condition <- factor(td.contributions$NOx.Condition, levels = c("High-NOx", "Maximal-O3", "Low-NOx"))
 
-p <- ggplot(difference, aes(x = NOx.Condition, y = Difference, colour = Mechanism))
-p <- p + geom_point(size = 3)
-p <- p + facet_grid( ~ Run)
+p <- ggplot(td.contributions, aes(x = Temperature.C, y = Fraction, fill = Category, order = Category))
+p <- p + geom_area(position = "stack")
+p <- p + facet_grid(Mechanism ~ NOx.Condition) 
 p <- p + plot_theme()
-p <- p + scale_colour_manual(values = my.colours)
-p <- p + theme(legend.title = element_blank(), legend.position = "top")
+p <- p + theme(legend.position = "top")
+p <- p + theme(legend.key.width = unit(2, "cm"))
+p <- p + theme(legend.title = element_blank())
+p <- p + ggtitle("Temperature-Dependent Ox Budgets Fractional Contributions")
+p <- p + theme(panel.margin = unit(4, "mm"))
+p <- p + scale_x_continuous(limits = c(15, 40), breaks = seq(15, 40, 5), expand = c(0, 0))
+p <- p + scale_y_continuous(labels = percent, expand = c(0, 0))
+p <- p + scale_fill_manual(values = my.colours)
 p
 
-CairoPDF(file = "Differences_RO2_by_NOx.pdf", width = 10, height = 7)
+CairoPDF(file = "TD_Ox_category_contributions.pdf", width = 10, height = 7)
 print(p)
 dev.off()
+
+# temperature dependent plots
+ti <- d %>%
+  filter(Run == "TI")
+ti.plot <- ggplot(ti, aes(x = Temperature.C, y = Rate, fill = Category, order = Category))
+ti.plot <- ti.plot + geom_bar(stat = "identity") 
+ti.plot <- ti.plot + facet_grid(Mechanism ~ NOx.Condition) 
+ti.plot <- ti.plot + plot_theme()
+ti.plot <- ti.plot + theme(legend.position = "top")
+ti.plot <- ti.plot + theme(legend.key.width = unit(1, "cm"))
+ti.plot <- ti.plot + theme(legend.title = element_blank())
+ti.plot <- ti.plot + ggtitle("(b) Temperature-Independent Isoprene Emissions")
+ti.plot <- ti.plot + scale_x_continuous(limits = c(15, 40), breaks = seq(15, 40, 5), expand = c(0, 0))
+ti.plot <- ti.plot + scale_y_continuous(limits = c(0, 3.5e9), breaks = seq(0, 3e9, 1e9), expand = c(0, 0))
+ti.plot <- ti.plot + scale_fill_manual(values = my.colours)
+ti.plot <- ti.plot + theme(panel.margin = unit(4, "mm"))
+ti.plot <- ti.plot + xlab(expression(bold(paste("Temperature (", degree, "C)"))))
+ti.plot <- ti.plot + ylab("Production Rate (molecules cm-3)")
+ti.plot
+
+# grid.arrange td and ti plots together
+g_legend <- function(a.gplot) {
+  tmp <- ggplot_gtable(ggplot_build(a.gplot))
+  leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+  legend <- tmp$grobs[[leg]]
+  return(legend)
+}
+my.legend <- g_legend(td.plot)
+
+grid.arrange(my.legend, 
+             arrangeGrob(td.plot + theme(legend.position = "none"), 
+                         ti.plot + theme(axis.title.y = element_blank()) + theme(legend.position = "none"), 
+                         nrow = 1), 
+             nrow = 2, 
+             heights = c(0.5, 10))
+
+CairoPDF(file = "Ox_Budget_absolute_categories.pdf", width = 10, height = 7)
+print(grid.arrange(my.legend, 
+                   arrangeGrob(td.plot + theme(legend.position = "none"), 
+                               ti.plot + theme(axis.title.y = element_blank()) + theme(legend.position = "none"), 
+                               nrow = 1), 
+                   nrow = 2, 
+                   heights = c(0.6, 10)))
+dev.off()
+
+# CairoPDF(file = "TI_Ox_absolute_categorys.pdf", width = 10, height = 7)
+# print(p)
+# dev.off()
+
+# contributions to total
+ti.contributions <- ti %>%
+  group_by(Mechanism, Run, NOx.Condition, Temperature.C) %>%
+  mutate(Sum = sum(Rate), Fraction = Rate/Sum) %>%
+  select(-Rate, -Sum)
+tbl_df(ti.contributions)
+ti.contributions$NOx.Condition <- factor(ti.contributions$NOx.Condition, levels = c("High-NOx", "Maximal-O3", "Low-NOx"))
+
+p <- ggplot(ti.contributions, aes(x = Temperature.C, y = Fraction, fill = Category, order = Category))
+p <- p + geom_area(position = "stack")
+p <- p + facet_grid(Mechanism ~ NOx.Condition) 
+p <- p + plot_theme()
+p <- p + theme(legend.position = "top")
+p <- p + theme(legend.key.width = unit(2, "cm"))
+p <- p + theme(legend.title = element_blank())
+p <- p + ggtitle("Temperature-Independent Ox Budgets Fractional Contributions")
+p <- p + theme(panel.margin = unit(4, "mm"))
+p <- p + scale_x_continuous(limits = c(15, 40), breaks = seq(15, 40, 5), expand = c(0, 0))
+p <- p + scale_y_continuous(labels = percent, expand = c(0, 0))
+p <- p + scale_fill_manual(values = my.colours)
+p
+
+CairoPDF(file = "TI_Ox_category_contributions.pdf", width = 10, height = 7)
+print(p)
+dev.off()
+
+# increase at 40°C from 20°C
+df.increase <- d %>%
+  filter(Temperature.C %in% c(20, 40)) %>%
+  rowwise() %>%
+  mutate(T.Cond = ifelse(Temperature.C == 20, "Reference", "Maximum")) %>%
+  select(-Temperature.C) %>%
+  spread(T.Cond, Rate, drop = FALSE) %>%
+  mutate(Difference = Maximum - Reference) %>%
+  select(-Maximum, -Reference) %>%
+  spread(Run, Difference, drop = FALSE) %>%
+  mutate(Isoprene.Increase = TD - TI) %>%
+  select(-TD, Chemistry.Increase = TI) %>%
+  gather(Type, Increase, -Mechanism, -Category, -NOx.Condition)
+
+# Difference of all radicals from RO2NO2
+df.increase %>%
+  filter(Category %in% c("ARO2", "RO2", "HO2", "RO2NO2")) %>%
+  spread(Category, Increase) %>%
+  mutate(Diff.from.RO2NO2 = RO2NO2 - ARO2 - RO2 - HO2) %>%
+  select(-ARO2, -RO2, -HO2, -RO2NO2) %>%
+  spread(Type, Diff.from.RO2NO2, drop = FALSE)
+
+ggplot(df.increase, aes(x = Category, y = Increase, fill = Type)) + geom_bar(stat = "identity", position = "dodge") + facet_grid(NOx.Condition ~  Mechanism) + plot_theme()
+
+# differences from MCMv3.2
+mcm.diff <- d %>%
+  spread(Mechanism, Rate, drop = FALSE) %>%
+  gather(Mechanism, Rate, -Temperature.C, -Category, -Run, -NOx.Condition, -MCMv3.2) %>%
+  mutate(Difference.from.MCM = MCMv3.2 - Rate) %>%
+  select(-MCMv3.2, -Rate)
+mcm.diff.td <- mcm.diff %>%
+  filter(Run == "TD")
+ggplot(mcm.diff.td, aes(x = Temperature.C, y = Difference.from.MCM, fill = Category)) + geom_bar(data = subset(mcm.diff.td, Difference.from.MCM < 0), stat = "identity") + geom_bar(data = subset(mcm.diff, Difference.from.MCM > 0), stat = "identity") + facet_grid(Mechanism ~ NOx.Condition) + plot_theme() + scale_fill_manual(values = my.colours)
+
+# contributions at 40C
+d %>%
+  filter(Temperature.C == 40) %>%
+  spread(Category, Rate, drop = FALSE) %>%
+  mutate(Diff = (RO2NO2 - HO2)/RO2NO2*100) %>%
+  select(Mechanism, Run, NOx.Condition, Diff) %>%
+  spread(Run, Diff)
+  
+
