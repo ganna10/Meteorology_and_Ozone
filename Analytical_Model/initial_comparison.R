@@ -43,7 +43,7 @@ vocr <- vocr + plot.lines
 vocr <- vocr + ylab("VOCR (s-1)")
 vocr <- vocr + scale_y_continuous(limits = c(0, 6), breaks = seq(0, 6, 1), expand = c(0, 0))
 vocr <- vocr + ggtitle("Total VOC OH Reactivity")
-vocr <- vocr + theme(legend.position = "right")
+vocr <- vocr + theme(legend.position = "top")
 vocr
 
 # NOxR Plot
@@ -112,14 +112,17 @@ grid.arrange(arrangeGrob(vocr + theme(legend.position = "none"),
                          my.legend,
                          ncol = 2))
 
-CairoPDF(file = "Analytical_model_comparison.pdf", width = 7, height = 10)
-print(grid.arrange(arrangeGrob(vocr + theme(legend.position = "none"), 
-                         noxr + theme(legend.position = "none"),
-                         vocr.noxr + theme(legend.position = "none"),
-                         no.nox + theme(legend.position = "none"),
-                         phox + theme(legend.position = "none"),
-                         po3 + theme(legend.position = "none"),
-                         o3 + theme(legend.position = "none"),
-                         my.legend,
-                         ncol = 2)))
+CairoPDF(file = "Analytical_model_comparison.pdf", width = 10, height = 7)
+print(grid.arrange(my.legend, 
+                   arrangeGrob(vocr + theme(legend.position = "none"), 
+                               phox + theme(legend.position = "none"),
+                               no.nox + theme(legend.position = "none"),
+                               o3 + theme(legend.position = "none"),
+                               nrow = 2), 
+                   nrow = 2, 
+                   heights = c(1, 6)))
+dev.off()
+
+CairoPDF(file = "PO3_model.pdf")
+print(po3)
 dev.off()
