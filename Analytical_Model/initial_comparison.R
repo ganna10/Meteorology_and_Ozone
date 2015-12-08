@@ -3,7 +3,7 @@
 
 setwd("~/Documents//Analysis//2015_Meteorology_and_Ozone//Analytical_Model")
 date = "07122015"
-mechanisms <- c("CRIv2", "MOZART-4", "CB05", "RADM2")
+mechanisms <- c("MCMv3.2", "CRIv2", "MOZART-4", "CB05", "RADM2")
 
 # temperature independent data
 ti.list <- lapply(mechanisms, get_analytical_model_data, Run.Label = "TI", Date = date)
@@ -44,6 +44,7 @@ vocr <- vocr + ylab("VOCR (s-1)")
 vocr <- vocr + scale_y_continuous(limits = c(0, 6), breaks = seq(0, 6, 1), expand = c(0, 0))
 vocr <- vocr + ggtitle("Total VOC OH Reactivity")
 vocr <- vocr + theme(legend.position = "right")
+vocr
 
 # NOxR Plot
 noxr <- ggplot(data, aes(x = Temperature.C, y = NOxR))
