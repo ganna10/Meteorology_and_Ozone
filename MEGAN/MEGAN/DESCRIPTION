@@ -1,0 +1,10 @@
+Package: MEGAN
+Type: Package
+Title: Calculate isoprene emissions using MEGAN2.1 code, adapted for Meteorology study
+Version: 1.0
+Date: 2015-12-08
+Author: Jane Coates <jane.coates@iass-potsdam.de>
+Maintainer: Jane Coates <jane.coates@iass-potsdam.de>
+Description: MEGAN2.1 code modified with parameters selected that give similar isoprene mixing ratios as temperature independent source using EMEP data for Benelux
+License: GNU
+RoxygenNote: 5.0.1
