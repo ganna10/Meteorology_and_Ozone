@@ -2,9 +2,8 @@
 # Version 0: Jane Coates 04/12/2015
 
 setwd("~/Documents//Analysis//2015_Meteorology_and_Ozone//Analytical_Model")
-date = "09122015"
-# mechanisms <- c("MCMv3.2", "CRIv2", "MOZART-4", "CB05", "RADM2")
-mechanisms <- c("CB05")
+date = "11122015"
+mechanisms <- c("MCMv3.2", "CRIv2", "MOZART-4", "CB05", "RADM2")
 
 # data
 data.list <- lapply(mechanisms, get_analytical_model_data, Run.Label = "Modified_MEGAN", Date = date)
@@ -21,7 +20,7 @@ data$NOx.Condition <- factor(data$NOx.Condition, levels = c("High-NOx", "Maximal
 
 my.colours <- c("MCMv3.2" = "#6c254f", "CRIv2" = "#ef6638", "MOZART-4" = "#2b9eb3", "CB05" = "#0e5c28", "RADM2" = "#f9c500")
 plot.lines <- list(
-  geom_point(size = 1, aes(colour = Mechanism)),
+  geom_line(size = 1, aes(colour = Mechanism)),
   facet_wrap( ~ NOx.Condition),
   plot_theme(),
   scale_colour_manual(values = my.colours),
@@ -36,7 +35,7 @@ plot.lines <- list(
 vocr <- ggplot(data, aes(x = Temperature.C, y = VOCR))
 vocr <- vocr + plot.lines
 vocr <- vocr + ylab("VOCR (s-1)")
-vocr <- vocr + scale_y_continuous(limits = c(0, 16), breaks = seq(0, 16, 5), expand = c(0, 0))
+vocr <- vocr + scale_y_continuous(limits = c(0, 17), breaks = seq(0, 17, 5), expand = c(0, 0))
 vocr <- vocr + ggtitle("Total VOC OH Reactivity")
 vocr <- vocr + theme(legend.position = "top")
 vocr + theme(panel.grid = element_line(colour = "grey"))
@@ -78,7 +77,7 @@ o3 <- ggplot(data, aes(x = Temperature.C, y = O3))
 o3 <- o3 + plot.lines
 o3 <- o3 + ylab("O3 (ppbv)")
 o3 <- o3 + ggtitle("O3 Mixing Ratios")
-# o3 <- o3 + scale_y_continuous(limits = c(40, 60), breaks = seq(40, 60, 10), expand = c(0, 0))
+o3 <- o3 + scale_y_continuous(limits = c(40, 100), breaks = seq(40, 100, 20), expand = c(0, 0))
 o3
 
 # PO3 plot
