@@ -16,7 +16,7 @@ my $benelux_base = "/local/home/coates/Variable_Conditions/$mechanism/Benelux";
 #my $benelux_base = "/work/users/jco/EU_Average_Sensitivity/T_Dependent_BVOCs/$mechanism/Trials/Benelux";
 my $kpp = KPP->new("$benelux_base/gas.eqn");
 my (%families, %weights, %production_budget);
-$families{"Ox"} = [ qw( O3 NO2 ) ];
+$families{"Ox"} = [ qw( O3 NO2 O ) ];
 my @NOx = qw( NO NO2 );
 
 # define allocatable groups
