@@ -24,3 +24,5 @@ nytprof.out
 markdown_O3_budgets.pdf
 .Rproj.user
 *.nc
+*.tar.gz
+*_jane

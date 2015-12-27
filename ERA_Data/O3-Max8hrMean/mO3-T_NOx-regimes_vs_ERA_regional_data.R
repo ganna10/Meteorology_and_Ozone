@@ -19,5 +19,5 @@ t.o3 <- data.df %>%
 t.o3$NOx.Condition <- factor(t.o3$NOx.Condition, levels = c("Low-NOx", "Maximal-O3", "High-NOx"))
 t.o3$Run <- factor(t.o3$Run, levels = c("Temperature Dependent\nIsoprene Emissions", "Temperature Independent\nIsoprene Emissions", "Low Isoprene Emissions", "High Isoprene Emissions"))
 
-areas <- c("N Germany", "Central Germany", "Czech Republic", "C Poland", "Eastern Germany", "NE France", "Netherlands", "W Austria", "W Poland")
+areas <- c("Central Germany", "Eastern Germany", "Poland")
 plot.list <- lapply(areas, plot_dO3_dT_comparison_ERA, df = t.o3)

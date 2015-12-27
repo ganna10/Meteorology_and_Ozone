@@ -65,34 +65,34 @@ o3.df <- o3 %>%
 names(o3.df) <- c("Lat", "Lon", "Time", "O3")
 
 #get data over specific regions
-NE.France = get_subdata(tmax.df, o3.df, lon.min = 4, lon.max = 5, lat.min = 47, lat.max = 49)
-NE.France$Area <- rep("NE France", length(NE.France$O3))
+# NE.France = get_subdata(tmax.df, o3.df, lon.min = 4, lon.max = 5, lat.min = 47, lat.max = 49)
+# NE.France$Area <- rep("NE France", length(NE.France$O3))
 
-C.Germany = get_subdata(tmax.df, o3.df, lon.min = 9, lon.max = 12, lat.min = 50, lat.max = 51)
-C.Germany$Area <- rep("Central Germany", length(C.Germany$O3))
+Germany = get_subdata(tmax.df, o3.df, lon.min = 9, lon.max = 14, lat.min = 50, lat.max = 53)
+Germany$Area <- rep("Germany", length(Germany$O3))
 
-E.Germany = get_subdata(tmax.df, o3.df, lon.min = 13, lon.max = 14, lat.min = 50, lat.max = 53)
-E.Germany$Area <- rep("Eastern Germany", length(E.Germany$O3))
+# E.Germany = get_subdata(tmax.df, o3.df, lon.min = 13, lon.max = 14, lat.min = 50, lat.max = 53)
+# E.Germany$Area <- rep("Eastern Germany", length(E.Germany$O3))
 
-Czech.Rep = get_subdata(tmax.df, o3.df, lon.min = 14, lon.max = 16, lat.min = 47, lat.max = 49)
-Czech.Rep$Area <- rep("Czech Republic", length(Czech.Rep$O3))
+# Czech.Rep = get_subdata(tmax.df, o3.df, lon.min = 14, lon.max = 16, lat.min = 47, lat.max = 49)
+# Czech.Rep$Area <- rep("Czech Republic", length(Czech.Rep$O3))
+# 
+# W.Austria = get_subdata(tmax.df, o3.df, lon.min = 14, lon.max = 16, lat.min = 47, lat.max = 48)
+# W.Austria$Area <- rep("W Austria", length(W.Austria$O3))
 
-W.Austria = get_subdata(tmax.df, o3.df, lon.min = 14, lon.max = 16, lat.min = 47, lat.max = 48)
-W.Austria$Area <- rep("W Austria", length(W.Austria$O3))
+Poland = get_subdata(tmax.df, o3.df, lon.min = 15, lon.max = 20, lat.min = 50, lat.max = 52)
+Poland$Area <- rep("Poland", length(Poland$O3))
 
-W.Poland = get_subdata(tmax.df, o3.df, lon.min = 15, lon.max = 17, lat.min = 50, lat.max = 52)
-W.Poland$Area <- rep("W Poland", length(W.Poland$O3))
+# C.Poland = get_subdata(tmax.df, o3.df, lon.min = 19, lon.max = 20, lat.min = 51, lat.max = 52)
+# C.Poland$Area <- rep("C Poland", length(C.Poland$O3))
 
-C.Poland = get_subdata(tmax.df, o3.df, lon.min = 19, lon.max = 20, lat.min = 51, lat.max = 52)
-C.Poland$Area <- rep("C Poland", length(C.Poland$O3))
+# Netherlands = get_subdata(tmax.df, o3.df, lon.min = 6, lon.max = 6, lat.min = 51, lat.max = 52)
+# Netherlands$Area <- rep("Netherlands", length(Netherlands$O3))
+# 
+# N.Germany = get_subdata(tmax.df, o3.df, lon.min = 9, lon.max = 14, lat.min = 53, lat.max = 53)
+# N.Germany$Area <- rep("N Germany", length(N.Germany$O3))
 
-Netherlands = get_subdata(tmax.df, o3.df, lon.min = 6, lon.max = 6, lat.min = 51, lat.max = 52)
-Netherlands$Area <- rep("Netherlands", length(Netherlands$O3))
-
-N.Germany = get_subdata(tmax.df, o3.df, lon.min = 9, lon.max = 14, lat.min = 53, lat.max = 53)
-N.Germany$Area <- rep("N Germany", length(N.Germany$O3))
-
-all.data <- rbind(NE.France, C.Germany, E.Germany, Czech.Rep, W.Austria, W.Poland, C.Poland, Netherlands, N.Germany)
+all.data <- rbind(Germany, Poland)
 all.data <- all.data %>%
   mutate(Tmax.C = Tmax - 273) %>%
   select(-Tmax)

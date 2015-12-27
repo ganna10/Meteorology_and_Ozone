@@ -87,15 +87,22 @@ final <- assigned %>%
 
 plot <- final %>%
   select(-Rate)
-plot$Category <- factor(plot$Category, levels = c("HO2", "CH3CO3", "Others", "CH3O2"))
+plot$Category <- factor(plot$Category, levels = c(levels(factor(plot$Category)), "HO2NO2", "CH3O2NO2", "PAN"))
+plot$Category[plot$Category == "HO2"] <- "HO2NO2"
+plot$Category[plot$Category == "CH3O2"] <- "CH3O2NO2"
+plot$Category[plot$Category == "CH3CO3"] <- "PAN"
 
-my.colours = c("CH3CO3" = "#6c254f", "CH3O2" = "#ef6638", "HO2" = "#2b9eb3", "Others" = "#0e5c28")
+plot$Category <- factor(plot$Category, levels = c("HO2NO2", "CH3O2NO2", "PAN", "Others"))
+
+my.colours = c("HO2NO2" = "#6c254f", "CH3O2NO2" = "#ef6638", "PAN" = "#2b9eb3", "Others" = "#0e5c28")
 
 # temperature dependent plots
 td <- plot %>%
-  filter(Run == "Temperature Dependent\nIsoprene Emissions")
+  filter(Run == "Temperature Dependent\nIsoprene Emissions") %>%
+  arrange(Category)
+
 td.plot <- ggplot(td, aes(x = Temperature.C, y = Normalised,  fill = Category, order = Category))
-td.plot <- td.plot + geom_bar(stat = "identity") 
+td.plot <- td.plot + geom_bar(stat = "identity", width = 1) 
 td.plot <- td.plot + facet_grid(Mechanism ~ NOx.Condition) 
 td.plot <- td.plot + plot_theme()
 td.plot <- td.plot + theme(legend.position = "top")
@@ -108,7 +115,7 @@ td.plot <- td.plot + scale_y_continuous(limits = c(0, 4), breaks = seq(0, 4, 1.0
 td.plot <- td.plot + scale_fill_manual(values = my.colours)
 td.plot <- td.plot + theme(panel.margin = unit(4, "mm"))
 td.plot <- td.plot + xlab(expression(bold(paste("Temperature (", degree, "C)"))))
-td.plot <- td.plot + ylab("Ox Production per Loss of Emitted VOC (molecules (Ox)/molecules (VOC))")
+td.plot <- td.plot + ylab("RO2NO2 Production per Loss of Emitted VOC\n(molecules (RO2NO2)/molecules (VOC))")
 td.plot <- td.plot + guides(fill = guide_legend(label.position = "top"))
 td.plot
 
@@ -118,9 +125,10 @@ td.plot
 
 # temperature dependent plots
 ti <- plot %>%
-  filter(Run == "Temperature Independent\nIsoprene Emissions")
+  filter(Run == "Temperature Independent\nIsoprene Emissions") %>%
+  arrange(Category)
 ti.plot <- ggplot(ti, aes(x = Temperature.C, y = Normalised, fill = Category, order = Category))
-ti.plot <- ti.plot + geom_bar(stat = "identity") 
+ti.plot <- ti.plot + geom_bar(stat = "identity", width = 1) 
 ti.plot <- ti.plot + facet_grid(Mechanism ~ NOx.Condition) 
 ti.plot <- ti.plot + plot_theme()
 ti.plot <- ti.plot + theme(legend.position = "top")
@@ -159,6 +167,7 @@ print(grid.arrange(my.legend,
                    nrow = 2, 
                    heights = c(0.38, 7)))
 dev.off()
+
 plot$Run[plot$Run == "Temperature Dependent\nIsoprene Emissions"] <- "TD"
 # increase at 40°C from 20°C
 df.increase <- plot %>%

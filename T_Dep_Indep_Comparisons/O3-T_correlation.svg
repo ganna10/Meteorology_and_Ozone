@@ -13,7 +13,7 @@
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
    width="881.72382"
-   height="594.00586"
+   height="588.17175"
    xml:space="preserve"
    sodipodi:docname="O3-T_correlation.svg"><metadata
      id="metadata8"><rdf:RDF><cc:Work
@@ -28,13 +28,13 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1920"
-     inkscape:window-height="1023"
+     inkscape:window-width="1366"
+     inkscape:window-height="711"
      id="namedview4"
      showgrid="true"
-     inkscape:zoom="4.2677822"
+     inkscape:zoom="0.83039936"
      inkscape:cx="441.83813"
-     inkscape:cy="362.07213"
+     inkscape:cy="300.95261"
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
@@ -50,35 +50,11 @@
        enabled="true"
        snapvisiblegridlinesonly="true"
        originx="-13.337383px"
-       originy="-13.492253px" /></sodipodi:namedview><g
+       originy="-13.492279px" /></sodipodi:namedview><g
      id="g10"
      inkscape:groupmode="layer"
      inkscape:label="O3-T_correlation"
-     transform="matrix(1.25,0,0,-1.25,-13.337383,607.49806)"><text
-   id="text16"
-   transform="scale(1,-1)"
-   x="134.70703"
-   y="-479.21875"><tspan
-     id="tspan18"
-     sodipodi:role="line"
-     y="-479.21875"
-     x="134.70703 140.38933 145.56013 153.82784 159.51013 164.68092 168.29863 173.46944 176.56633 182.24863 185.86633 191.03712 193.62253 200.33713 205.50793 211.19023 216.36102 222.04333 227.69772 232.86853 238.55083"
-     style="font-size:9.30000019px;font-variant:normal;font-weight:bold;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Nimbus Sans L;-inkscape-font-specification:NimbusSanL-Bold">Temperature Dependent</tspan><tspan
-     id="tspan20"
-     sodipodi:role="line"
-     y="-469.71484"
-     x="144.25391 146.83931 152.0101 157.69241 163.37471 166.9924 172.16321 177.8455 183.01631 185.6017 191.80481 200.07251 202.6579 207.8287 212.99951 215.5849 221.26721 226.94951"
-     style="font-size:9.30000019px;font-variant:normal;font-weight:bold;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Nimbus Sans L;-inkscape-font-specification:NimbusSanL-Bold">Isoprene Emissions</tspan><tspan
-     id="tspan22"
-     sodipodi:role="line"
-     y="-479.21875"
-     x="441.17578 446.85809 452.02887 460.29657 465.97888 471.14969 474.7674 479.93817 483.0351 488.71738 492.33508 497.50589 500.09128 502.67667 508.35898 514.04126 519.21204 524.89435 530.03729 535.71954 541.40186 546.57269 552.25494"
-     style="font-size:9.30000019px;font-variant:normal;font-weight:bold;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Nimbus Sans L;-inkscape-font-specification:NimbusSanL-Bold">Temperature Independent</tspan><tspan
-     id="tspan24"
-     sodipodi:role="line"
-     y="-469.71484"
-     x="454.33984 456.92526 462.09604 467.77835 473.46063 477.07834 482.24915 487.93146 493.10223 495.68765 501.89075 510.15845 512.74384 517.91461 523.08545 525.67084 531.35315 537.03546"
-     style="font-size:9.30000019px;font-variant:normal;font-weight:bold;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Nimbus Sans L;-inkscape-font-specification:NimbusSanL-Bold">Isoprene Emissions</tspan></text>
+     transform="matrix(1.25,0,0,-1.25,-13.337383,601.66396)">
 
 
 <path
@@ -113,6 +89,8 @@
      style="font-size:14.89999962px;font-variant:normal;writing-mode:lr-tb;fill:#ef6638;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Nimbus Sans L;-inkscape-font-specification:NimbusSanL-Regu">CRIv2</tspan></text>
 
 
+
+
 <text
    id="text42"
    transform="scale(1,-1)"
@@ -123,6 +101,8 @@
      y="-384"
      x="56 68.411713 80.003906 89.107788 99.046112 109.80389 118.90781 123.86951"
      style="font-size:14.89999962px;font-variant:normal;writing-mode:lr-tb;fill:#2b9eb3;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Nimbus Sans L;-inkscape-font-specification:NimbusSanL-Regu">MOZART-4</tspan></text>
+
+
 
 
 <text
@@ -137,6 +117,8 @@
      style="font-size:14.89999962px;font-variant:normal;writing-mode:lr-tb;fill:#6c254f;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Nimbus Sans L;-inkscape-font-specification:NimbusSanL-Regu">MCMv3.2</tspan></text>
 
 
+
+
 <text
    id="text50"
    transform="scale(1,-1)"
@@ -149,6 +131,8 @@
      style="font-size:14.89999962px;font-variant:normal;writing-mode:lr-tb;fill:#f9c500;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Nimbus Sans L;-inkscape-font-specification:NimbusSanL-Regu">RADM2</tspan></text>
 
 
+
+
 <text
    id="text54"
    transform="scale(1,-1)"
@@ -159,6 +143,8 @@
      y="-448"
      x="56 66.757812 76.696106 84.980499"
      style="font-size:14.89999962px;font-variant:normal;writing-mode:lr-tb;fill:#0e5c28;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Nimbus Sans L;-inkscape-font-specification:NimbusSanL-Regu">CB05</tspan></text>
+
+
 
 
 <path
@@ -296,6 +282,8 @@
      style="font-size:9.30000019px;font-variant:normal;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Nimbus Sans L;-inkscape-font-specification:NimbusSanL-Regu">80</tspan></text>
 
 
+
+
 <path
    inkscape:connector-curvature="0"
    id="path230"
@@ -341,6 +329,8 @@
      y="-310.17188"
      x="22.789062 27.959862"
      style="font-size:9.30000019px;font-variant:normal;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Nimbus Sans L;-inkscape-font-specification:NimbusSanL-Regu">80</tspan></text>
+
+
 
 
 <path
@@ -390,6 +380,8 @@
      style="font-size:9.30000019px;font-variant:normal;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Nimbus Sans L;-inkscape-font-specification:NimbusSanL-Regu">80</tspan></text>
 
 
+
+
 <path
    inkscape:connector-curvature="0"
    id="path270"
@@ -426,6 +418,8 @@
      y="-102.30859"
      x="668.87634 675.59094 678.17633 683.85864 689.54095 692.63782 699.35242 706.58783"
      style="font-size:9.30000019px;font-variant:normal;font-weight:bold;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Nimbus Sans L;-inkscape-font-specification:NimbusSanL-Bold">High-NOx</tspan></text>
+
+
 
 
 <path
@@ -468,6 +462,8 @@
      style="font-size:9.30000019px;font-variant:normal;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Nimbus Sans L;-inkscape-font-specification:NimbusSanL-Regu">152025303540</tspan></text>
 
 
+
+
 <path
    inkscape:connector-curvature="0"
    id="path304"
@@ -508,6 +504,8 @@
      style="font-size:9.30000019px;font-variant:normal;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Nimbus Sans L;-inkscape-font-specification:NimbusSanL-Regu">152025303540</tspan></text>
 
 
+
+
 <text
    id="text322"
    transform="scale(1,-1)"
@@ -520,6 +518,8 @@
      style="font-size:11.5px;font-variant:normal;font-weight:bold;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Nimbus Sans L;-inkscape-font-specification:NimbusSanL-Bold">Temperature (</tspan></text>
 
 
+
+
 <text
    id="text326"
    transform="scale(1,-1)"
@@ -529,6 +529,8 @@
      y="-13.300781"
      x="373.18982"
      style="font-size:11.5px;font-variant:normal;font-weight:normal;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Symbol;-inkscape-font-specification:Symbol">°</tspan></text>
+
+
 
 
 <text
@@ -543,6 +545,8 @@
      style="font-size:11.5px;font-variant:normal;font-weight:bold;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Nimbus Sans L;-inkscape-font-specification:NimbusSanL-Bold">C)</tspan></text>
 
 
+
+
 <text
    id="text334"
    transform="matrix(0,1,1,0,0,0)"
@@ -555,6 +559,8 @@
      style="font-size:11.5px;font-variant:normal;font-weight:bold;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Nimbus Sans L;-inkscape-font-specification:NimbusSanL-Bold">O<tspan
    style="font-size:10.39999962px;baseline-shift:sub"
    id="tspan4526">3</tspan> (ppbv)</tspan></text>
+
+
 
 
 <path
@@ -584,6 +590,8 @@
      style="font-size:12.80000019px;fill:#2b9eb3;fill-opacity:1">Chemistry</tspan></text>
 
 
+
+
 <path
    style="fill:none;stroke:#2b9eb3;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:2, 4;stroke-dashoffset:0"
    d="m 420,470 0,45"
@@ -604,42 +612,36 @@
      style="font-size:12.80000019px;fill:#2b9eb3;fill-opacity:1">Emissions</tspan></text>
 
 
-<path
-   style="fill:none;stroke:#0e5c28;stroke-width:6.4000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-   d="m 341.6,309.59996 0,-21.6"
-   id="path4510"
-   inkscape:connector-curvature="0" /><path
-   style="fill:none;stroke:#f9c500;stroke-width:6.4000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-   d="m 348.8,293.59996 0,-5.6"
-   id="path4512"
-   inkscape:connector-curvature="0" /><path
-   style="fill:none;stroke:#ef6638;stroke-width:6.4000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-   d="m 356,287.99996 0,-3.2"
-   id="path4514"
-   inkscape:connector-curvature="0" /><path
-   style="fill:none;stroke:#2b9eb3;stroke-width:6.4000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-   d="m 363.2,287.99996 0,-9.6"
-   id="path4516"
-   inkscape:connector-curvature="0" /><text
+
+
+
+
+
+
+<text
    xml:space="preserve"
-   style="font-size:16px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Nimbus Sans L;-inkscape-font-specification:Sans Bold"
-   x="348"
-   y="-311.99997"
-   id="text4518"
+   style="font-size:12.80000019px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Nimbus Sans L;-inkscape-font-specification:Sans Bold"
+   x="52.391895"
+   y="-471.99997"
+   id="text3281"
    sodipodi:linespacing="125%"
    transform="scale(1,-1)"><tspan
      sodipodi:role="line"
-     id="tspan4520"
-     x="348"
-     y="-311.99997"
-     style="font-size:12.80000019px">Difference</tspan><tspan
-     sodipodi:role="line"
-     x="348"
-     y="-295.99997"
-     id="tspan4522"
-     style="font-size:12.80000019px">from <tspan
-   style="fill:#6c254f;fill-opacity:1"
-   id="tspan4524">MCMv3.2</tspan></tspan></text>
+     id="tspan3283"
+     x="52.391895"
+     y="-471.99997">Temperature Dependent isoprene Emissions</tspan></text>
 
+<text
+   xml:space="preserve"
+   style="font-size:12.80000019px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Nimbus Sans L;-inkscape-font-specification:Sans Bold"
+   x="357.5029"
+   y="-471.99997"
+   id="text3281-3"
+   sodipodi:linespacing="125%"
+   transform="scale(1,-1)"><tspan
+     sodipodi:role="line"
+     id="tspan3283-4"
+     x="357.5029"
+     y="-471.99997">Temperature Independent isoprene Emissions</tspan></text>
 
 </g></svg>
