@@ -16,7 +16,7 @@ t.o3 <- data.df %>%
   group_by(Mechanism, Run, NOx.Condition, Temperature.C) %>%
   summarise(O3 = mean(O3))
 t.o3$NOx.Condition <- factor(t.o3$NOx.Condition, levels = c("Low-NOx", "Maximal-O3", "High-NOx"))
-t.o3$Run <- factor(t.o3$Run, levels = c("Temperature Dependent\nIsoprene Emissions", "Temperature Independent\nIsoprene Emissions", "Low Isoprene Emissions", "High Isoprene Emissions"))
+t.o3$Run <- factor(t.o3$Run, levels = c("Temperature Independent\nIsoprene Emissions", "Temperature Dependent\nIsoprene Emissions"))
 t.o3$Mechanism <- factor(t.o3$Mechanism, levels = c("MCMv3.2", "CRIv2", "MOZART-4", "CB05", "RADM2"))
 
 p <- plot_dO3_dT(t.o3)
@@ -26,6 +26,7 @@ p <- p + geom_vline(x = 20)
 p
 
 CairoPDF(file = "O3-T_correlation.pdf", width = 10, height = 7)
+# print(p)
 p1 = direct.label(p, list("last.bumpup", cex = 1.2))
 p2 = ggplot_gtable(ggplot_build(p1))
 p2$layout$clip[p2$layout$name == "panel"] = "off"

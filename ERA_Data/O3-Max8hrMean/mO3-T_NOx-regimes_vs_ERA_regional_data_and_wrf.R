@@ -1,5 +1,6 @@
 # O3 vs T, allocated to the 3 NOx-regimes. Overlaid with ERA data and WRF output from different regions. Summer only values.
 # Version 0: Jane Coates 24/12/2015
+# Version 1: Jane Coates 11/2/2016 changing Run order
 
 setwd("~/Documents//Analysis//2015_Meteorology_and_Ozone//ERA_Data/O3-Max8hrMean/")
 
@@ -17,7 +18,7 @@ t.o3 <- data.df %>%
   group_by(Mechanism, Run, NOx.Condition, Temperature.C) %>%
   summarise(O3 = mean(Max.O3.8hr.av))
 t.o3$NOx.Condition <- factor(t.o3$NOx.Condition, levels = c("Low-NOx", "Maximal-O3", "High-NOx"))
-t.o3$Run <- factor(t.o3$Run, levels = c("Temperature Dependent\nIsoprene Emissions", "Temperature Independent\nIsoprene Emissions"))
+t.o3$Run <- factor(t.o3$Run, levels = c("Temperature Independent\nIsoprene Emissions", "Temperature Dependent\nIsoprene Emissions"))
 
 # areas <- c("Central Germany", "Eastern Germany", "Poland")
 areas <- c("Poland", "Germany")
