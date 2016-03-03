@@ -2,7 +2,7 @@
 # Version 0: Jane Coates 12/2/2016
 
 setwd("~/Documents//Analysis/2015_Meteorology_and_Ozone/Budgets/")
-spc <- "O3_OtherOrganic"
+spc <- "O3_Inorganic"
 date <- "12022016"
 
 #temperature dependent o3 data
@@ -33,7 +33,8 @@ d <- df %>%
   rowwise() %>%
   mutate(NOx.Condition = get_NOx_condition(H2O2/HNO3), Temperature.C = Temperature - 273) %>%
   group_by(Mechanism, Temperature.C, Reaction, Run, NOx.Condition) %>%
-  summarise(Rate = mean(Rate)) %>%
+  summarise(Rate = mean(Rate)) 
+%>%
   rowwise() %>%
   group_by(Mechanism, Temperature.C, Run, NOx.Condition, Reaction) %>%
   mutate(Normalised = normalising_rates(Rate, Normalising.df = norm.data, mechanism = Mechanism, temperature = Temperature.C, run = Run, NOx.condition = NOx.Condition)) %>%
@@ -46,9 +47,9 @@ d$NOx.Condition <- factor(d$NOx.Condition, levels = c("High-NOx", "Maximal-O3", 
 
 my.colours <- c("HNO3 + hv" = "#000000", "HO2 + NO3" = "#9bb18d", "HONO + OH" = "#e7e85e", "N2O5" = "#6c254f", "NO2" = "#c65d6c", "NO2 + NO3" = "#0e5c28", "NO2 + O" = "#ba8b01", "NO2 + OH" = "#a67c52", "NO3 + hv" = "#0c3f78", "NO3 + OH" = "#b32448", "NO + NO" = "#dd7983", "NO + NO3" = "#898989", "O1D" = "#c9a415", "O3" = "#8c6238", "O3 + OH" = "#1c3e3d", "O + O3" = "#cc6329", "HO2 + O3" = "#f3aa7f", "NO2 + O3" = "#ae4901")
 
-plot <- ggplot(d, aes(x = Temperature.C, y = Normalised, fill = Reaction, order = Reaction))
-plot <- plot + geom_bar(data = subset(d, Normalised < 0), stat = "identity", width = 1) 
-plot <- plot + geom_bar(data = subset(d, Normalised > 0), stat = "identity", width = 1) 
+plot <- ggplot(d, aes(x = Temperature.C, y = Rate, fill = Reaction, order = Reaction))
+plot <- plot + geom_bar(data = subset(d, Rate < 0), stat = "identity", width = 1) 
+plot <- plot + geom_bar(data = subset(d, Rate > 0), stat = "identity", width = 1) 
 plot <- plot + facet_grid(Run ~ NOx.Condition) 
 plot <- plot + plot_theme()
 # plot <- plot + scale_fill_manual(values = my.colours)

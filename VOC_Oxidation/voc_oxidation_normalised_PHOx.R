@@ -27,42 +27,58 @@ df <- rbind(td.df, ti.df)
 assigned <- df %>%
   rowwise() %>%
   mutate(Temperature.C = Temperature - 273, NOx.Condition = get_NOx_condition(H2O2/HNO3), Group = set_gp(VOC)) %>%
-  group_by(Mechanism, Temperature.C, Run, NOx.Condition, Group, Reaction) %>%
-  summarise(Oxidation.Rate = mean(Oxidation.Rate), Emission.Rate = mean(Emission.Rate)) 
-
-tbl_df(assigned)
-normed <- assigned %>%
-  mutate(Normalised = Oxidation.Rate / Emission.Rate) %>%
-  group_by(Mechanism, Temperature.C, NOx.Condition, Run, Group) %>%
-  summarise(Normalised = sum(Normalised))
-
-emissions <- assigned %>%
   group_by(Mechanism, Temperature.C, Run, NOx.Condition, Group) %>%
-  summarise(Emission.Rate = mean(Emission.Rate)) 
-tbl_df(emissions)
+  summarise(Oxidation.Rate = mean(Oxidation.Rate), Emission.Rate = mean(Emission.Rate)) 
+tbl_df(assigned)
+
+fractional.loss <- assigned %>%
+  select(-Emission.Rate) %>%
+  group_by(Mechanism, Temperature.C, Run, NOx.Condition) %>%
+  mutate(Total.Loss = sum(Oxidation.Rate), Fractional.Loss = Oxidation.Rate / Total.Loss) %>%
+  select(-Oxidation.Rate, -Total.Loss)
+tbl_df(fractional.loss)
+
+# normed <- assigned %>%
+#   mutate(Normalised = Oxidation.Rate / Emission.Rate) %>%
+#   group_by(Mechanism, Temperature.C, NOx.Condition, Run, VOC) %>%
+#   summarise(Normalised = sum(Normalised))
+# 
+# emissions <- assigned %>%
+#   group_by(Mechanism, Temperature.C, Run, NOx.Condition, VOC) %>%
+#   summarise(Emission.Rate = mean(Emission.Rate)) 
+# tbl_df(emissions)
 
 my.colours <- c("Alkanes" = "#6c254f", "Alkenes" = "#f9c500", "Isoprene" = "#0e5c28", "Terpenes" = "#2b9eb3", "Aromatics" = "#ef6638", "Alcohols" = "#0352cb", "Aldehydes" = "#b569b3", "Ketones" = "#ae4901", "Acids" = "#000000", "Chlorinated" = "#ba8b01", "Others" = "#77aecc")
 
-emis.plot <- ggplot(emissions, aes(x = Temperature.C, y = Emission.Rate, fill = Run)) + geom_bar(stat = "identity", position = "dodge") + facet_wrap(Group ~ Mechanism, scales = "free") + plot_theme()
-CairoPDF(file = "Emissions_absolute.pdf", height = 10, width = 15)
-print(emis.plot)
-dev.off()
+# td plots
+fractional.loss.td <- fractional.loss %>%
+  filter(Run == "TD")
 
-p <- ggplot(assigned, aes(x = Temperature.C, y = Emission.Rate, fill = Group))
-p <- p + geom_bar(data = subset(assigned, Run == "TI"), stat = "identity")
-p <- p + facet_grid(Mechanism ~ NOx.Condition)
-p <- p + plot_theme()
-p <- p + scale_fill_manual(values = my.colours)
-p <- p + ggtitle("Temperature Independent Emissions")
-p
-CairoPDF(file = "TI_emissions.pdf")
-print(p)
-dev.off()
+td.p <- ggplot(fractional.loss.td, aes(x = Temperature.C, y = Fractional.Loss, fill = Group))
+td.p <- td.p + geom_bar(stat = "identity", size = 1)
+td.p <- td.p + facet_grid(Mechanism ~ NOx.Condition)
+td.p <- td.p + plot_theme()
+td.p <- td.p + scale_fill_manual(values = my.colours)
+td.p
 
-normed.plot <- ggplot(normed, aes(x = Temperature.C, y = Normalised, fill = Group)) + geom_bar(data = subset(normed, Run == "TD"), stat = "identity") + facet_grid(Mechanism ~ NOx.Condition) + plot_theme() + scale_fill_manual(values = my.colours) + ggtitle("Temperature Dependent Emissions")
-CairoPDF(file = "TD_Loss_normalised_Emissions.pdf")
-print(normed.plot)
-dev.off()
+# ti plots
+fractional.loss.ti <- fractional.loss %>%
+  filter(Run == "TI")
+
+ti.p <- ggplot(fractional.loss.ti, aes(x = Temperature.C, y = Fractional.Loss, fill = Group))
+ti.p <- ti.p + geom_bar(stat = "identity", size = 1)
+ti.p <- ti.p + facet_grid(Mechanism ~ NOx.Condition)
+ti.p <- ti.p + plot_theme()
+ti.p <- ti.p + scale_fill_manual(values = my.colours)
+ti.p
+
+mcm.loss <- fractional.loss %>%
+  filter(Run == "TI")
+mcm <- ggplot(fractional.loss, aes(x = Temperature.C, y = Fractional.Loss, fill = Mechanism))
+mcm <- mcm + geom_bar(stat = "identity", position = "dodge")
+mcm <- mcm + facet_grid(NOx.Condition ~ Group)
+mcm <- mcm + plot_theme()
+mcm
 
 set_gp <- function (species) {
   if (species == "C5H8" | species == "ISOP" | species == "ISO") {
@@ -82,7 +98,8 @@ set_gp <- function (species) {
   } else if (species == "ACR" | species == "ALD" | species == "ALD2" | species == "ALDX" | species == "C2H5CHO" | species == "C3H7CHO" | species == "C4ALDB" | species == "C4H9CHO" | species == "CARB6" | species == "CH2O" | species == "CH3CHO" | species == "CH3COCHO" | species == "CH3OCHO" | species == "FORM" | species == "HCHO" | species == "IPRCHO" | species == "MACR" | species == "MGLY" | species == "MGLYOX" | species == "UCARB10") {
     gp <- "Aldehydes"
   } else if (species == "BUT2OL" | species == "C2H5OH" | species == "C6H5CH2OH" | species == "CH3OH" | species == "CYHEXOL" | species == "ETHGLY" | species == "ETOH" | species == "IBUTOL" | species == "IPEAOH" | species == "IPEBOH" | species == "IPECOH" | species == "IPROPOL" | species == "MBO" | species == "MEOH" | species == "NBUTOL" | species == "NPROPOL" | species == "PECOH" | species == "PROPGLY" | species == "TBUTOL") {
-    gp <- "Alcohols"
+#     gp <- "Alcohols"
+    gp <- "Others"
   } else if (species == "CH3COCH3" | species == "CYHEXONE" | species == "DIEK" | species == "HEX2ONE" | species == "HEX3ONE" | species == "KET" | species == "MEK" | species == "MIBK" | species == "MIBKAOH" | species == "MIPK" | species == "MPRK") {
     gp <- "Ketones"
   } else {

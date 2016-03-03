@@ -27,3 +27,11 @@ plot_species_budgets(subset(data, Rate > 0), Absolute = TRUE, Stacked = FALSE)
 prod.data <- get_species_budget(subset(df, Rate > 0), Reactants = TRUE, Absolute = FALSE)
 tbl_df(prod.data)
 plot_species_budgets(prod.data, Absolute = FALSE, Stacked = FALSE)
+
+# net budget
+net.df <- data %>%
+  group_by(Mechanism, Run, Temperature.C, NOx.Condition) %>%
+  summarise(Net = sum(Rate))
+net.df
+
+ggplot(net.df, aes(x = Temperature.C, y = Net, colour = Mechanism)) + geom_line(size = 2) + facet_grid(Run ~ NOx.Condition) + plot_theme()

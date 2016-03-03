@@ -2,7 +2,9 @@
 # extract data from individual mechanism files and output to csv file. Date (ddmmyyyy) is argument
 # Version 0: Jane Coates 29/9/2015
 # Version 1: Jane Coates 13/10/2015 outputting VOCR data
-# Version 2: Jane Coates 27/10/2015 not including VOCR
+# Version 2: Jane Coates 29/10/2015 removing VOCR
+# Version 3: Jane Coates 7/11/2015 new directory structure
+# Version 4: Jane Coates 14/11/2015 adding ketones and aldeydes
 
 use strict;
 use diagnostics;
@@ -10,12 +12,12 @@ use Cwd qw( cwd );
 
 die "Need date" if (@ARGV == 0);
 my $date = $ARGV[0];
-my @variables = qw( NOx.Emissions NOx Temperature O3 H2O2 OH HO2 HOx HCHO RO2NO2 RONO2 HNO3 PAN Ketones Aldehydes);
+#my @variables = qw( NOx.Emissions NOx Temperature O3 H2O2 OH HO2 HOx HCHO RO2NO2 RONO2 HNO3 PAN Ketones Aldehydes);
+my @variables = qw( NOx.Emissions Temperature O3 H2O2 OH HO2 HONO HNO3 );
 
 my $base = cwd();
 opendir DIR, $base or die $!;
 my @files = grep { $_ =~ /_check_Temperature_${date}\.txt$/ } readdir DIR;
-#my @files = grep { $_ =~ /MCMv3\.2_check_Temperature_${date}\.txt$/ } readdir DIR;
 close DIR;
 
 my $out_file = "out_Temperature_NOx_${date}.csv";
@@ -28,11 +30,13 @@ print $out "\n";
 
 foreach my $checkfile (@files) { 
     (my $mechanism = $checkfile) =~ s/^(.*?)_check_(.*?)$/$1/;
-    my ($nox_emission, $NOx, $temperature, $O3, $H2O2, $OH, $HO2, $HOx, $HCHO, $RO2NO2, $RONO2, $HNO3, $PAN, $Ketones, $Aldehydes) = extract_data($mechanism, $checkfile, \@variables);
+    #my ($nox_emission, $NOx, $temperature, $O3, $H2O2, $OH, $HO2, $HOx, $HCHO, $RO2NO2, $RONO2, $HNO3, $PAN, $Ketones, $Aldehydes) = extract_data($mechanism, $checkfile, \@variables);
+    my ($nox_emission, $temperature, $O3, $H2O2, $OH, $HO2, $HNO3, $HONO) = extract_data($mechanism, $checkfile, \@variables);
 
     for (0..$#$nox_emission) {
-        $Ketones->[$_] = 0 if ($mechanism eq "CB05");
-        print $out "$mechanism,$nox_emission->[$_],$NOx->[$_],$temperature->[$_],$O3->[$_],$H2O2->[$_],$OH->[$_],$HO2->[$_],$HOx->[$_],$HCHO->[$_],$RO2NO2->[$_],$RONO2->[$_],$HNO3->[$_],$PAN->[$_],$Ketones->[$_],$Aldehydes->[$_]\n";
+        #$Ketones->[$_] = 0 if ($mechanism eq "CB05");
+        print $out "$mechanism,$nox_emission->[$_],$temperature->[$_],$O3->[$_],$H2O2->[$_],$OH->[$_],$HO2->[$_],$HONO->[$_],$HNO3->[$_]\n";
+        #print $out "$mechanism,$nox_emission->[$_],$temperature->[$_],$O3->[$_],$H2O2->[$_],$OH->[$_],$HO2->[$_],$HONO->[$_],$HCHO->[$_],$RO2NO2->[$_],$RONO2->[$_],$HNO3->[$_],$PAN->[$_],$Ketones->[$_],$Aldehydes->[$_]\n";
     }
 }
 
@@ -48,7 +52,7 @@ sub extract_data {
     close $in; 
     my @lines = split /\n/, $all_lines;
 
-    my (@nox_emissions, @NOx, @temperature, @O3, @H2O2, @OH, @HO2, @HOx, @HCHO, @RONO2, @RO2NO2, @HNO3, @PAN, @Ketones, @Aldehydes);
+    my (@nox_emissions, @temperature, @O3, @H2O2, @OH, @HO2, @HNO3, @HONO);
     foreach my $variable (@$variables) { 
         if ($variable eq "NOx.Emissions") {
             foreach my $line (@lines) { 
@@ -59,7 +63,7 @@ sub extract_data {
         } elsif ($variable eq "Temperature") {
             foreach my $line (@lines) { 
                 if ($line =~ /^T_/) {
-                    (my $temperature = $line) =~ s/^T_(.*?)_NOSF(.*?)$/$1/;
+                    (my $temperature = $line) =~ s/^T_(.*?)_NOSF_(.*?)$/$1/;
                     push @temperature, $temperature;
                 }
             }
@@ -71,28 +75,30 @@ sub extract_data {
                     } elsif ($variable eq "HO2") {
                         push @HO2, get_value($line) * 1e12;
                     } elsif ($variable eq "HOx") {
-                        push @HOx, get_value($line) * 1e12;
+                        #push @HOx, get_value($line) * 1e12;
                     } elsif ($variable eq "HNO3") {
                         push @HNO3, get_value($line) * 1e9;
                     } elsif ($variable eq "H2O2") {
                         push @H2O2, get_value($line) * 1e9;
                     } elsif ($variable eq "HCHO") {
-                        push @HCHO, get_value($line) * 1e9;
+                        #push @HCHO, get_value($line) * 1e9;
                     } elsif ($variable eq "NOx" and $line =~ /Max/) {
-                        push @NOx, get_value($line) * 1e9;;
+                        #push @NOx, get_value($line) * 1e9;;
                     } elsif ($variable eq "RO2NO2") {
-                        push @RO2NO2, get_value($line) * 1e9;
+                        #push @RO2NO2, get_value($line) * 1e9;
                     } elsif ($variable eq "RONO2") {
-                        push @RONO2, get_value($line) * 1e9;
+                        #push @RONO2, get_value($line) * 1e9;
                     } elsif ($variable eq "PAN") {
-                        push @PAN, get_value($line) * 1e9;
+                        #push @PAN, get_value($line) * 1e9;
                     } elsif ($variable eq "Ketones") {
-                        push @Ketones, get_value($line) * 1e9;
+                        #push @Ketones, get_value($line) * 1e9;
                     } elsif ($variable eq "Aldehydes") {
-                        push @Aldehydes, get_value($line) * 1e9;
+                        #push @Aldehydes, get_value($line) * 1e9;
+                    } elsif ($variable eq "HONO") {
+                        push @HONO, get_value($line) * 1e9;
                     } elsif ($variable eq "O3") {
                         push @O3, get_value($line) * 1e9;
-                    } elsif ($variable eq "VOCR") {
+                        #} elsif ($variable eq "VOCR") {
                         #push @VOCR, get_value($line);
                     } else {
                         print "Missing data structure for $variable\n" unless ($variable eq "NOx");
@@ -101,8 +107,8 @@ sub extract_data {
             }
         }
     }
-    return \@nox_emissions, \@NOx, \@temperature, \@O3, \@H2O2, \@OH, \@HO2, \@HOx, \@HCHO, \@RO2NO2, \@RONO2, \@HNO3, \@PAN, \@Ketones, \@Aldehydes;
-    #my ($nox_emission, $NOx, $temperature, $O3, $H2O2, $OH, $HO2, $HOx, $HCHO, $RO2NO2, $RONO2, $HNO3, $PAN) = extract_data($checkfile, \@variables);
+    #return \@nox_emissions, \@NOx, \@temperature, \@O3, \@H2O2, \@OH, \@HO2, \@HOx, \@HCHO, \@RO2NO2, \@RONO2, \@HNO3, \@PAN, \@Ketones, \@Aldehydes;
+    return \@nox_emissions, \@temperature, \@O3, \@H2O2, \@OH, \@HO2, \@HNO3, \@HONO;
 }
 
 sub get_value {

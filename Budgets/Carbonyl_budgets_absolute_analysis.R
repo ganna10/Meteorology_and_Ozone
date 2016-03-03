@@ -62,3 +62,13 @@ p
 CairoPDF(file = "Differences_RO2_by_NOx.pdf", width = 10, height = 7)
 print(p)
 dev.off()
+
+# net
+net.df <- df %>%
+  rowwise() %>%
+  mutate(NOx.Condition = get_NOx_condition(H2O2/HNO3), Temperature.C = Temperature - 273) %>%
+  group_by(Mechanism, Run, Temperature.C, NOx.Condition) %>%
+  summarise(Net = sum(Rate))
+tbl_df(net.df)
+
+ggplot(net.df, aes(x = Temperature.C, y = Net, colour = Mechanism)) + geom_line(size = 2) + facet_grid(Run ~ NOx.Condition) + plot_theme()
