@@ -48,6 +48,8 @@ p <- p + plot_theme()
 p <- p + ylab("OH (pptv)")
 p <- p + scale_x_continuous(limits = c(15, 40), breaks = seq(15, 40, 5), expand = c(0, 0))
 p <- p + scale_colour_manual(values = my.colours)
+p <- p + theme(axis.line.x = element_line(colour = "black"))
+p <- p + theme(axis.line.y = element_line(colour = "black"))
 p
 
 CairoPDF(file = "OH_T.pdf")

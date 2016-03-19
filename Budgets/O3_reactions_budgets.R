@@ -41,20 +41,23 @@ d <- df %>%
 
 d$Run[d$Run == "Temperature Dependent\nIsoprene Emissions"] <- "TD"
 d$Run[d$Run == "Temperature Independent\nIsoprene Emissions"] <- "TI"
-tbl_df(d %>% filter(Run == "TD", NOx.Condition == "High-NOx", Temperature.C == 15, Reaction == "O3"))
+# tbl_df(d %>% filter(Run == "TD", NOx.Condition == "High-NOx", Temperature.C == 15, Reaction == "O3"))
 d$NOx.Condition <- factor(d$NOx.Condition, levels = c("High-NOx", "Maximal-O3", "Low-NOx"))
+tbl_df(d %>% filter(Normalised > 0))
+
+write.table(d, file = "Mixing_O3_Reactions.csv", sep = ",", row.names = FALSE, quote = FALSE)
 
 my.colours <- c("HNO3 + hv" = "#000000", "HO2 + NO3" = "#9bb18d", "HONO + OH" = "#e7e85e", "N2O5" = "#6c254f", "NO2" = "#c65d6c", "NO2 + NO3" = "#0e5c28", "NO2 + O" = "#ba8b01", "NO2 + OH" = "#a67c52", "NO3 + hv" = "#0c3f78", "NO3 + OH" = "#b32448", "NO + NO" = "#dd7983", "NO + NO3" = "#898989", "O1D" = "#c9a415", "O3" = "#8c6238", "O3 + OH" = "#1c3e3d", "O + O3" = "#cc6329", "HO2 + O3" = "#f3aa7f", "NO2 + O3" = "#ae4901")
 
 plot <- ggplot(d, aes(x = Temperature.C, y = Normalised, fill = Reaction, order = Reaction))
-plot <- plot + geom_bar(data = subset(d, Normalised < 0), stat = "identity", width = 1) 
-plot <- plot + geom_bar(data = subset(d, Normalised > 0), stat = "identity", width = 1) 
+plot <- plot + geom_bar(stat = "identity", width = 1) 
 plot <- plot + facet_grid(Run ~ NOx.Condition) 
 plot <- plot + plot_theme()
 # plot <- plot + scale_fill_manual(values = my.colours)
 plot
 # plot <- plot + theme(legend.position = "top")
 # plot <- plot + theme(legend.key.width = unit(2.5, "cm"))
+write.table(d, file = "../Stagnation/Budgets/Mixing_Inorganic_Data.csv", sep = ",", row.names = FALSE, quote = FALSE)
 # plot <- plot + theme(legend.key.height = unit(0.5, "cm"))
 # plot <- plot + theme(legend.title = element_blank())
 # plot <- plot + ggtitle("Temperature-Dependent Isoprene Emissions")

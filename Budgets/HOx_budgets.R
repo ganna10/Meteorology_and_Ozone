@@ -46,20 +46,21 @@ d <- df %>%
 d$Run[d$Run == "Temperature Dependent\nIsoprene Emissions"] <- "TD"
 d$Run[d$Run == "Temperature Independent\nIsoprene Emissions"] <- "TI"
 d$NOx.Condition <- factor(d$NOx.Condition, levels = c("High-NOx", "Maximal-O3", "Low-NOx"))
-d$Category <- factor(d$Category, levels = c("O1D", "Carbonyl Photolysis", "Inorganic Photolysis", "Other Photolysis", "VOC Oxidation", "RO2 + RO2"))
+d$Category <- factor(d$Category, levels = c("O1D", "Carbonyl Photolysis", "Inorganic Photolysis", "Other Photolysis", "VOC Oxidation", "RO2 + RO2", "Inorganic", "Other Organic", "Peroxide Formation", "RO2NO2"))
+# write.table(d, file = "Mixing_HOx_budgets.csv", sep = ",", row.names = FALSE, quote = FALSE)
 
 my.colours = c("Carbonyl Photolysis" = "#f9c500", "Other Photolysis" = "#2b9eb3", "Inorganic Photolysis" = "#0e5c28", "RO2 + RO2" = "#b569b3", "VOC Oxidation" = "#ef6638", "O1D" = "#6c254f")
 tbl_df(d)
 # temperature dependent plots
 td <- d %>%
-  arrange(Category) %>%
   filter(Run == "TD")
+td
 td.plot <- ggplot(td, aes(x = Temperature.C, y = Rate, fill = Category))
-# td.plot <- td.plot + geom_bar(data = subset(td, Rate < 0), stat = "identity", width = 1) 
+td.plot <- td.plot + geom_bar(data = subset(td, Rate < 0), stat = "identity", width = 1) 
 td.plot <- td.plot + geom_bar(data = subset(td, Rate > 0), stat = "identity", width = 1) 
 td.plot <- td.plot + facet_grid(Mechanism ~ NOx.Condition) 
 td.plot <- td.plot + plot_theme()
-td.plot <- td.plot + scale_fill_manual(values = my.colours)
+# td.plot <- td.plot + scale_fill_manual(values = my.colours)
 td.plot
 td.plot <- td.plot + theme(legend.position = "top")
 td.plot <- td.plot + theme(legend.key.width = unit(3.5, "cm"))
@@ -67,7 +68,7 @@ td.plot <- td.plot + theme(legend.key.height = unit(0.5, "cm"))
 td.plot <- td.plot + theme(legend.title = element_blank())
 td.plot <- td.plot + ggtitle("Temperature-Dependent Isoprene Emissions")
 td.plot <- td.plot + scale_x_continuous(limits = c(15, 40), breaks = seq(15, 40, 5), expand = c(0, 0))
-td.plot <- td.plot + scale_y_continuous(limits = c(0, 3e8), breaks = seq(0, 3e8, 1e8), expand = c(0, 0))
+# td.plot <- td.plot + scale_y_continuous(limits = c(0, 3e8), breaks = seq(0, 3e8, 1e8), expand = c(0, 0))
 td.plot <- td.plot + theme(panel.margin = unit(4, "mm"))
 td.plot <- td.plot + xlab(expression(bold(paste("Temperature (", degree, "C)"))))
 td.plot <- td.plot + ylab("HOx Production (molecules (HOx))")
@@ -118,22 +119,21 @@ td.plot
 
 # temperature dependent plots
 ti <- d %>%
-  arrange(Category) %>%
   filter(Run == "TI")
 tbl_df(ti)
 ti.plot <- ggplot(ti, aes(x = Temperature.C, y = Rate, fill = Category))
 ti.plot <- ti.plot + geom_bar(data = subset(ti, Rate > 0), stat = "identity", width = 1) 
-# ti.plot <- ti.plot + geom_bar(data = subset(ti, Rate < 0), stat = "identity", width = 1) 
+ti.plot <- ti.plot + geom_bar(data = subset(ti, Rate < 0), stat = "identity", width = 1) 
 ti.plot <- ti.plot + facet_grid(Mechanism ~ NOx.Condition) 
 ti.plot <- ti.plot + plot_theme()
-ti.plot
+# ti.plot
 ti.plot <- ti.plot + theme(legend.position = "top")
 ti.plot <- ti.plot + theme(legend.key.width = unit(1, "cm"))
 ti.plot <- ti.plot + theme(legend.title = element_blank())
 ti.plot <- ti.plot + ggtitle("Temperature-Independent Isoprene Emissions")
 ti.plot <- ti.plot + scale_x_continuous(limits = c(15, 40), breaks = seq(15, 40, 5), expand = c(0, 0))
-ti.plot <- ti.plot + scale_y_continuous(limits = c(0, 3e8), breaks = seq(0, 3e8, 1e8), expand = c(0, 0))
-ti.plot <- ti.plot + scale_fill_manual(values = my.colours)
+# ti.plot <- ti.plot + scale_y_continuous(limits = c(0, 3e8), breaks = seq(0, 3e8, 1e8), expand = c(0, 0))
+# ti.plot <- ti.plot + scale_fill_manual(values = my.colours)
 ti.plot <- ti.plot + theme(panel.margin = unit(4, "mm"))
 ti.plot <- ti.plot + xlab(expression(bold(paste("Temperature (", degree, "C)"))))
 ti.plot <- ti.plot + ylab("HOx Production Rate (molecules cm-3)")

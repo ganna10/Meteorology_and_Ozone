@@ -10,6 +10,8 @@ plot_theme <- function () {
        theme(strip.text = element_text(face = "bold")),
        theme(strip.text.y = element_text(angle = 0)),
        theme(plot.title = element_text(face = "bold")),
-       theme(axis.title = element_text(face = "bold"))
+       theme(axis.title = element_text(face = "bold")),
+       theme(axis.line.y = element_line(colour = "black")),
+       theme(axis.line.x = element_line(colour = "black"))
   )
 }

@@ -14,7 +14,6 @@ fractional.loss$Group <- factor(fractional.loss$Group, levels = c("Alkanes", "Al
 fractional.loss$Mechanism <- factor(fractional.loss$Mechanism, levels = c("MCMv3.2", "CRIv2", "MOZART-4", "CB05", "RADM2"))
 fractional.loss$NOx.Condition <- factor(fractional.loss$NOx.Condition, levels = c("High-NOx", "Maximal-O3", "Low-NOx"))
 
-
 my.colours <- c("Alkanes" = "#6c254f", "Alkenes" = "#f9c500", "Isoprene" = "#0e5c28", "Terpenes" = "#2b9eb3", "Aromatics" = "#ef6638", "Alcohols" = "#0352cb", "Aldehydes" = "#b569b3", "Ketones" = "#77aecc", "Acids" = "#000000", "Chlorinated" = "#ba8b01", "Others" = "#ae4901")
 
 # td plots
@@ -87,25 +86,25 @@ dev.off()
 # mcm <- mcm + plot_theme()
 # mcm
 
-
 ## total loss
 total.loss <- assigned %>%
   select(-Emission.Rate) %>%
-  group_by(Mechanism, NOx.Condition, Temperature.C, Run) %>%
+  group_by(Mechanism, NOx.Condition, Temperature.C, Run, Group) %>%
   mutate(Total = sum(Oxidation.Rate))
-total.loss$Group <- factor(total.loss$Group, levels = c("Alkanes", "Alkenes", "Aromatics", "Isoprene", "Terpenes", "Aldehydes", "Ketones", "Chlorinated", "Others"))
+total.loss$Group <- factor(total.loss$Group, levels = c("Alkanes", "Alkenes", "Aromatics", "Terpenes", "Aldehydes", "Ketones", "Chlorinated", "Others", "Isoprene"))
 total.loss$Mechanism <- factor(total.loss$Mechanism, levels = c("MCMv3.2", "CRIv2", "MOZART-4", "CB05", "RADM2"))
 total.loss$NOx.Condition <- factor(total.loss$NOx.Condition, levels = c("High-NOx", "Maximal-O3", "Low-NOx"))
 
 td.total <- total.loss %>%
   filter(Run == "TD")
-td.plot <- ggplot(arrange(td.total, Group), aes(x = Temperature.C, y = Total, fill = Group))
+td.plot <- ggplot(td.total %>% filter(NOx.Condition == "High-NOx") %>% arrange(Group), aes(x = Temperature.C, y = Total))
 td.plot <- td.plot + geom_area(position = "stack")
-td.plot <- td.plot + facet_grid(Mechanism ~ NOx.Condition)
+td.plot <- td.plot + facet_wrap(Mechanism ~ Group, scales = "free")
 td.plot <- td.plot + plot_theme()
+td.plot
 td.plot <- td.plot + scale_fill_manual(values = my.colours)
 td.plot <- td.plot + scale_x_continuous(limits = c(15, 40), breaks = seq(15, 40, 5), expand = c(0, 0))
-td.plot <- td.plot + scale_y_continuous(limits = c(0, 1.3e9), breaks = seq(0, 1.2e9, 4e8), expand = c(0, 0))
+td.plot <- td.plot + scale_y_continuous(limits = c(0, 2e8), breaks = seq(0, 2e8, 5e7), expand = c(0, 0))
 td.plot <- td.plot + theme(legend.position = "top")
 td.plot <- td.plot + theme(legend.key.width = unit(2.5, "cm"))
 td.plot <- td.plot + theme(legend.key.height = unit(0.5, "cm"))
@@ -113,20 +112,21 @@ td.plot <- td.plot + theme(legend.title = element_blank())
 td.plot <- td.plot + ggtitle("Temperature-Dependent Isoprene Emissions")
 td.plot <- td.plot + theme(panel.margin = unit(4, "mm"))
 td.plot <- td.plot + xlab(expression(bold(paste("Temperature (", degree, "C)"))))
-td.plot <- td.plot + ylab("Loss of VOCs (molecules cm-3)")
+td.plot <- td.plot + ylab("NMVOC Loss Rate (molecules cm-3)")
 td.plot <- td.plot + guides(fill = guide_legend(label.position = "top", nrow = 1))
 td.plot <- td.plot + theme(axis.line.y = element_line(colour = "black"))
 td.plot
 
 ti.total <- total.loss %>%
   filter(Run == "TI")
-ti.plot <- ggplot(arrange(ti.total, Group), aes(x = Temperature.C, y = Total, fill = Group))
+ti.plot <- ggplot(ti.total %>% filter(NOx.Condition == "High-NOx") %>% arrange(Group), aes(x = Temperature.C, y = Total))
 ti.plot <- ti.plot + geom_area(position = "stack")
-ti.plot <- ti.plot + facet_grid(Mechanism ~ NOx.Condition)
+ti.plot <- ti.plot + facet_wrap(Mechanism ~ Group, scales = "free")
 ti.plot <- ti.plot + plot_theme()
 ti.plot <- ti.plot + scale_fill_manual(values = my.colours)
+ti.plot
 ti.plot <- ti.plot + scale_x_continuous(limits = c(15, 40), breaks = seq(15, 40, 5), expand = c(0, 0))
-ti.plot <- ti.plot + scale_y_continuous(limits = c(0, 1.3e9), breaks = seq(0, 1.2e9, 4e8), expand = c(0, 0))
+ti.plot <- ti.plot + scale_y_continuous(limits = c(0, 2e8), breaks = seq(0, 2e8, 5e7), expand = c(0, 0))
 ti.plot <- ti.plot + theme(legend.position = "top")
 ti.plot <- ti.plot + theme(legend.key.width = unit(2.5, "cm"))
 ti.plot <- ti.plot + theme(legend.key.height = unit(0.5, "cm"))
@@ -134,7 +134,7 @@ ti.plot <- ti.plot + theme(legend.title = element_blank())
 ti.plot <- ti.plot + ggtitle("Temperature-Independent Isoprene Emissions")
 ti.plot <- ti.plot + theme(panel.margin = unit(4, "mm"))
 ti.plot <- ti.plot + xlab(expression(bold(paste("Temperature (", degree, "C)"))))
-ti.plot <- ti.plot + ylab("Loss of VOCs (molecules cm-3)")
+ti.plot <- ti.plot + ylab("NMVOC Loss Rate (molecules cm-3)")
 ti.plot <- ti.plot + guides(fill = guide_legend(label.position = "top", nrow = 1))
 ti.plot <- ti.plot + theme(axis.line.y = element_line(colour = "black"))
 ti.plot
@@ -152,7 +152,7 @@ dev.off()
 # emissions
 emissions <- assigned %>%
   select(-Oxidation.Rate) 
-emissions$Group <- factor(emissions$Group, levels = c("Alkanes", "Alkenes", "Aromatics", "Isoprene", "Terpenes", "Aldehydes", "Ketones", "Chlorinated", "Others"))
+emissions$Group <- factor(emissions$Group, levels = c("Alkanes", "Alkenes", "Aromatics", "Terpenes", "Aldehydes", "Ketones", "Chlorinated", "Others", "Isoprene"))
 emissions$Mechanism <- factor(emissions$Mechanism, levels = c("MCMv3.2", "CRIv2", "MOZART-4", "CB05", "RADM2"))
 emissions$NOx.Condition <- factor(emissions$NOx.Condition, levels = c("High-NOx", "Maximal-O3", "Low-NOx"))
 
@@ -173,3 +173,21 @@ ti.emis <- ti.emis + facet_grid(Mechanism ~ NOx.Condition)
 ti.emis <- ti.emis + plot_theme()
 ti.emis <- ti.emis + scale_fill_manual(values = my.colours)
 ti.emis
+
+# increase in loss rate from 20 to 40C
+filtered <- total.loss %>%
+  filter(Temperature.C == 20 | Temperature.C == 40)
+filtered$Temperature.C[filtered$Temperature.C == 20.0] <- "Twenty"
+filtered$Temperature.C[filtered$Temperature.C == 40.0] <- "Fourty"
+filtered %>%
+  select(-Total) %>%
+  spread(Temperature.C, Oxidation.Rate) %>%
+  mutate(Increase = Fourty - Twenty)
+
+# linear slopes of loss rates with T
+total.loss %>%  group_by(Mechanism, Run, NOx.Condition, Group) %>% 
+  do(model = lm(Oxidation.Rate ~ Temperature.C, data = .)) %>% 
+  mutate(Slope = summary(model)$coeff[2], Intercept = summary(model)$coeff[1], R2 = summary(model)$r.squared) %>% 
+  select(-model, -R2, -Intercept) %>%
+  spread(Run,Slope) %>%
+  mutate(Diff = TD - TI)
