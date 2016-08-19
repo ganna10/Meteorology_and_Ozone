@@ -17,5 +17,5 @@ nox <- data.df %>%
   summarise(NOx.Emissions = mean(NOx.Emissions)/nosf1) 
 
 print.data.frame(nox %>%
-  filter(Run == "TI", Mechanism == "RADM2", NOx.Condition == "High-NOx") %>%
+  filter(Run == "TI", Mechanism == "MOZART-4", NOx.Condition == "High-NOx") %>%
   spread(Mechanism, NOx.Emissions))

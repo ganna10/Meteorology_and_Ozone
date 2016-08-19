@@ -2,8 +2,8 @@
 # Version 0: Jane Coates 13/2/2016
 
 setwd("~/Documents//Analysis/2015_Meteorology_and_Ozone/Budgets/")
-spc <- "O3_reactions"
-date <- "13022016"
+spc <- "O3_RO2NO2"
+date <- "12022016"
 
 #temperature dependent o3 data
 td.df <- get_budget_data(Mechanism = "MOZART-4", Species = spc, Run.Label = "TD", Date = date)
@@ -35,7 +35,7 @@ d <- df %>%
   group_by(Mechanism, Temperature.C, Reaction, Run, NOx.Condition) %>%
   summarise(Rate = mean(Rate)) %>%
   rowwise() %>%
-  group_by(Mechanism, Temperature.C, Run, NOx.Condition, Reaction) %>%
+X  group_by(Mechanism, Temperature.C, Run, NOx.Condition, Reaction) %>%
   mutate(Normalised = normalising_rates(Rate, Normalising.df = norm.data, mechanism = Mechanism, temperature = Temperature.C, run = Run, NOx.condition = NOx.Condition)) %>%
   select(-Rate)
 

@@ -24,7 +24,10 @@ p <- p + facet_grid(NOx.Condition ~ Run)
 p <- p + plot_theme()
 p
 
+mda.T$Mechanism <- factor(mda.T$Mechanism, levels = c("MCMv3.2", "CRIv2", "MOZART-4", "CB05", "RADM2"))
+mda.T$NOx.Condition <- factor(mda.T$NOx.Condition, levels = c("Low-NOx", "Maximal-O3", "High-NOx"))
 mda.T %>%  group_by(Mechanism, NOx.Condition, Run) %>% 
   do(model = lm(MDA8 ~ Temperature.C, data = .)) %>% 
   mutate(Slope = summary(model)$coeff[2], Intercept = summary(model)$coeff[1], R2 = summary(model)$r.squared) %>% 
-  select(-model)
+  select(-model, -Intercept, -R2) %>%
+  spread(NOx.Condition, Slope)

@@ -1,9 +1,15 @@
 # analyse Ox production Budgets, absolute increases and differences
 # Version 0: Jane Coates 18/3/2016
+# Version 1: Jane Coates 2/8/2016 correcting plotting error
 
 setwd("~/Documents//Analysis/2015_Meteorology_and_Ozone/Stagnation//Budgets/")
 d <- read.csv("Normalised_Ox_budget.csv")
-tbl_df(d)
+d <- d %>%
+  filter(Category != "Deposition")
+
+d$Mechanism <- factor(d$Mechanism, levels = c("MCMv3.2", "CRIv2", "MOZART-4", "CB05", "RADM2"))
+d$Category <- factor(d$Category, levels = c("HO2", "RO2", "ARO2", "Inorganic", "Other Organic", "RO2NO2"))
+d$NOx.Condition <- factor(d$NOx.Condition, levels = c("Low-NOx", "Maximal-O3", "High-NOx"))
 
 my.colours = c("Inorganic" = "#f9c500", "Other Organic" = "#86b650", "RO2" = "#6c254f", "ARO2" = "#ef6638", "RO2NO2" = "#b569b3", "HO2" = "#0e5c28", "Deposition" = "#2b9eb3")
 
@@ -20,8 +26,6 @@ td.plot <- td.plot + geom_bar(data = td %>% filter(Rate < 0) %>% arrange(Categor
 td.plot <- td.plot + geom_line(data = net.td, colour = "white", size = 1)
 td.plot <- td.plot + facet_grid(Mechanism ~ NOx.Condition) 
 td.plot <- td.plot + plot_theme()
-# td.plot <- td.plot + scale_fill_manual(values = my.colours)
-# td.plot
 td.plot <- td.plot + theme(legend.position = "top")
 td.plot <- td.plot + theme(legend.key.width = unit(2.5, "cm"))
 td.plot <- td.plot + theme(legend.key.height = unit(0.5, "cm"))
@@ -48,8 +52,8 @@ tbl_df(net.ti)
 
 tbl_df(ti)
 ti.plot <- ggplot(ti, aes(x = Temperature.C, y = Rate))
-ti.plot <- ti.plot + geom_bar(data = td %>% filter(Rate > 0) %>% arrange(Category), aes(fill = Category), stat = "identity", width = 1) 
-ti.plot <- ti.plot + geom_bar(data = td %>% filter(Rate < 0) %>% arrange(Category), aes(fill = Category), stat = "identity", width = 1) 
+ti.plot <- ti.plot + geom_bar(data = ti %>% filter(Rate > 0) %>% arrange(Category), aes(fill = Category), stat = "identity", width = 1) 
+ti.plot <- ti.plot + geom_bar(data = ti %>% filter(Rate < 0) %>% arrange(Category), aes(fill = Category), stat = "identity", width = 1) 
 ti.plot <- ti.plot + geom_line(data = net.ti, colour = "white", size = 1)
 ti.plot <- ti.plot + facet_grid(Mechanism ~ NOx.Condition) 
 ti.plot <- ti.plot + scale_fill_manual(values = my.colours)
